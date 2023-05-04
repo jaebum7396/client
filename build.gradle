@@ -1,0 +1,36 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.9'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	//common
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	implementation 'org.webjars:sockjs-client:1.5.1'
+	
+	//view
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+	implementation 'org.webjars.bower:axios:0.21.1'
+	implementation group: 'org.webjars', name: 'bootstrap', version: '3.3.7'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
