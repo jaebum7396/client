@@ -5,16 +5,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ClientController {
-	@GetMapping("/chatView")
-    public String chatView() {
-        return "chat";
+	@GetMapping("/chat/login")
+    public String chatLogin() {
+        return "chat/login";
     }
-	@GetMapping("/loginView")
-    public String loginView() {
-        return "login";
+    @GetMapping("/chat/register")
+    public String chatRegister() {
+        return "chat/register";
     }
-	@GetMapping("/")
-    public String indexView() {
-        return "index";
+    @GetMapping("/admin/index")
+    public String adminIndex() {
+        return "admin/index";
     }
 }
