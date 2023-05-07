@@ -15,16 +15,16 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
                                     <div class="card-body">
                                         <form>
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="userId" type="email" placeholder="name@example.com" />
-                                                <label for="userId">Email address</label>
+                                                <label for="userId">아이디</label>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="userPw" type="password" placeholder="Password" />
-                                                <label for="userPw">Password</label>
+                                                <label for="userPw">비밀번호</label>
                                             </div>
                                             <div class="form-check mb-3">
                                                 <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
