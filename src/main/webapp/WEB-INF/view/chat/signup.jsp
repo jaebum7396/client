@@ -6,7 +6,7 @@
         <jsp:directive.include file="../common/head.jsp"/>
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <script src="js/register.js<%= version %>" type="text/javascript"></script>
+        <script src="js/signup.js<%= version %>" type="text/javascript"></script>
     </head>
     <body class="bg-primary">
         <div id="layoutAuthentication">
@@ -16,7 +16,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-7">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">계정 생성</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">회원가입</h3></div>
                                     <div class="card-body">
                                         <form>
                                             <%--<div class="row mb-3">
@@ -65,7 +65,7 @@
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="login">Have an account? Go to login</a></div>
+                                        <div class="small"><a href="login">이미 계정이 있나요? 로그인하기</a></div>
                                     </div>
                                 </div>
                             </div>

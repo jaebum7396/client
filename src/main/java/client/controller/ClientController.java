@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ClientController {
-    @GetMapping("/chat/register")
-    public String chatRegister() {
-        return "chat/register";
+    @GetMapping("/chat/signup")
+    public String chatSignup() {
+        return "chat/signup";
     }
 	@GetMapping("/chat/login")
     public String chatLogin() {
