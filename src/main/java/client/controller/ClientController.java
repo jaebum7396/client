@@ -9,9 +9,13 @@ public class ClientController {
     public String chatLogin() {
         return "chat/login";
     }
-    @GetMapping("/chat/register")
-    public String chatRegister() {
-        return "chat/register";
+    @GetMapping("/chat/index")
+    public String chatIndex() {
+        return "chat/index";
+    }
+    @GetMapping("/chat/application")
+    public String chatApplication() {
+        return "chat/application";
     }
     @GetMapping("/admin/index")
     public String adminIndex() {

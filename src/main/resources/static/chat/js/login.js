@@ -10,9 +10,14 @@ function login(){
         }
     })
     .then(response => {
-        console.log(response.data);
+        let result = response.data.result;
+        //console.log(response.data);
+        localStorage.setItem("token", result.token);
+        //console.log('token >>>>> ', localStorage.getItem("token"))
+        location.href='/chat/index';
     })
     .catch(error => {
+        alert('로그인 실패');
         console.error(error);
     });
 }

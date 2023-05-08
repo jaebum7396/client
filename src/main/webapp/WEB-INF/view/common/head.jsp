@@ -15,6 +15,5 @@ String version = "?v=20230102.1"; // CSS 나 JS 수정 후 업데이트 해줄�
 <%-- 폰트 --%>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js<%= version %>"></script>
 <script src="/webjars/axios/0.21.1/dist/axios.min.js"></script>
-<script src="js/login.js<%= version %>" type="text/javascript"></script>
 <%--<script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js<%= version %>"></script>--%>
 <%--<link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.css<%= version %>">--%>
