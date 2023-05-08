@@ -3,7 +3,7 @@ server:
 
 logging:
   level:
-    root: trace
+    root: debug
 
 spring:
   mvc:

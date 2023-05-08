@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ClientController {
 	@GetMapping("/chat/login")
     public String chatLogin() {
-        return "chat/login";
+        return "/chat/login";
     }
     @GetMapping("/chat/register")
     public String chatRegister() {
-        return "chat/register";
+        return "/chat/register";
     }
     @GetMapping("/admin/index")
     public String adminIndex() {
-        return "admin/index";
+        return "/admin/index";
     }
 }
