@@ -1,0 +1,19 @@
+server:
+  port: '3000'
+
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+  jsp:
+    cache: 'false'
+  devtools:
+    restart:
+      enabled: 'true'
+    livereload:
+      enabled: 'true'
