@@ -2,6 +2,12 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'war'
+}
+
+bootWar {
+	archiveBaseName = 'client'
+	archiveFileName = 'client.war'
 }
 
 group = 'com'
@@ -24,9 +30,12 @@ dependencies {
 	
 	//view
 	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
 	implementation 'org.webjars.bower:axios:0.21.1'
 	implementation group: 'org.webjars', name: 'bootstrap', version: '3.3.7'
+
+	//jsp
+	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+	implementation 'javax.servlet:jstl:1.2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
