@@ -14,8 +14,8 @@
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700'	rel='stylesheet' type='text/css'>
-<link href="chat/css/chat.css" rel="stylesheet" type="text/css" />
-<script src="chat/js/chat.js" type="text/javascript"></script>
+<link href="css/chat.css" rel="stylesheet" type="text/css" />
+<script src="js/chat.js" type="text/javascript"></script>
 </head>
 <%@ page import="java.util.Enumeration, java.util.UUID"%>
 <%@ page pageEncoding="UTF-8"%>
@@ -59,9 +59,9 @@ String USER_CD = UUID.randomUUID().toString();
 		<div id="tab_container">
 			<div id="topmenu">
 				<span class="friends chat_header" onclick="myFriendList('0')">
-					<img src="chat/image/people_icon.png" />
+					<img src="image/people_icon.png" />
 				</span> <span class="chats chat_header"> <img
-					src="chat/image/sms_icon.png" onclick="myChannelList('0')" />
+					src="image/sms_icon.png" onclick="myChannelList('0')" />
 				</span>
 				<!-- <span class="history chat_header">
 					<img src="image/etc_icon.png" />
@@ -92,7 +92,7 @@ String USER_CD = UUID.randomUUID().toString();
 				    		<a>
 					    		<div class='channel_user_btn'>대화상대</div> 
 					    		<div style='display: flex; text-align: center; align-items: center; z-index:9999;' onclick="inviteList('0')">
-					    			<img src="chat/image/close.png" style='width:25px;margin:10px;transform: rotate( 45deg );'/>
+					    			<img src="image/close.png" style='width:25px;margin:10px;transform: rotate( 45deg );'/>
 				    			</div>
 				    		</a>
 					    	<ul class="channel_user_list">

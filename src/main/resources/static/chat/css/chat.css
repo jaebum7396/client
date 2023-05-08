@@ -1,11 +1,3 @@
-/***********************************************************************************
-* Copyright (C)RFLOGIX since 2010.08.24 (rflogix@rflogix.com)
-************************************************************************************
-* ● 프로젝트	: 크로닉-관리자
-* ○ 파일		: common.css
-* ○ 생성		: 2017.02.01(수요일)
-* ○ 최종변경	: 2017.02.01(수요일)
-************************************************************************************/
 * {
 	margin: 0px;
 	padding: 0px;
@@ -525,7 +517,7 @@ html.open {
 	height: 50px;
 	z-index: 1;
 	background-image:
-			url("/chat/image/menu.png");
+			url("image/menu.png");
 	background-size: 50%;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -536,7 +528,7 @@ html.open {
 	width: 50px;
 	height: 50px;
 	background-image:
-			url("/chat/image/close.png");
+			url("image/close.png");
 	background-size: 50%;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -649,13 +641,13 @@ input[type=checkbox] + label {
 	cursor: pointer;
 	padding-left: 23px;
 	background-repeat: no-repeat;
-	background-image: url('/chat/image/checker-off.svg');
+	background-image: url('image/checker-off.svg');
 }
 input[type=checkbox]:checked + label {
-	background-image: url('/chat/image/checker-on.svg');
+	background-image: url('image/checker-on.svg');
 }
 input[type=checkbox]:disabled + label {
-	background-image: url('/chat/image/checker-disabled.svg');
+	background-image: url('image/checker-disabled.svg');
 }
 .profile_container{
 	position:relative;

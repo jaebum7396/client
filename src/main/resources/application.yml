@@ -1,10 +1,6 @@
 server:
   port: '3000'
 
-logging:
-  level:
-    root: warn
-
 spring:
   mvc:
     view:
