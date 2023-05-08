@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Login - chat</title>
+        <title>register - chat</title>
         <jsp:directive.include file="../common/head.jsp"/>
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="js/register.js<%= version %>" type="text/javascript"></script>
     </head>
     <body class="bg-primary">
         <div id="layoutAuthentication">
@@ -51,11 +52,15 @@
                                                 </div>
                                             </div>
                                             <div class="form-floating mb-3">
+                                                <input class="form-control" id="userPhoneNo" type="text" placeholder="홍길동" />
+                                                <label for="userPhoneNo">휴대폰 번호</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
                                                 <input class="form-control" id="userNm" type="text" placeholder="홍길동" />
                                                 <label for="userNm">사용자 이름</label>
                                             </div>
                                             <div class="mt-4 mb-0">
-                                                <div class="d-grid"><a class="btn btn-primary btn-block" href="login">계정 생성</a></div>
+                                                <div class="d-grid"><div class="btn btn-primary btn-block" onclick='signup();'>계정 생성</div></div>
                                             </div>
                                         </form>
                                     </div>
