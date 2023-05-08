@@ -3,7 +3,7 @@ server:
 
 logging:
   level:
-    org.springframework.cloud.gateway: trace
+    root: trace
 
 spring:
   mvc:
