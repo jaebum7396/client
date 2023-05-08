@@ -24,6 +24,9 @@ String WSS_CD = UUID.randomUUID().toString();
 String USER_CD = UUID.randomUUID().toString();
 %>
 <script>
+	if(!localStorage.getItem("token")){
+		location.href = "login";
+	}
 	function invite_list_close(){
 		$('#invite_list_popup').css('display','none');
 		leftSideMenuClose();
