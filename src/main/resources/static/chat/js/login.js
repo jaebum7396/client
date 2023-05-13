@@ -1,5 +1,5 @@
 function login(){
-    console.log('login>>>>>>>>>>>>')
+    console.log('login>>>>>>>>>>>>', backendUrl+'/user/login')
     axios.post(backendUrl+'/user/login', {
         userId: $('#userId').val(),
         userPw: $('#userPw').val()

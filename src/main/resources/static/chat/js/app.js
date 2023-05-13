@@ -99,34 +99,34 @@ function getFriendsWithPageable(p_page) {
         if (!p_page) {
             var p_page = $("#tab_container input[name='current_page_num']").val();
             if(p_page==0||p_page==''){
-                getMyInfo();
+                //getMyInfo();
             }
         } else {
             if (p_page == '0') {
                 $("#friend_list_container").html('');
-                getMyInfo();
+                //getMyInfo();
             }
         }
         axios.get(backendUrl+'/chat/friends', {
-            page: p_page,
-            size: 11
-        }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token"),
-            }
+                Authorization: localStorage.getItem("token"),
+            },
+            page: p_page,
+            size: 11
         })
         .then(response => {
             console.log('getFriendsWithPageableResp', response)
-
-            let friendList = response.result.friendList
-            $("#tab_container input[name='current_page_num']").val(response.result.p_page);
-            friendMakerHub(friendList, $("#friend_list_container"), true);
+            let result = response.data.result;
+            let friendArr = result.friendArr
+            let p_page = result.p_page;
+            $("#tab_container input[name='current_page_num']").val(p_page);
+            friendMakerHub(friendArr, $("#friend_list_container"), true);
 
             OPEN_FRIEND_LIST_YN = false;
         })
         .catch(error => {
-            alert('로그인 실패');
+            alert('친구 목록을 가져오는데 실패했습니다.');
             console.error(error);
         });
     }
@@ -151,10 +151,10 @@ function getFriendsWithPageable(p_page) {
     });
 }
 
-async function friendMakerHub(friendList, p_obj, rowClickActivate){
+async function friendMakerHub(friendArr, p_obj, rowClickActivate){
     console.log('friendMakerHub start')
-    for (var i = 0; i < friendList.length; i++) {
-        let friend = friendList[i];
+    for (var i = 0; i < friendArr.length; i++) {
+        let friend = friendArr[i];
         await p_obj.append(friendMaker(friend, rowClickActivate));
     }
     console.log('friendMakerHub done')
@@ -163,18 +163,18 @@ async function friendMakerHub(friendList, p_obj, rowClickActivate){
 function friendMaker(friend, rowClickActivate) {
     console.log(friend)
     let htmlText ="";
-    htmlText += "<div class='chat_row friend " + friend.userCd + "'>";
-    htmlText += 	"<input class='USER_CD' id='USER_CD' name='USER_CD' type='hidden' value='" + friend.userCd + "'/>";
+    htmlText += "<div class='chat_row friend " + friend.friendUserCd + "'>";
+    htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + friend.friendUserCd + "'/>";
     htmlText +=		"<div class='profile_container'>"
-    htmlText += 		profileMaker(friend,' left:auto; top:auto;');
+    //htmlText += 		profileMaker(friend,' left:auto; top:auto;');
     htmlText += 	"</div>";
     htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
-    htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (friend.userNickNm!=null? friend.userNickNm : friend.userNm) + "</strong>";
+    htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
     htmlText += 		"<strong class='friend_message'>" + (friend.userMessage!=null? friend.userMessage:"") + "</strong>";
     htmlText += 	"</div>";
     htmlText += 	"<div style='margin: auto;'>";
-    htmlText += 		"<input id='check_"+friend.userCd+"' class='friend_check' type='checkbox' style='' value='" + friend.userCd + "'/>";
-    htmlText +=     	"<label for='check_"+friend.userCd+"' class='friend_check_label'></label>"
+    htmlText += 		"<input id='check_"+friend.friendUserCd+"' class='friend_check' type='checkbox' style='' value='" + friend.friendUserCd + "'/>";
+    htmlText +=     	"<label for='check_"+friend.friendUserCd+"' class='friend_check_label'></label>"
     htmlText += 	"</div>";
     htmlText += "</div>";
     return htmlText;

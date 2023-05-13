@@ -1,14 +1,17 @@
 <%@ page import="org.springframework.beans.factory.annotation.Value" %>
 <%@ page import="org.springframework.context.ApplicationContext" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@ page import="org.springframework.core.env.Environment" %>
+<%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%
 //**********************************************************************************
 // ○ 파일	: page_head
 // ● 설명	: 페이지 공통 head
 //**********************************************************************************
 String version = "?v=20230102.1"; // CSS 나 JS 수정 후 업데이트 해줄것
-ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(application);
-String BACKEND_URL = context.getBean("${backend.url}", String.class);
+WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+Environment env = context.getEnvironment();
+String BACKEND_URL = env.getProperty("backend.url");
 %>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,5 +27,5 @@ String BACKEND_URL = context.getBean("${backend.url}", String.class);
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script>
-    const backendUrl = '<%=BACKEND_URL%>>';
+    const backendUrl = '<%=BACKEND_URL%>';
 </script>

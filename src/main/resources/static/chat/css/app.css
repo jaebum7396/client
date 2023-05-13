@@ -836,7 +836,9 @@ input[type=checkbox]:disabled + label {
 	cursor: pointer;
 }
 .list_container{
-	height: calc(100% - 130px); overflow-y: scroll;
+	margin-top: 44.8px;
+	height: calc(100% - 114px);
+	overflow-y: scroll;
 }
 .channel_user_add_btn{
 	display: flex; text-align: center; align-items: center; z-index:9999;
