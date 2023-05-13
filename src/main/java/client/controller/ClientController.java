@@ -13,9 +13,9 @@ public class ClientController {
     public String chatLogin() {
         return "chat/login";
     }
-    @GetMapping("/chat/index")
-    public String chatIndex() {
-        return "chat/index";
+    @GetMapping("/chat/app")
+    public String chatApp() {
+        return "chat/app";
     }
     @GetMapping("/admin/index")
     public String adminIndex() {

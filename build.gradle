@@ -32,6 +32,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.webjars.bower:axios:0.21.1'
 	implementation group: 'org.webjars', name: 'bootstrap', version: '3.3.7'
+	implementation group: 'org.webjars', name: 'jquery'
 
 	//jsp
 	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"

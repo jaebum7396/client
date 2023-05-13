@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     <head>
         <title>Login - chat</title>
         <jsp:directive.include file="../common/head.jsp"/>
@@ -8,6 +8,9 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="js/login.js<%= version %>" type="text/javascript"></script>
     </head>
+    <%
+
+    %>
     <body class="bg-primary">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
