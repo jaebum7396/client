@@ -1,9 +1,9 @@
-const channelUrl = "http://192.168.0.8:9090";
+const backendUrl = "http://192.168.0.8:9090";
 const clientDomainCd = 1;
 const clientUrl = "192.168.0.8:7089";
 const mainUrl = window.location.href.split('http://')[1];
 
-var sock = new SockJS(channelUrl+"/ws-stomp?userCd="+$('#USER_CD').val());
+var sock = new SockJS(backendUrl+"/ws-stomp?userCd="+$('#USER_CD').val());
 var wsClient = Stomp.over(sock);
 var reconnect = 0;
 
@@ -74,7 +74,7 @@ function wsClientConnect() {
 		if (reconnect++ <= 5) {
 			setTimeout(function () {
 				console.log("connection reconnect");
-				sock = new SockJS(channelUrl+"/ws-stomp");
+				sock = new SockJS(backendUrl+"/ws-stomp");
 				wsClient = Stomp.over(sock);
 				wsClientConnect();
 			}, 10 * 1000);
