@@ -107,13 +107,11 @@ function getFriendsWithPageable(p_page) {
                 //getMyInfo();
             }
         }
-        axios.get(backendUrl+'/chat/friends', {
+        axios.get(backendUrl+'/chat/friends?size=11&page='+p_page, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: localStorage.getItem("token"),
-            },
-            page: p_page,
-            size: 11
+            }
         })
         .then(response => {
             console.log('getFriendsWithPageableResp', response)
@@ -141,7 +139,7 @@ function getFriendsWithPageable(p_page) {
             if (scrollTop + innerHeight >= scrollHeight) {
                 if (innerHeight != 0) {
                     //스크롤이 바닥치면 뭐할지 여기에 정의 시작
-                    $('#friend_list_container').scrollTop(scrollHeight - 150);
+                    $('#friend_list_container').scrollTop(scrollHeight - 111);
                     $("#tab_container input[name='current_page_num']").val(Number(current_page_num) + Number(1))
                     getFriendsWithPageable();
                     noMore = (true);
