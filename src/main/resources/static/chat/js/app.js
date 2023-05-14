@@ -10,7 +10,6 @@ $(document).ready(function() {
     $("#searchfield").focusout(function() {
         if ($(this).val() == "") {
             $(this).val("Search contacts...");
-
         }
     });
     $("#sendmessage input").focus(function() {
@@ -21,7 +20,6 @@ $(document).ready(function() {
     $("#sendmessage input").focusout(function() {
         if ($(this).val() == "") {
             $(this).val("Send message...");
-
         }
     });
     $('#sendmessage #msg').keydown((e) => {
@@ -124,8 +122,14 @@ function getFriendsWithPageable(p_page) {
             OPEN_FRIEND_LIST_YN = false;
         })
         .catch(error => {
-            alert('친구 목록을 가져오는데 실패했습니다.');
-            console.error(error);
+            if(error.response.status == 401){
+                localStorage.setItem('token', '');
+                alert('로그인이 만료되었습니다.');
+                location.href = 'login';
+            }else{
+                alert('친구 목록을 가져오는데 실패했습니다.');
+                console.error(error);
+            }
         });
     }
 
@@ -135,6 +139,27 @@ function getFriendsWithPageable(p_page) {
         let innerHeight = $('#friend_list_container').height();
         let scrollHeight = $('#friend_list_container')[0].scrollHeight;
         let current_page_num = $("#tab_container input[name='current_page_num']").val()
+        if (!noMore) {
+            if (scrollTop + innerHeight >= scrollHeight) {
+                if (innerHeight != 0) {
+                    //스크롤이 바닥치면 뭐할지 여기에 정의 시작
+                    $('#friend_list_container').scrollTop(scrollHeight - 111);
+                    $("#tab_container input[name='current_page_num']").val(Number(current_page_num) + Number(1))
+                    getFriendsWithPageable();
+                    noMore = (true);
+                }
+            }
+        }
+    });
+}
+
+function addInfiniteScroll(p_list_container_id){
+    $('#'+p_list_container_id).scroll(function() {
+        let noMore = false;
+        let scrollTop = $('#'+p_list_container_id).scrollTop();
+        let innerHeight = $('#'+p_list_container_id).height();
+        let scrollHeight = $('#'+p_list_container_id)[0].scrollHeight;
+        let current_page_num = $('#'+p_list_container_id+' '+"input[name='current_page_num']").val()
         if (!noMore) {
             if (scrollTop + innerHeight >= scrollHeight) {
                 if (innerHeight != 0) {
@@ -166,7 +191,7 @@ function friendMaker(friend, rowClickActivate) {
     htmlText +=		"<div class='profile_container'>"
     //htmlText += 		profileMaker(friend,' left:auto; top:auto;');
     htmlText += 	"</div>";
-    htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+    htmlText += 	"<div onclick='openPopupProfile(this);' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
     htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
     htmlText += 		"<strong class='friend_message'>" + (friend.userMessage!=null? friend.userMessage:"") + "</strong>";
     htmlText += 	"</div>";

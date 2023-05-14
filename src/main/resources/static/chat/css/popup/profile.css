@@ -1,0 +1,29 @@
+#profile_popup{
+    width:100%; height:100%; display:none; z-index:999999; position:absolute;
+}
+
+#profile_popup #chat_header{
+    background-color:white;
+}
+
+#profile_popup #close_btn{
+    margin-left: 10px;
+}
+
+#profile_popup #contents{
+    height: calc(100% - 130px); background-color:white;
+}
+
+#profile_popup #profile_background_container{
+    width: 100%; height:100%; display:flex; flex-direction:column; justify-content:space-around; align-items:center;
+}
+
+#profile_popup .null_container{
+    height: 50%; width: 100%;
+}
+
+#profile_popup
+
+#profile_popup
+
+#profile_popup
