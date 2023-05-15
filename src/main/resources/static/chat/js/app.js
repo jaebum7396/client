@@ -1,43 +1,41 @@
 $(document).ready(function() {
-    var preloadbg = document.createElement("img");
-    preloadbg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/timeline1.png";
+    // #menu 요소 하위의 ul 요소 중 class 속성이 channel_user_list인 요소를 숨깁니다.
+    $("#menu ul.channel_user_list").hide();
 
-    $("#searchfield").focus(function() {
-        if ($(this).val() == "Search contacts...") {
-            $(this).val("");
-        }
+    // #menu 요소 하위의 ul 요소 중 class 속성이 channel_user_list인 요소를 토글합니다.
+    $("#menu ul.nav li a .channel_user_btn").click(function(){
+        $("ul", '.channel_user_list').slideToggle("fast");
     });
-    $("#searchfield").focusout(function() {
-        if ($(this).val() == "") {
-            $(this).val("Search contacts...");
-        }
-    });
-    $("#sendmessage input").focus(function() {
-        if ($(this).val() == "Send message...") {
-            $(this).val("");
-        }
-    });
-    $("#sendmessage input").focusout(function() {
-        if ($(this).val() == "") {
-            $(this).val("Send message...");
-        }
+
+    // .left_side_btn 요소를 클릭하면, leftSideMenuOpen() 함수와 loadChannelUserListHub() 함수를 실행하고, URL 해시값을 #open으로 변경합니다.
+    $(".left_side_btn").click(function() {
+        leftSideMenuOpen();
+        loadChannelUserListHub();
+        window.location.hash = "#open";
     });
     $('#sendmessage #msg').keydown((e) => {
         if (e.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
             sendMessageHub(document.getElementById("msg").value, isValidURL(document.getElementById("msg").value)?'5' : '1')
         }
     });
-    getFriendsWithPageable(0);
+    let getMyInfoPromise = getMyInfo();
+        getMyInfoPromise
+        .then((response) => {
+            console.log('getMyInfoResp', response)
+            $('#friend_list_container .friend_list').prepend(myInfoMaker(response.data.result.user));
+            getFriendsWithPageable(0);
+        })
+        .catch((error) => {
+            if(error.response.status == 401){
+                localStorage.setItem('token', '');
+                alert('로그인이 만료되었습니다.');
+                location.href = 'login';
+            }else{
+                alert('데이터를 로딩하는 중 실패했습니다.');
+                console.error(error);
+            }
+        })
 });
-
-
-$(document).ready(function() {
-    $(".left_side_btn").click(function() {
-        leftSideMenuOpen();
-        loadChannelUserListHub();
-        window.location.hash = "#open";
-    })
-})
 
 window.onhashchange = function() {
     if (location.hash != "#open") {
@@ -53,12 +51,47 @@ function leftSideMenuClose(){
     $("#menu,.page_cover,html").removeClass("open");
 }
 
-$(document).ready(function(){
-    $("#menu ul.channel_user_list").hide();
-    $("#menu ul.nav li a .channel_user_btn").click(function(){
-        $("ul", '.channel_user_list').slideToggle("fast");
+function getMyInfo(){
+    return axios.get(backendUrl+'/user/me', {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem("token"),
+        }
     })
-})
+}
+
+function myInfoMaker(user, rowClickActivate) {
+    let htmlText ="";
+    htmlText += "<div class='chat_row friend " + user.userCd + "'>";
+    htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + user.userCd + "'/>";
+    htmlText +=		"<div class='profile_container'>"
+    htmlText += 		myProfileMaker(user,' left:auto; top:auto;');
+    htmlText += 	"</div>";
+    htmlText += 	"<div onclick='openPopupProfile(this);' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+    htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (user.friendAlias!=null? user.friendAlias : user.userNm) + "</strong>";
+    htmlText += 		"<strong class='friend_message'>" + (user.userMessage!=null? user.userMessage:"") + "</strong>";
+    htmlText += 	"</div>";
+    htmlText += 	"<div style='margin: auto;'>";
+    htmlText += 		"<input id='check_"+user.userCd+"' class='friend_check' type='checkbox' style='' value='" + user.userCd + "'/>";
+    htmlText +=     	"<label for='check_"+user.userCd+"' class='friend_check_label'></label>"
+    htmlText += 	"</div>";
+    htmlText += "</div>";
+    return htmlText;
+}
+
+function myProfileMaker(user, imgSizestr){
+    let htmlText='';
+    if(user.userInfo.profileImgUrl){
+        htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
+        htmlText += 		"<img src='"+user.userInfo.profileImgUrl+"'>";
+        htmlText += 	"</div>";
+    }else{
+        htmlText += 	"<div class='profile_img' style='"+imgSizestr+"'>";
+        htmlText += 		"<img src='chat/image/face_common.jpg'>";
+        htmlText += 	"</div>";
+    }
+    return htmlText;
+}
 
 //채팅방 보이기 함수
 function chatRoomVisible(p_flag) {
@@ -96,13 +129,9 @@ function getFriendsWithPageable(p_page) {
         OPEN_FRIEND_LIST_YN = true;
         if (!p_page) {
             var p_page = $("#tab_container input[name='current_page_num']").val();
-            if(p_page==0||p_page==''){
-                //getMyInfo();
-            }
         } else {
             if (p_page == '0') {
                 $("#friend_list_container").html('');
-                //getMyInfo();
             }
         }
         axios.get(backendUrl+'/chat/friends?size=11&page='+p_page, {
@@ -117,7 +146,7 @@ function getFriendsWithPageable(p_page) {
             let friendArr = result.friendArr
             let p_page = result.p_page;
             $("#tab_container input[name='current_page_num']").val(p_page);
-            friendMakerHub(friendArr, $("#friend_list_container"), true);
+            friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
 
             OPEN_FRIEND_LIST_YN = false;
         })
@@ -132,25 +161,7 @@ function getFriendsWithPageable(p_page) {
             }
         });
     }
-
-    $('#friend_list_container').scroll(function() {
-        let noMore = false;
-        let scrollTop = $('#friend_list_container').scrollTop();
-        let innerHeight = $('#friend_list_container').height();
-        let scrollHeight = $('#friend_list_container')[0].scrollHeight;
-        let current_page_num = $("#tab_container input[name='current_page_num']").val()
-        if (!noMore) {
-            if (scrollTop + innerHeight >= scrollHeight) {
-                if (innerHeight != 0) {
-                    //스크롤이 바닥치면 뭐할지 여기에 정의 시작
-                    $('#friend_list_container').scrollTop(scrollHeight - 111);
-                    $("#tab_container input[name='current_page_num']").val(Number(current_page_num) + Number(1))
-                    getFriendsWithPageable();
-                    noMore = (true);
-                }
-            }
-        }
-    });
+    addInfiniteScroll('friend_list_container');
 }
 
 function addInfiniteScroll(p_list_container_id){
@@ -159,14 +170,18 @@ function addInfiniteScroll(p_list_container_id){
         let scrollTop = $('#'+p_list_container_id).scrollTop();
         let innerHeight = $('#'+p_list_container_id).height();
         let scrollHeight = $('#'+p_list_container_id)[0].scrollHeight;
-        let current_page_num = $('#'+p_list_container_id+' '+"input[name='current_page_num']").val()
+        let current_page_num = $('#'+p_list_container_id).find("input[name='current_page_num']").val()
         if (!noMore) {
             if (scrollTop + innerHeight >= scrollHeight) {
                 if (innerHeight != 0) {
                     //스크롤이 바닥치면 뭐할지 여기에 정의 시작
-                    $('#friend_list_container').scrollTop(scrollHeight - 111);
-                    $("#tab_container input[name='current_page_num']").val(Number(current_page_num) + Number(1))
-                    getFriendsWithPageable();
+                    $('#'+p_list_container_id).scrollTop(scrollHeight - 111);
+                    $('#'+p_list_container_id).find("input[name='current_page_num']").val(Number(current_page_num) + Number(1))
+                    if(p_list_container_id == 'channel_list_container'){
+                        getChannelsWithPageable();
+                    }else if(p_list_container_id == 'friend_list_container'){
+                        getFriendsWithPageable();
+                    }
                     noMore = (true);
                 }
             }
