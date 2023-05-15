@@ -1,4 +1,5 @@
-function openPopupProfile(p_obj){
+function openPopupProfile(p_obj, p_division){
+    p_obj = $(p_obj).parents('.chat_row')
     console.log('openPopupProfile>>>>>>>', $(p_obj));
     $('#profile_popup').find('.CHANNEL_CD').val('');
     $('#profile_popup').find('.USER_CD').val('');
@@ -33,30 +34,30 @@ function openPopupProfile(p_obj){
     if($(p_obj).attr('class').indexOf('friend')>0){
         $('#profile_popup').find('.popup_flag').val('friend');
         $('#profile_popup').find('.USER_CD').val($(p_obj).find('.USER_CD').val());
-        if($('#profile_popup').find('.USER_CD').val()==$('#LOGIN_USER_CD').val()){
+        if(p_division== 'me'){
             $('#profile_popup').find('.name_edit_btn').css('display','block');
             $('#profile_popup').find('.message_edit_btn').css('display','block');
-            $('#profile_popup').find('#chat_footer').html(
-                $("<div class='chat_btn' onclick='openChannelWithUserHub(\"me\");' style='width:100%; height:100%; background-color: white; display: flex; justify-content: center; align-items: center;'>나와의대화</div>"
-                ))
+            $('#profile_popup')
+                .find('#chat_footer')
+                //.html($("<div class='chat_btn' onclick='openChannelWithUserHub(\"me\");' style=''>나와의대화</div>"))
             $('#profile_popup').find('.profile_container').click(function() {
                 $("#imageInput")[0].click()
             })
         }else{
             $('#profile_popup').find('.name_edit_btn').css('display','none');
             $('#profile_popup').find('.message_edit_btn').css('display','none');
-            $('#profile_popup').find('#chat_footer').html(
-                $("<div class='chat_btn' onclick='openChannelWithUserHub();' style='width:100%; height:100%; background-color: white; display: flex; justify-content: center; align-items: center;'>채팅하기</div>"
-                ))
+            $('#profile_popup')
+                .find('#chat_footer')
+                //.html($("<div class='chat_btn' onclick='openChannelWithUserHub();' style=''>채팅하기</div>"))
         }
     }else{
         $('#profile_popup').find('.popup_flag').val('channel');
         $('#profile_popup').find('.CHANNEL_CD').val($(p_obj).find('.CHANNEL_CD').val());
         $('#profile_popup').find('.message_edit_btn').css('display','none');
         $('#profile_popup').find('.name_edit_btn').css('display','block');
-        $('#profile_popup').find('#chat_footer').html(
-            $("<div class='chat_btn' onclick='openChannel(\""+$(p_obj).find('.CHANNEL_CD').val()+"\",\""+$(p_obj).find('.alias').html()+"\,\""+$(p_obj).find('.channel_user_count').html()+"\");' style='width:100%; height:100%; background-color: white; display: flex; justify-content: center; align-items: center;'>채팅하기</div>"
-            ))
+        $('#profile_popup')
+            .find('#chat_footer')
+            //.html($("<div class='chat_btn' onclick='openChannel(\""+$(p_obj).find('.CHANNEL_CD').val()+"\",\""+$(p_obj).find('.alias').html()+"\,\""+$(p_obj).find('.channel_user_count').html()+"\");' style=''>채팅하기</div>"))
     }
 
     $('#profile_popup').css('display','block');
@@ -64,11 +65,12 @@ function openPopupProfile(p_obj){
     $('#profile_popup').find('.name_container .name').val($(p_obj).find('.alias').html());
     $('#profile_popup').find('.message_container .message').val($(p_obj).find('.friend_message').html());
 }
+
 function closePopupProfile(){
     $('#profile_popup').css('display','none')
     if($('#profile_popup').find('.popup_flag').val()=='channel'){
         getChannelsWithPageable('0');
     } else {
-        getFriendsWithPageable('0');
+        initFriendTab();
     }
 }

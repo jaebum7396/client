@@ -25,5 +25,6 @@
             <jsp:directive.include file="room/room_template.jsp"/>
             <%--room_template End--%>
         </div>
+        <jsp:directive.include file="popup/profile.jsp"/>
     </body>
 </html>
