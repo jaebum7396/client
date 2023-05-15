@@ -25,14 +25,14 @@ $(document).ready(function() {
             $('#friend_list_container .friend_list').prepend(myInfoMaker(response.data.result.user));
             getFriendsWithPageable(0);
         })
-        .catch((error) => {
-            if(error.response.status == 401){
+        .catch((response) => {
+            if(response.status == 401){
                 localStorage.setItem('token', '');
                 alert('로그인이 만료되었습니다.');
                 location.href = 'login';
             }else{
                 alert('데이터를 로딩하는 중 실패했습니다.');
-                console.error(error);
+                console.error(response);
             }
         })
 });
@@ -62,14 +62,14 @@ function getMyInfo(){
 
 function myInfoMaker(user, rowClickActivate) {
     let htmlText ="";
-    htmlText += "<div class='chat_row friend " + user.userCd + "'>";
+    htmlText += "<div class='chat_row friend " + user.userCd + "' style='border:3px solid #f1f4f6'>";
     htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + user.userCd + "'/>";
     htmlText +=		"<div class='profile_container'>"
     htmlText += 		myProfileMaker(user,' left:auto; top:auto;');
     htmlText += 	"</div>";
     htmlText += 	"<div onclick='openPopupProfile(this);' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
-    htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (user.friendAlias!=null? user.friendAlias : user.userNm) + "</strong>";
-    htmlText += 		"<strong class='friend_message'>" + (user.userMessage!=null? user.userMessage:"") + "</strong>";
+    htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (user.userInfo.userNickNm!=null? user.userInfo.userNickNm+"(나)" : user.userNm+"(나)") + "</strong>";
+    htmlText += 		"<strong class='friend_message'>" + (user.userInfo.aboutMe!=null? user.userInfo.aboutMe:"") + "</strong>";
     htmlText += 	"</div>";
     htmlText += 	"<div style='margin: auto;'>";
     htmlText += 		"<input id='check_"+user.userCd+"' class='friend_check' type='checkbox' style='' value='" + user.userCd + "'/>";
@@ -87,7 +87,7 @@ function myProfileMaker(user, imgSizestr){
         htmlText += 	"</div>";
     }else{
         htmlText += 	"<div class='profile_img' style='"+imgSizestr+"'>";
-        htmlText += 		"<img src='chat/image/face_common.jpg'>";
+        htmlText += 		"<img src='image/face_common.jpg'>";
         htmlText += 	"</div>";
     }
     return htmlText;
@@ -150,14 +150,14 @@ function getFriendsWithPageable(p_page) {
 
             OPEN_FRIEND_LIST_YN = false;
         })
-        .catch(error => {
-            if(error.response.status == 401){
+        .catch(response => {
+            if(response.status == 401){
                 localStorage.setItem('token', '');
                 alert('로그인이 만료되었습니다.');
                 location.href = 'login';
             }else{
                 alert('친구 목록을 가져오는데 실패했습니다.');
-                console.error(error);
+                console.error(response);
             }
         });
     }
@@ -172,10 +172,12 @@ function addInfiniteScroll(p_list_container_id){
         let scrollHeight = $('#'+p_list_container_id)[0].scrollHeight;
         let current_page_num = $('#'+p_list_container_id).find("input[name='current_page_num']").val()
         if (!noMore) {
-            if (scrollTop + innerHeight >= scrollHeight) {
+            console.log(scrollTop, innerHeight, scrollHeight)
+            if (1+scrollTop + innerHeight >= scrollHeight) {
+                console.log('pass')
                 if (innerHeight != 0) {
                     //스크롤이 바닥치면 뭐할지 여기에 정의 시작
-                    $('#'+p_list_container_id).scrollTop(scrollHeight - 111);
+                    $('#'+p_list_container_id).scrollTop(scrollHeight - 110);
                     $('#'+p_list_container_id).find("input[name='current_page_num']").val(Number(current_page_num) + Number(1))
                     if(p_list_container_id == 'channel_list_container'){
                         getChannelsWithPageable();
@@ -204,7 +206,7 @@ function friendMaker(friend, rowClickActivate) {
     htmlText += "<div class='chat_row friend " + friend.friendUserCd + "'>";
     htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + friend.friendUserCd + "'/>";
     htmlText +=		"<div class='profile_container'>"
-    //htmlText += 		profileMaker(friend,' left:auto; top:auto;');
+    htmlText += 		profileMaker(friend,' left:auto; top:auto;');
     htmlText += 	"</div>";
     htmlText += 	"<div onclick='openPopupProfile(this);' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
     htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
@@ -221,13 +223,13 @@ function friendMaker(friend, rowClickActivate) {
 //채팅리스트 및 친구 리스트 프로필 생성
 function profileMaker(friend, imgSizestr){
     let htmlText='';
-    if(friend.userProfile.profileImgUrl){
+    if(friend.friendInfo.profileImgUrl){
         htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
-        htmlText += 		"<img src='"+friend.userProfile.profileImgUrl+"'>";
+        htmlText += 		"<img src='"+friend.friendInfo.profileImgUrl+"'>";
         htmlText += 	"</div>";
     }else{
         htmlText += 	"<div class='profile_img' style='"+imgSizestr+"'>";
-        htmlText += 		"<img src='chat/image/face_common.jpg'>";
+        htmlText += 		"<img src='image/face_common.jpg'>";
         htmlText += 	"</div>";
     }
     return htmlText;
