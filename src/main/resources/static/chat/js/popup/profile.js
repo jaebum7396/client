@@ -143,7 +143,7 @@ function uploadProfileImageFile() {
 
 function saveProfileImage(fileLocation){
     console.log(saveProfileImage);
-    return axios.post(backendUrl+'/userInfo', {
+    return axios.post(backendUrl+'/user/userInfo', {
         headers: {
             'Content-Type': 'application/json',
             Authorization: localStorage.getItem("token"),
