@@ -84,14 +84,16 @@
 
         // HTTP 요청 생성
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/uploadProfileImage?loginUserCd="+loginUserCd.value, true);
+        xhr.open("POST", backendUrl+"/file-storage/upload?division=profile", true);
+        //xhr.open("POST", "localhost:7100/upload", true);
+        xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
 
         // 요청 완료 시 처리할 콜백 함수 등록
         xhr.onload = function() {
             if (xhr.status === 200) {
-                console.log("이미지 업로드 성공");
+                console.log("이미지 업로드 성공" + xhr.response);
             } else {
-                console.log("이미지 업로드 실패");
+                console.log("이미지 업로드 실패" + xhr.response);
             }
         };
 
