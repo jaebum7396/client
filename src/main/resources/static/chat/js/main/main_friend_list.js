@@ -84,26 +84,26 @@ function getFriendsWithPageable(p_page) {
                 Authorization: localStorage.getItem("token"),
             }
         })
-            .then(response => {
-                console.log('getFriendsWithPageableResp', response)
-                let result = response.data.result;
-                let friendArr = result.friendArr
-                let p_page = result.p_page;
-                $("#tab_container input[name='current_page_num']").val(p_page);
-                friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
+        .then(response => {
+            console.log('getFriendsWithPageableResp', response)
+            let result = response.data.result;
+            let friendArr = result.friendArr
+            let p_page = result.p_page;
+            $("#tab_container input[name='current_page_num']").val(p_page);
+            friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
 
-                OPEN_FRIEND_LIST_YN = false;
-            })
-            .catch(response => {
-                if(response.status == 401){
-                    localStorage.setItem('token', '');
-                    alert('로그인이 만료되었습니다.');
-                    location.href = 'login';
-                }else{
-                    alert('친구 목록을 가져오는데 실패했습니다.');
-                    console.error(response);
-                }
-            });
+            OPEN_FRIEND_LIST_YN = false;
+        })
+        .catch(response => {
+            if(response.status == 401){
+                localStorage.setItem('token', '');
+                alert('로그인이 만료되었습니다.');
+                location.href = 'login';
+            }else{
+                alert('친구 목록을 가져오는데 실패했습니다.');
+                console.error(response);
+            }
+        });
     }
     addInfiniteScroll('friend_list_container');
 }

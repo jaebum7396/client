@@ -74,3 +74,86 @@ function closePopupProfile(){
         initFriendTab();
     }
 }
+
+function updateProfileImageHub(){
+    let previewProfileImagePromise = previewProfileImage();
+    previewProfileImagePromise
+    .then(function(){
+        uploadProfileImageFile();
+    }).catch(function(err){
+        console.log(err);
+    });
+}
+
+function previewProfileImage(){
+    return new Promise(function(resolve, reject){
+        const fileInput = document.querySelector('#imageInput');
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function() {
+                const imageUrl = URL.createObjectURL(file);
+                const image = new Image();
+                image.src = imageUrl;
+                image.onload = function() {
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.classList.add('profile_img');
+                    imgWrapper.style.left = 'auto';
+                    imgWrapper.style.top = 'auto';
+                    imgWrapper.appendChild(image);
+
+                    $('#profile_popup').find('.profile_container').html(imgWrapper);
+                    resolve();
+                }
+            }
+        }
+    });
+}
+
+// 이미지 업로드
+function uploadProfileImageFile() {
+    // input 요소에서 선택된 파일 가져오기
+    const file = document.getElementById("imageInput").files[0];
+
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // HTTP 요청 생성
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", backendUrl+"/file-storage/upload?division=profile", true);
+    //xhr.open("POST", "localhost:7100/upload", true);
+    xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+
+    // 요청 완료 시 처리할 콜백 함수 등록
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let response = JSON.parse(xhr.response);
+            console.log("이미지 업로드 성공 >>>>>", response);
+            console.log("파일위치 >>>>>", response.result.fileLocation);
+            saveProfileImage(response.result.fileLocation);
+        } else {
+            console.log("이미지 업로드 실패" + xhr.response);
+        }
+    };
+    // HTTP 요청 전송
+    xhr.send(formData);
+}
+
+function saveProfileImage(fileLocation){
+    console.log(saveProfileImage);
+    return axios.post(backendUrl+'/userInfo', {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem("token"),
+        },
+        params: {
+            updateUserInfo: {
+                userProfileImages: [{
+                    userProfileImage: fileLocation
+                }]
+            }
+        }
+    })
+}
