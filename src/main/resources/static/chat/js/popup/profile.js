@@ -144,16 +144,18 @@ function uploadProfileImageFile() {
 function saveProfileImage(fileLocation){
     console.log(saveProfileImage);
     return axios.post(backendUrl+'/user/userInfo', {
+        userProfileImages: [
+            {
+                profileImgUrl: fileLocation
+            }
+        ]
+    }, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: localStorage.getItem("token"),
         },
         params: {
-            updateUserInfo: {
-                userProfileImages: [{
-                    userProfileImage: fileLocation
-                }]
-            }
+            // 기타 파라미터가 있다면 여기에 추가
         }
-    })
+    });
 }
