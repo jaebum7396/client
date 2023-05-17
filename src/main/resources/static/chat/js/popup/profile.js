@@ -144,6 +144,7 @@ function uploadProfileImageFile() {
 function saveProfileImage(fileLocation){
     console.log(saveProfileImage);
     return axios.post(backendUrl+'/user/userInfo', {
+    //return axios.post('localhost:8001/userInfo', {
         userProfileImages: [
             {
                 profileImgUrl: fileLocation

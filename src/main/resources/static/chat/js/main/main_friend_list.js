@@ -123,7 +123,7 @@ function friendMaker(friend, rowClickActivate) {
     htmlText += "<div class='chat_row friend " + friend.friendUserCd + "'>";
     htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + friend.friendUserCd + "'/>";
     htmlText +=		"<div class='profile_container'>"
-    htmlText += 		profileMaker(friend,' left:auto; top:auto;');
+    //htmlText += 		profileMaker(friend,' left:auto; top:auto;');
     htmlText += 	"</div>";
     htmlText += 	"<div onclick='openPopupProfile(this);' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
     htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
@@ -140,7 +140,7 @@ function friendMaker(friend, rowClickActivate) {
 //채팅리스트 및 친구 리스트 프로필 생성
 function profileMaker(friend, imgSizestr){
     let htmlText='';
-    if(friend.friendInfo.profileImgUrl){
+    if(friend.userInfo.userProfileImages[0].profileImgUrl){
         htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
         htmlText += 		"<img src='"+friend.friendInfo.profileImgUrl+"'>";
         htmlText += 	"</div>";
