@@ -3,24 +3,24 @@ function initFriendTab(){
     $('#friend_list_container .friend_list').empty();
     let getMyInfoPromise = getMyInfo();
     getMyInfoPromise
-    .then((response) => {
-        console.log('getMyInfoResp', response)
-        let myInfoMakerPromise = myInfoMaker(response.data.result.user);
-        myInfoMakerPromise.then((myInfoMakerResp) => {
-            $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
-            getFriendsWithPageable(0);
-        });
-    })
-    .catch((error) => {
-        if(error.response.status == 401){
-            localStorage.setItem('token', '');
-            alert('로그인이 만료되었습니다.');
-            location.href = 'login';
-        }else{
-            alert('데이터를 로딩하는 중 실패했습니다.');
-            console.error(error);
-        }
-    })
+        .then((response) => {
+            console.log('getMyInfoResp', response)
+            let myInfoMakerPromise = myInfoMaker(response.data.result.user);
+            myInfoMakerPromise.then((myInfoMakerResp) => {
+                $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
+                getFriendsWithPageable(0);
+            });
+        })
+        .catch((error) => {
+            if(error.response.status == 401){
+                localStorage.setItem('token', '');
+                alert('로그인이 만료되었습니다.');
+                location.href = 'login';
+            }else{
+                alert('데이터를 로딩하는 중 실패했습니다.');
+                console.error(error);
+            }
+        })
 }
 
 function getMyInfo(){
@@ -69,26 +69,26 @@ function getFriendsWithPageable(p_page) {
                 Authorization: localStorage.getItem("token"),
             }
         })
-        .then(response => {
-            console.log('getFriendsWithPageableResp', response)
-            let result = response.data.result;
-            let friendArr = result.friendArr
-            let p_page = result.p_page;
-            $("#tab_container input[name='current_page_num']").val(p_page);
-            friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
+            .then(response => {
+                console.log('getFriendsWithPageableResp', response)
+                let result = response.data.result;
+                let friendArr = result.friendArr
+                let p_page = result.p_page;
+                $("#tab_container input[name='current_page_num']").val(p_page);
+                friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
 
-            OPEN_FRIEND_LIST_YN = false;
-        })
-        .catch(error  => {
-            console.log(error.response)
-            if(error.response.status == 401){
-                localStorage.setItem('token', '');
-                alert('로그인이 만료되었습니다.');
-                location.href = 'login';
-            }else{
-                alert('친구 목록을 가져오는데 실패했습니다.');
-            }
-        });
+                OPEN_FRIEND_LIST_YN = false;
+            })
+            .catch(error  => {
+                console.log(error.response)
+                if(error.response.status == 401){
+                    localStorage.setItem('token', '');
+                    alert('로그인이 만료되었습니다.');
+                    location.href = 'login';
+                }else{
+                    alert('친구 목록을 가져오는데 실패했습니다.');
+                }
+            });
     }
     addInfiniteScroll('friend_list_container');
 }
