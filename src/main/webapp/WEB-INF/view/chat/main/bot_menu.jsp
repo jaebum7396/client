@@ -6,7 +6,7 @@
   Time: 오후 4:14
 --%>
 <div id="botmenu">
-    <span class="chat_header friends" onclick="myFriendList('0')">
+    <span class="chat_header friends" onclick="initFriendTab();">
         <img src="image/users.svg"/>
     </span>
     <span class="chat_header chats">
