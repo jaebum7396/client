@@ -8,7 +8,7 @@
 <div id="topmenu">
     <div id='app_title_container'>
         <div id="app_title_img" class='app_title'>
-            <img src="image/logo.png" style='width: 100%;'/>
+            <img src="../common/image/favicon.png" style='width:25px;'/>
         </div>
         <div id="app_title"class='app_title'>
             <div id="app_title_text">채팅</div>

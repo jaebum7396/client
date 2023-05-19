@@ -18,7 +18,7 @@ String BACKEND_URL = env.getProperty("backend.url");
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<link href="/common/image/favicon.ico" rel="icon" type="image/x-icon">
+<link href="image/favicon.png" rel="icon" type="image/x-icon">
 
 <%-- 폰트 --%>
 <%--<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js<%= version %>"></script>--%>
