@@ -122,7 +122,7 @@ function uploadProfileImageFile() {
 
     // HTTP 요청 생성
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", backendUrl+"/file-storage/upload?division=profile", true);
+    xhr.open("POST", API_FILE_STORAGE_URL+'/upload?division=profile', true);
     //xhr.open("POST", "localhost:7100/upload", true);
     xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
 
@@ -143,7 +143,7 @@ function uploadProfileImageFile() {
 
 function saveProfileImage(fileLocation){
     console.log(saveProfileImage);
-    return axios.post(backendUrl+'/user/userInfo', {
+    return axios.post(API_USER_URL+'/userInfo', {
     //return axios.post('localhost:8001/userInfo', {
         userProfileImages: [
             {

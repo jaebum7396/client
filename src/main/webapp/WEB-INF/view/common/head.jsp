@@ -1,8 +1,8 @@
-<%@ page import="org.springframework.beans.factory.annotation.Value" %>
-<%@ page import="org.springframework.context.ApplicationContext" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@ page import="org.springframework.core.env.Environment" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
+<%@ page import="org.springframework.core.env.*" %>
+<%@ page import="java.util.stream.StreamSupport" %>
+<%@ page import="java.util.Arrays" %>
 <%
 //**********************************************************************************
 // ○ 파일	: page_head
@@ -11,7 +11,21 @@
 String version = "?v=20230102.1"; // CSS 나 JS 수정 후 업데이트 해줄것
 WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
 Environment env = context.getEnvironment();
+
+//MutablePropertySources propSrcs = ((ConfigurableEnvironment) env).getPropertySources();
+//StreamSupport.stream(propSrcs.spliterator(), false)
+//        .filter(ps -> ps instanceof EnumerablePropertySource)
+//        .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
+//        .flatMap(Arrays::<String>stream)
+//        .forEach(propName -> System.out.println(propName + " = " + env.getProperty(propName)));
+
 String BACKEND_URL = env.getProperty("backend.url");
+String API_USER_URL = env.getProperty("api.user.url");
+System.out.println("API_USER_URL : " + API_USER_URL);
+String API_CHAT_URL = env.getProperty("api.chat.url");
+System.out.println("API_CHAT_URL : " + API_CHAT_URL);
+String API_FILE_STORAGE_URL = env.getProperty("api.file-storage.url");
+System.out.println("API_FILE_STORAGE_URL : " + API_FILE_STORAGE_URL);
 %>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,5 +41,8 @@ String BACKEND_URL = env.getProperty("backend.url");
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script>
-    const backendUrl = '<%=BACKEND_URL%>';
+    const BACKEND_URL = '<%=BACKEND_URL%>';
+    const API_USER_URL = '<%=API_USER_URL%>';
+    const API_CHAT_URL = '<%=API_CHAT_URL%>';
+    const API_FILE_STORAGE_URL = '<%=API_FILE_STORAGE_URL%>';
 </script>

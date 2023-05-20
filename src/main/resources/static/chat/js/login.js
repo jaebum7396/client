@@ -1,10 +1,10 @@
 function login(){
-    console.log('login>>>>>>>>>>>>', backendUrl+'/user/login')
-    axios.post(backendUrl+'/user/login', {
+    axios.post(API_USER_URL+'/login', {
         userId: $('#userId').val(),
         userPw: $('#userPw').val()
     }, {
         headers: {
+            withCredentials: true,
             'Content-Type': 'application/json'
         }
     })

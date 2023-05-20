@@ -1,5 +1,9 @@
 
 spring:
+  application:
+    name: user
+  profiles:
+    active: deploy
   mvc:
     view:
       prefix: /WEB-INF/view/

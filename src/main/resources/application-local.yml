@@ -1,0 +1,7 @@
+api:
+  user:
+    url: ${API_USER_URL_LOCAL}
+  chat:
+    url: ${API_CHAT_URL_LOCAL}
+  file-storage:
+    url: ${API_FILE_STORAGE_URL_LOCAL}

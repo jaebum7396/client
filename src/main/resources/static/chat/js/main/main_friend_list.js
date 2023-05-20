@@ -24,7 +24,7 @@ function initFriendTab(){
 }
 
 function getMyInfo(){
-    return axios.get(backendUrl+'/user/me', {
+    return axios.get(API_USER_URL+'/me', {
         headers: {
             'Content-Type': 'application/json',
             Authorization: localStorage.getItem("token"),
@@ -63,7 +63,7 @@ function getFriendsWithPageable(p_page) {
                 $("#friend_list_container").html('');
             }
         }
-        axios.get(backendUrl+'/chat/friends?size=11&page='+p_page, {
+        axios.get(API_CHAT_URL+'/friends?size=11&page='+p_page, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: localStorage.getItem("token"),
@@ -166,7 +166,7 @@ function profileMaker(friend, imgSizestr){
         let userProfileImages = friend.userInfo.userProfileImages;
         let htmlText='';
         if(friend.userInfo.userProfileImages.length > 0){
-            axios.get(backendUrl+'/file-storage/display?fileLocation='+userProfileImages[userProfileImages.length-1].profileImgUrl, {
+            axios.get(API_FILE_STORAGE_URL+'/display?fileLocation='+userProfileImages[userProfileImages.length-1].profileImgUrl, {
                 responseType:'blob',
                 headers: {
                     'Content-Type': 'application/json',
