@@ -18,3 +18,4 @@ spring:
 
 backend:
   url: ${BACKEND_URL}
+

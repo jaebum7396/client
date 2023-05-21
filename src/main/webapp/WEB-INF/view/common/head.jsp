@@ -26,6 +26,8 @@ String API_CHAT_URL = env.getProperty("api.chat.url");
 System.out.println("API_CHAT_URL : " + API_CHAT_URL);
 String API_FILE_STORAGE_URL = env.getProperty("api.file-storage.url");
 System.out.println("API_FILE_STORAGE_URL : " + API_FILE_STORAGE_URL);
+String API_SOCKET_STREAM_URL = env.getProperty("api.socket-stream.url");
+System.out.println("API_SOCKET_STREAM_URL : " + API_SOCKET_STREAM_URL);
 %>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -45,4 +47,5 @@ System.out.println("API_FILE_STORAGE_URL : " + API_FILE_STORAGE_URL);
     const API_USER_URL = '<%=API_USER_URL%>';
     const API_CHAT_URL = '<%=API_CHAT_URL%>';
     const API_FILE_STORAGE_URL = '<%=API_FILE_STORAGE_URL%>';
+    const SOCKET_STREAM_URL = '<%=API_SOCKET_STREAM_URL%>';
 </script>

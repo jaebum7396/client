@@ -18,6 +18,7 @@ $(document).ready(function() {
             sendMessageHub(document.getElementById("msg").value, isValidURL(document.getElementById("msg").value)?'5' : '1')
         }
     });
+    webSocketConnectHub();
     initFriendTab();
 });
 
@@ -55,7 +56,7 @@ function chatRoomVisible(p_flag) {
         if("channel" == p_flag){
             getChannelsWithPageable('0')
         }else{
-            getFriendsWithPageable('0');
+            initFriendTab();
         }
     });
     closePopupProfile();

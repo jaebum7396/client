@@ -47,7 +47,7 @@ body {
 	position:fixed;
 	display: flex;
 	justify-content: space-around;
-	border-top: 1px solid #d8dfe3;
+	border-top: 1px solid #f18a1c;
 	height: 69px;
 	width: 100%;
 	bottom:0;
@@ -57,7 +57,7 @@ body {
 	position:fixed;
 	display: flex;
 	justify-content: space-between;
-	border-bottom: 1px solid #d8dfe3;
+	border-bottom: 1px solid #f18a1c;
 	width: 100%;
 }
 
@@ -129,13 +129,13 @@ body {
 .chat_row p strong {
 	font-weight: 600;
 	font-size: 15px;
-	color: #597a96;
+	color: #f18a1c;
 }
 
 .chat_row p span {
 	font-size: 13px;
 	font-weight: 400;
-	color: #aab8c2;
+	color: #f18a1c;
 }
 
 .chat_row .status {
@@ -157,7 +157,7 @@ body {
 }
 
 #chat_footer {
-	border-top: 1px solid #d8dfe3;
+	border-top: 1px solid #f18a1c;
 	height: 60px;
 	width: 100%;
 	position: absolute;
@@ -257,7 +257,7 @@ body {
 }
 
 #chat-messages label {
-	color: #aab8c2;
+	color: #f18a1c;
 	font-weight: 600;
 	font-size: 12px;
 	text-align: center;
@@ -346,7 +346,7 @@ div.message.right .corner {
 }
 
 .bubble span {
-	color: #aab8c2;
+	color: #f18a1c;
 	font-size: 11px;
 	position: absolute;
 	right: 0;
@@ -372,7 +372,7 @@ div.message.right .corner {
 	font-size: 14px;
 	font-family: "Open Sans", sans-serif;
 	font-weight: 400px;
-	color: #aab8c2;
+	color: #f18a1c;
 }
 
 #sendmessage input:focus {
@@ -718,7 +718,7 @@ input[type=checkbox]:disabled + label {
 	height: 20px;
 	white-space: nowrap;
 	width: 200px;
-	display:inline-block; font-weight: 600; font-size: 15px; color: #597a96;
+	display:inline-block; font-weight: 600; font-size: 15px; color: #f18a1c;
 }
 
 .chat_row .unread_count_container{
@@ -748,7 +748,7 @@ input[type=checkbox]:disabled + label {
 }
 
 #profile_popup .name_container .name {
-	color: #597a96;
+	color: #f18a1c;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
@@ -775,7 +775,7 @@ input[type=checkbox]:disabled + label {
 	display: inline-block;
 	font-weight: 600;
 	font-size: 15px;
-	color: #597a96;
+	color: #f18a1c;
 }
 
 .urlThumbnail{
@@ -791,7 +791,7 @@ input[type=checkbox]:disabled + label {
 	display: inline-block;
 	font-weight: 600;
 	font-size: 15px;
-	color: #597a96;
+	color: #f18a1c;
 }
 
 .oneLineAlarm{
@@ -804,7 +804,7 @@ input[type=checkbox]:disabled + label {
 	word-break: break-all;
 	font-weight: 600;
 	font-size: 15px;
-	color: #597a96;
+	color: #f18a1c;
 }
 #app_title_container{
 	display: flex;
