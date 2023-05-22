@@ -3,6 +3,7 @@ spring:
   application:
     name: user
   profiles:
+    #active: local
     active: deploy
   mvc:
     view:

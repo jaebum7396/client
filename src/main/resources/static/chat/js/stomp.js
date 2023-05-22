@@ -9,11 +9,17 @@ var websocket;
 function webSocketConnectHub() {
 	console.log('webSocketConnectHub start')
 	
-	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp?userCd="+$('#LOGIN_USER_CD').val());
+	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp");
+	sock.onopen = function () {
+		// 연결이 열리면 실행되는 코드
+		// 헤더를 설정할 수 있습니다.
+		let transport = sock._transport;
+		transport.xhr.setRequestHeader('Authorization', localStorage.getItem("token"));
+	}
 	wsClient = Stomp.over(sock);
 	reconnect = 0;
 	
-	wsClient.connect({userCd : $('#LOGIN_USER_CD').val()}, function (frame) {
+	wsClient.connect({Authorization : localStorage.getItem("token")}, function (frame) {
 		//메인 채널 구독
 		//stompSubscribe(clientDomainCd, 0)
 		

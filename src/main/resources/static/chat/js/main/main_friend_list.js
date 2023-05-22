@@ -14,7 +14,7 @@ function initFriendTab(){
         })
         .catch((error) => {
             console.log(error.response);
-            if(error.response.data.statusCode == 401){
+            if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
                 localStorage.setItem('token', '');
                 alert(error.response.data.message);
                 location.href = 'login';
