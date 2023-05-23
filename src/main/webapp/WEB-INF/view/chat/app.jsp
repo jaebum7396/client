@@ -17,6 +17,7 @@
         }
     </script>
     <body>
+        <input type='hidden' class='OPEN_CHANNEL_CD' id='OPEN_CHANNEL_CD' name='OPEN_CHANNEL_CD' value='' />
         <div id="chatbox">
             <input type='hidden' class='OPEN_CHANNEL_CD' id='OPEN_CHANNEL_CD' name='OPEN_CHANNEL_CD' value=''/>
             <%--main_template Start--%>

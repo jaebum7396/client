@@ -86,3 +86,84 @@ function addInfiniteScroll(p_list_container_id){
         }
     });
 }
+
+//친구 리스트에서 클릭시 채팅방 오픈하기 위한 함수
+function openChannelWithUserHub(p_me){
+    console.log('openChannelWithUserHub start')
+
+    // 전역변수 초기화
+    $('#OPEN_CHANNEL_CD').val(''); // 채팅방 번호
+    $('#chat-messages').off('scroll'); // 채팅 스크롤
+    $('#chat-messages').html(''); // 채팅 메시지
+    let p_objArr = new Array(); // 선택된 친구들의 채팅 행 정보를 저장할 배열 초기화
+    if (p_me != 'me') { // 로그인한 사용자가 아닌 경우
+        $("input[class='friend_check']").each(function (idx, item) { // friend_check 클래스를 가진 모든 input 태그에 대해 반복문 수행
+            if ($(item).prop('checked') == true) { // 친구 선택상태이면
+                p_objArr.push($(item).parents('.chat_row')); // 친구의 채팅 행 정보를 배열에 추가
+            }
+        });
+    }
+    let channelUsers
+    // 선택된 친구들과의 채팅방 생성
+    var openChannelWithUserPromise = openChannelWithUser(p_objArr);
+    openChannelWithUserPromise
+        .then((response) => { // 채팅방 생성 성공시 수행될 코드
+            console.log('openChannelWithUserResp', response)
+            channelUsers = response.result.channel.channelUsers; // 채팅방에 참여한 사용자 정보들
+            for(let i=0; i< channelUsers.length; i++){ // 사용자 정보들을 반복문으로 돌면서
+                if(channelUsers[i].userCd==$('#LOGIN_USER_CD').val()){ // 로그인한 사용자의 채팅방 별명 설정
+                    $('#channel_alias').html(channelUsers[i].channelAlias);
+                }
+            }
+            let channelCd = response.result.channel.channelCd; // 생성된 채팅방 번호
+            console.log('channelCd : '+channelCd)
+            $('#OPEN_CHANNEL_CD').val(channelCd); // 채팅방 번호 업데이트
+            updateUnreadCountHub($('#LOGIN_USER_CD').val(), channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
+
+            channelJoin(channelCd, channelUsers); // 채팅방 참여
+
+            // 채팅방 생성을 위한 소켓서버통신
+            let messageDTO = new Object();
+            messageDTO.domainCd = 1;
+            messageDTO.channelCd = 0;
+            messageDTO.userCd = $("#chatbox input[name='LOGIN_USER_CD']").val();
+            messageDTO.wssKey = $('#WSS_KEY').val();
+            messageDTO.transferType = '99';
+            messageDTO.messageType = '1';
+            //sendMessage(messageDTO);
+
+            //메시지 초기화
+            loadMessageListHub(channelCd, 'Y');
+            $("input[class='friend_check']").prop('checked', false)
+            console.log('rowClick done')
+            chatRoomVisible('friend', channelUsers.length);
+        })
+        .catch((response) => {
+            console.log(response)
+        })
+
+    invite_list_close();
+}
+
+//채널생성 -- 현재 로그인 되어있는 세션 유저코드와 클릭한 행의 유저코드를 통해 채널 생성함
+function openChannelWithUser(p_objArr) {
+    console.log('openChannelWithUser>>>>>>>>>>>>', p_objArr)
+    return new Promise((resolve, reject) => {
+        let userCdArr = [];
+        p_objArr.forEach((p_obj) => {
+            userCdArr.push($(p_obj).find('#FRIEND_USER_CD').val());
+        })
+        axios.get(API_CHAT_URL + '/channel?userCdArr=' + encodeURIComponent(userCdArr.join(',')), {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: localStorage.getItem('token')
+            }
+        })
+        .then(response => {
+            resolve(response)
+        })
+        .catch(error => {
+            reject(error.response)
+        });
+    })
+}

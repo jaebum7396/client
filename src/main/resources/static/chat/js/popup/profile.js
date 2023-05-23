@@ -1,5 +1,4 @@
 function openPopupProfile(p_obj, p_division){
-    p_obj = $(p_obj).parents('.chat_row')
     console.log('openPopupProfile>>>>>>>', $(p_obj));
     $('#profile_popup').find('.CHANNEL_CD').val('');
     $('#profile_popup').find('.USER_CD').val('');
@@ -29,7 +28,7 @@ function openPopupProfile(p_obj, p_division){
             cloneArr.push(clone);
         }
     });
-    console.log($(p_obj).attr('class'))
+    console.log($(p_obj), p_obj.attr('class'))
 
     if($(p_obj).attr('class').indexOf('friend')>0){
         $('#profile_popup').find('.popup_flag').val('friend');

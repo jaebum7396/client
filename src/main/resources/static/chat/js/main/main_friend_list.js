@@ -130,25 +130,37 @@ function myInfoMaker(user, rowClickActivate) {
     })
 }
 
-function friendMaker(friend) {
+//행 클릭
+function rowClick(p_obj, rowClickActivate) {
+    if($(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop('checked')){
+        $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", false);
+    }else{
+        $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", true);
+    }
+    if(rowClickActivate){
+        console.log($(p_obj).parents('.chat_row')[0]);
+        openPopupProfile($(p_obj).parents('.chat_row'));
+    }
+}
+
+function friendMaker(friend, rowClickActivate) {
     console.log('friendMaker', friend);
     return new Promise((resolve, reject) => {
         let htmlText ="";
-        htmlText += "<div class='chat_row friend " + friend.friendUserCd + "'>";
-        htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + friend.friendUserCd + "'/>";
+        htmlText += "<div class='chat_row friend " + friend.userInfo.userCd + "'>";
+        htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + friend.userInfo.userCd + "'/>";
         htmlText += "   <div id='"+friend.userInfo.userCd+"' class='profile_container'>"
         htmlText += 	    "<div class='profile_img' style='left:auto; top:auto;'>"
         htmlText += 	    	"<img src='image/face_common.jpg'>";
         htmlText += 	    "</div>";
-        //htmlText += 		profileMakerResp;
         htmlText += 	"</div>";
-        htmlText += 	"<div onclick='openPopupProfile(this);' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+        htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
         htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
         htmlText += 		"<strong class='friend_message'>" + (friend.userMessage!=null? friend.userMessage:"") + "</strong>";
         htmlText += 	"</div>";
         htmlText += 	"<div style='margin: auto;'>";
-        htmlText += 		"<input id='check_"+friend.friendUserCd+"' class='friend_check' type='checkbox' style='' value='" + friend.friendUserCd + "'/>";
-        htmlText +=     	"<label for='check_"+friend.friendUserCd+"' class='friend_check_label'></label>"
+        htmlText += 		"<input id='check_"+friend.userInfo.userCd+"' class='friend_check' type='checkbox' style='' value='" + friend.userInfo.userCd + "'/>";
+        htmlText +=     	"<label for='check_"+friend.userInfo.userCd+"' class='friend_check_label'></label>"
         htmlText += 	"</div>";
         htmlText += "</div>";
         resolve(htmlText);
