@@ -107,40 +107,40 @@ function openChannelWithUserHub(p_me){
     // 선택된 친구들과의 채팅방 생성
     var openChannelWithUserPromise = openChannelWithUser(p_objArr);
     openChannelWithUserPromise
-        .then((response) => { // 채팅방 생성 성공시 수행될 코드
-            console.log('openChannelWithUserResp', response)
-            channelUsers = response.result.channel.channelUsers; // 채팅방에 참여한 사용자 정보들
-            for(let i=0; i< channelUsers.length; i++){ // 사용자 정보들을 반복문으로 돌면서
-                if(channelUsers[i].userCd==$('#LOGIN_USER_CD').val()){ // 로그인한 사용자의 채팅방 별명 설정
-                    $('#channel_alias').html(channelUsers[i].channelAlias);
-                }
+    .then((response) => { // 채팅방 생성 성공시 수행될 코드
+        console.log('openChannelWithUserResp', response)
+        channelUsers = response.data.result.channel.channelUsers; // 채팅방에 참여한 사용자 정보들
+        for(let i=0; i< channelUsers.length; i++){ // 사용자 정보들을 반복문으로 돌면서
+            if(channelUsers[i].userCd==$('#LOGIN_USER_CD').val()){ // 로그인한 사용자의 채팅방 별명 설정
+                $('#channel_alias').html(channelUsers[i].channelAlias);
             }
-            let channelCd = response.result.channel.channelCd; // 생성된 채팅방 번호
-            console.log('channelCd : '+channelCd)
-            $('#OPEN_CHANNEL_CD').val(channelCd); // 채팅방 번호 업데이트
-            updateUnreadCountHub($('#LOGIN_USER_CD').val(), channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
+        }
+        let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
+        console.log('channelCd : '+channelCd)
+        $('#OPEN_CHANNEL_CD').val(channelCd); // 채팅방 번호 업데이트
+        //updateUnreadCountHub($('#LOGIN_USER_CD').val(), channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
 
-            channelJoin(channelCd, channelUsers); // 채팅방 참여
+        channelJoin(channelCd, channelUsers); // 채팅방 참여
 
-            // 채팅방 생성을 위한 소켓서버통신
-            let messageDTO = new Object();
-            messageDTO.domainCd = 1;
-            messageDTO.channelCd = 0;
-            messageDTO.userCd = $("#chatbox input[name='LOGIN_USER_CD']").val();
-            messageDTO.wssKey = $('#WSS_KEY').val();
-            messageDTO.transferType = '99';
-            messageDTO.messageType = '1';
-            //sendMessage(messageDTO);
+        // 채팅방 생성을 위한 소켓서버통신
+        let messageDTO = new Object();
+        messageDTO.domainCd = 1;
+        messageDTO.channelCd = 0;
+        messageDTO.userCd = $("#chatbox input[name='LOGIN_USER_CD']").val();
+        messageDTO.wssKey = $('#WSS_KEY').val();
+        messageDTO.transferType = '99';
+        messageDTO.messageType = '1';
+        //sendMessage(messageDTO);
 
-            //메시지 초기화
-            loadMessageListHub(channelCd, 'Y');
-            $("input[class='friend_check']").prop('checked', false)
-            console.log('rowClick done')
-            chatRoomVisible('friend', channelUsers.length);
-        })
-        .catch((response) => {
-            console.log(response)
-        })
+        //메시지 초기화
+        //loadMessageListHub(channelCd, 'Y');
+        $("input[class='friend_check']").prop('checked', false)
+        console.log('rowClick done')
+        chatRoomVisible('friend', channelUsers.length);
+    })
+    .catch((response) => {
+        console.log(response)
+    })
 
     invite_list_close();
 }
