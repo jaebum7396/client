@@ -6,4 +6,4 @@ api:
   file-storage:
     url: ${API_FILE_STORAGE_URL_LOCAL}
   socket-stream:
-    url: ${SOCKET_STREAM_URL_DEPLOY}
+    url: ${SOCKET_STREAM_URL_LOCAL}

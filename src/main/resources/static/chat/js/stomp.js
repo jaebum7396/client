@@ -8,7 +8,7 @@ var reconnect;
 var websocket;
 function webSocketConnectHub() {
 	console.log('webSocketConnectHub start')
-	
+	console.log('Authorization', localStorage.getItem("token"));
 	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp");
 	sock.onopen = function () {
 		// 연결이 열리면 실행되는 코드
