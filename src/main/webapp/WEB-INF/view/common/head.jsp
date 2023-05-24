@@ -12,13 +12,6 @@ String version = "?v=20230102.1"; // CSS 나 JS 수정 후 업데이트 해줄�
 WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
 Environment env = context.getEnvironment();
 
-//MutablePropertySources propSrcs = ((ConfigurableEnvironment) env).getPropertySources();
-//StreamSupport.stream(propSrcs.spliterator(), false)
-//        .filter(ps -> ps instanceof EnumerablePropertySource)
-//        .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
-//        .flatMap(Arrays::<String>stream)
-//        .forEach(propName -> System.out.println(propName + " = " + env.getProperty(propName)));
-
 String BACKEND_URL = env.getProperty("backend.url");
 String API_USER_URL = env.getProperty("api.user.url");
 System.out.println("API_USER_URL : " + API_USER_URL);

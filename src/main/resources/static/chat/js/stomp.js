@@ -9,7 +9,7 @@ var websocket;
 function webSocketConnectHub() {
 	console.log('webSocketConnectHub start')
 	console.log('Authorization', localStorage.getItem("token"));
-	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp");
+	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp?Authorization="+localStorage.getItem("token"));
 	sock.onopen = function () {
 		// 연결이 열리면 실행되는 코드
 		// 헤더를 설정할 수 있습니다.
