@@ -1,7 +1,6 @@
-const serverUrl = 'http://52.79.162.165:8000';
 function signup(){
     console.log('signup>>>>>>>>>>>>')
-    axios.post(serverUrl+'/user/signup', {
+    axios.post(API_USER_URL+'/signup', {
         userId: $('#userId').val()
         , userPw: $('#userPw').val()
         , userPhoneNo: $('#userPhoneNo').val()

@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
     $('#sendmessage #msg').keydown((e) => {
         if (e.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
-            sendMessageHub(document.getElementById("msg").value, isValidURL(document.getElementById("msg").value)?'5' : '1')
+            sendChatHub(document.getElementById("msg").value, isValidURL(document.getElementById("msg").value)?'5' : '1')
         }
     });
     webSocketConnectHub();
@@ -52,7 +52,7 @@ function chatRoomVisible(p_flag) {
         $('.cx, .cy').removeClass("s1 s2 s3");
         $('#chatview').fadeOut();
         $('#tab_container').fadeIn();
-        $('#OPEN_CHANNEL_CD').val('');
+        localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트
         if("channel" == p_flag){
             getChannelsWithPageable('0')
         }else{
@@ -92,7 +92,8 @@ function openChannelWithUserHub(p_me){
     console.log('openChannelWithUserHub start')
 
     // 전역변수 초기화
-    $('#OPEN_CHANNEL_CD').val(''); // 채팅방 번호
+    localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트// 채팅방 번호
+
     $('#chat-messages').off('scroll'); // 채팅 스크롤
     $('#chat-messages').html(''); // 채팅 메시지
     let p_objArr = new Array(); // 선택된 친구들의 채팅 행 정보를 저장할 배열 초기화
@@ -117,20 +118,10 @@ function openChannelWithUserHub(p_me){
         }
         let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
         console.log('channelCd : '+channelCd)
-        $('#OPEN_CHANNEL_CD').val(channelCd); // 채팅방 번호 업데이트
+        localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
         //updateUnreadCountHub($('#LOGIN_USER_CD').val(), channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
 
         channelJoin(channelCd, channelUsers); // 채팅방 참여
-
-        // 채팅방 생성을 위한 소켓서버통신
-        let messageDTO = new Object();
-        messageDTO.domainCd = 1;
-        messageDTO.channelCd = 0;
-        messageDTO.userCd = $("#chatbox input[name='LOGIN_USER_CD']").val();
-        messageDTO.wssKey = $('#WSS_KEY').val();
-        messageDTO.transferType = '99';
-        messageDTO.messageType = '1';
-        //sendMessage(messageDTO);
 
         //메시지 초기화
         //loadMessageListHub(channelCd, 'Y');

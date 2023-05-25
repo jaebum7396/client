@@ -19,10 +19,8 @@ function webSocketConnectHub() {
 	wsClient = Stomp.over(sock);
 	reconnect = 0;
 	
-	wsClient.connect({Authorization : localStorage.getItem("token")}, function (frame) {
+	wsClient.connect({'Authorization' : localStorage.getItem("token")}, function (frame) {
 		//메인 채널 구독
-		//stompSubscribe(clientDomainCd, 0)
-		
 		wsClient.subscribe("/user/direct/"+clientDomainCd, function (message) {
 			console.log('connect.user-pool', message);
 			let recv = JSON.parse(message.body);
@@ -46,7 +44,7 @@ function webSocketConnectHub() {
 		if (reconnect++ <= 5) {
 			setTimeout(function () {
 				console.log("connection reconnect : "+ error);
-				sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp?userCd="+$('#LOGIN_USER_CD').val());
+				sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp?Authorization="+localStorage.getItem("token"));
 				wsClient = Stomp.over(sock);
 				reconnect = 0;
 			}, 10 * 1000);
@@ -56,7 +54,6 @@ function webSocketConnectHub() {
 
 // Set 객체 생성 (구독 정보를 저장하기 위한 Set)
 var subscriptionSet = new Set();
-
 function stompSubscribe(domainCd, channelCd) {
   	const channel = "/sub/channel/" + domainCd + "/" + channelCd;
 
@@ -68,13 +65,12 @@ function stompSubscribe(domainCd, channelCd) {
 
   	// 구독 요청 메시지 전송
   	wsClient.send(
-    	"/pub/enter",
-    	{},
-    	JSON.stringify({
+		"/pub/enter"
+		, {'Authorization' : localStorage.getItem("token")}
+    	, JSON.stringify({
       		transferType: 1,
       		domainCd: domainCd,
       		channelCd: channelCd,
-      		userCd: $('#LOGIN_USER_CD').val()
     	})
   	);
 
@@ -123,22 +119,22 @@ function channelJoin(channelCd, channelUsers) {
 		if(channelUsers[i].userCd==$('#LOGIN_USER_CD').val()){
 			stompSubscribe(clientDomainCd, channelCd)
 		}else{
-			let p_messageDTO = new Object();
-			p_messageDTO.transferType = 99
-			p_messageDTO.domainCd = clientDomainCd
-			p_messageDTO.channelCd = channelCd
-			p_messageDTO.toUserCd = channelUsers[i].userCd
-			sendMessage(p_messageDTO);
+			let p_chat = new Object();
+			p_chat.transferType = 99
+			p_chat.domainCd = clientDomainCd
+			p_chat.channelCd = channelCd
+			p_chat.toUser = channelUsers[i].userCd
+			sendChat(p_chat);
 		}
 	}
 }
 
-function sendMessage(p_messageDTO) {
-	console.log('sendMessage>>>>>>>>>>>>', p_messageDTO)
+function sendChat(p_chat) {
+	console.log('sendChat>>>>>>>>>>>>', p_chat)
 	wsClient.send(
 		"/pub/message"
-		, {}
-		, JSON.stringify(p_messageDTO)
+		, {'Authorization' : localStorage.getItem("token")}
+		, JSON.stringify(p_chat)
 	);
 }
 
@@ -177,10 +173,10 @@ function onMessage(msg) {
 			}
 		}else{
 			//수신한 메시지를 조회한다.
-			let getMessagesByMessageCdPromise = getMessagesByMessageCd(data)
-			getMessagesByMessageCdPromise
+			let getChatPromise = getChat(data)
+			getChatPromise
 			.then((response) => {
-				console.log('getMessagesByMessageCdResp', response)
+				console.log('getChatResp', response)
 				let messageArr = response.result.messageArr;
 				//채팅 목록이 활성화 되어 있을때
 				if($('#channel_list_container').css('display')=='block'){
@@ -211,7 +207,7 @@ function onMessage(msg) {
 					}
 				}
 				//채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
-				if ($('#OPEN_CHANNEL_CD').val() == messageArr[0].channelCd) {
+				if (messageArr[0].channelCd == localStorage.setItem("channelCd", channelCd)) {
 					//수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
 					if (($('#LOGIN_USER_CD').val() != messageArr[0].userCd)){
 						//안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
