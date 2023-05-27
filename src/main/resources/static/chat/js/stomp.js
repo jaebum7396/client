@@ -116,7 +116,7 @@ function channelJoin(channelCd, channelUsers) {
 	console.log('channelJoin>>>>>>>>>>>>', channelCd, channelUsers)
 	
 	for(let i=0; i<channelUsers.length; i++){
-		if(channelUsers[i].userCd==$('#LOGIN_USER_CD').val()){
+		if(channelUsers[i].userCd==localStorage.getItem('loginUserCd')){
 			stompSubscribe(clientDomainCd, channelCd)
 		}else{
 			let p_chat = new Object();
@@ -136,104 +136,4 @@ function sendChat(p_chat) {
 		, {'Authorization' : localStorage.getItem("token")}
 		, JSON.stringify(p_chat)
 	);
-}
-
-//메시지 수신 
-function onMessage(msg) {
-	console.log('onMessage>>>>>>>>>>>>', msg)
-	let innerHeight = $('#chat-messages').height();
-	if (msg) {
-		let data = msg;
-		console.log('onMessageResp', data)
-		if(data.transferType==3){
-			//$('#WSS_KEY').val(data.objMap.wssKey);
-		}else if(data.transferType == 9){
-			console.log('읽음처리resp', data);
-			// 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
-			let getMessagesByMessageCdPromise = getMessagesByGreaterThanLastMessageCd(data);
-			// 화면에 라스트 메시지 이후의 데이터들을 업데이트 해준다.
-			getMessagesByMessageCdPromise
-			.then((response) => {
-				console.log('getMessagesByGreaterThanLastMessageCdResp', response);
-				let updateMessageArr = response.result.messageArr;
-				for(let i=0; i<updateMessageArr.length; i++){
-					$('.bubble_box.'+updateMessageArr[i].messageCd).find('.unread_count').html(updateMessageArr[i].unreadCount)
-					if(updateMessageArr[i].unreadCount==0){
-						$('.bubble_box.'+updateMessageArr[i].messageCd).find('.unread_count').css('display','none');
-					}
-				}
-			})
-			.catch((response) => {
-				console.log(response);
-			})
-		}else if(data.transferType == 99){
-			console.log('채팅방 신규 개설', data);
-			if(data.userCd!=$('#LOGIN_USER_CD').val()){
-				stompSubscribe(data.domainCd, data.channelCd);
-			}
-		}else{
-			//수신한 메시지를 조회한다.
-			let getChatPromise = getChat(data)
-			getChatPromise
-			.then((response) => {
-				console.log('getChatResp', response)
-				let messageArr = response.result.messageArr;
-				//채팅 목록이 활성화 되어 있을때
-				if($('#channel_list_container').css('display')=='block'){
-					let channelUsers = messageArr[0].channelInfo.channelUsers;
-					let unreadCount = 0;
-					for(let i =0; i<channelUsers.length; i++){
-						//메시지 수신자 중 로그인한 유저코드와 같은 유저코드를 찾아서 안읽음 메시지 카운트 세팅
-						if(channelUsers[i].userCd == $('#LOGIN_USER_CD').val()){
-							unreadCount = channelUsers[i].unreadCount
-						}
-					}
-					//채팅방이 있을때
-					if($('.chat_row.'+messageArr[0].channelCd).length!=0){
-						//수신한 최신 메시지를 미리보기에 세팅한다.
-						$('.chat_row.'+messageArr[0].channelCd).find('.recent_message_container .recent_message').html(messageArr[0].message);
-						$('.chat_row.'+messageArr[0].channelCd).find('.recent_message_container .recent_messageDt').html(messageArr[0].messageDt.substr(0, 16));
-						//수신한 최신 메시지에 해당하는 채팅룸을 맨 위로 올린다.
-						$('.chat_row.'+messageArr[0].channelCd).insertBefore($('#channel_list_container .chat_row')[0]);
-						//안읽음 메시지 카운트를 미리보기에 세팅한다.
-						$('.chat_row.'+messageArr[0].channelCd).find('.unread_count div').html(unreadCount);
-						if(unreadCount==0){
-							$('.chat_row.'+messageArr[0].channelCd).find('.unread_count_container .unread_count').css('display','none');
-						}else{
-							$('.chat_row.'+messageArr[0].channelCd).find('.unread_count_container .unread_count').css('display','flex');
-						}
-					}else{ //채팅방이 없을때
-						$("#channel_list_container").append(channelMaker(messageArr[0].channelInfo));
-					}
-				}
-				//채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
-				if (messageArr[0].channelCd == localStorage.setItem("channelCd", channelCd)) {
-					//수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
-					if (($('#LOGIN_USER_CD').val() != messageArr[0].userCd)){
-						//안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
-						updateUnreadCountPerHub($('#LOGIN_USER_CD').val(), messageArr[0]);
-					}
-					let prevScrollHeight = $('#chat-messages')[0].scrollHeight;
-					//현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
-					if($('.message').last().find('.sender').val() == messageArr[0].userCd && $('.message').last().find('.messageTime').val() == messageArr[0].messageDt.substr(0, 16)){
-						//버블로 추가
-						$('.message').last().find('.bubble_container').append(bubbleMaker(messageArr[0]))
-					}else{
-						//통째 talk 단위로 추가
-						$('#chat-messages').append(talkMaker(messageArr,'Y'))
-					}
-					//수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
-					if (($('#LOGIN_USER_CD').val() == messageArr[0].userCd) || prevScrollHeight == Number($('#chat-messages').scrollTop() + innerHeight)) {
-						//스크롤을 아래로 내려준다.
-						moveBottom();
-					}
-				}else{
-					alarmMaker(messageArr[0])
-				}
-			})
-			.catch((response) => {
-				console.log(response);
-			})
-		}
-	}
 }

@@ -10,7 +10,7 @@
         <img src="image/users.svg"/>
     </span>
     <span class="chat_header chats">
-        <img src="image/message.svg" onclick="myChannelList('0')"/>
+        <img src="image/message.svg" onclick="getChannelsWithPageable('0')"/>
     </span>
     <span class="chat_header more_info">
         <img src="image/more_info.svg" onclick=""/>

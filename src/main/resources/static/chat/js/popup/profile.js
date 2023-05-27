@@ -39,7 +39,7 @@ function openPopupProfile(p_obj, p_division){
             $('#profile_popup')
                 .find('#chat_footer')
                 .html($("<div class='chat_btn' onclick='openChannelWithUserHub(\"me\");' style=''>나와의대화</div>"))
-            $('#profile_popup').find('.profile_container').click(function() {
+            $('#profile_popup').find('#profile_container').click(function() {
                 $("#imageInput")[0].click()
             })
         }else{

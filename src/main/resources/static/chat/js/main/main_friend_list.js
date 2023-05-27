@@ -4,25 +4,27 @@ function initFriendTab(){
     $('#friend_list_container .friend_list').empty();
     let getMyInfoPromise = getMyInfo();
     getMyInfoPromise
-        .then((response) => {
-            console.log('getMyInfoResp', response)
-            let myInfoMakerPromise = myInfoMaker(response.data.result.user);
-            myInfoMakerPromise.then((myInfoMakerResp) => {
-                $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
-                getFriendsWithPageable(0);
-            });
-        })
-        .catch((error) => {
-            console.log(error.response);
-            if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
-                localStorage.setItem('token', '');
-                alert(error.response.data.message);
-                location.href = 'login';
-            }else{
-                alert(error.response.data.message);
-                console.error(error);
-            }
-        })
+    .then((response) => {
+        console.log('getMyInfoResp', response)
+        //유저 코드 로컬스토리지 세팅
+        localStorage.setItem('loginUserCd', response.data.result.user.userCd);
+        let myInfoMakerPromise = myInfoMaker(response.data.result.user, true);
+        myInfoMakerPromise.then((myInfoMakerResp) => {
+            $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
+            getFriendsWithPageable(0);
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+        if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
+            localStorage.setItem('token', '');
+            alert(error.response.data.message);
+            location.href = 'login';
+        }else{
+            alert(error.response.data.message);
+            console.error(error);
+        }
+    })
 }
 
 function getMyInfo(){
@@ -116,7 +118,7 @@ function myInfoMaker(user, rowClickActivate) {
             htmlText += "   <div id='"+user.userCd+"' class='profile_container'>"
             htmlText += 	    profileMakerResp;
             htmlText += "   </div>";
-            htmlText += "   <div onclick='openPopupProfile(this, \"" + p_division + "\");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+            htmlText += "   <div onclick='rowClick(this, "+rowClickActivate+", \"me\");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
             htmlText += "       <strong class='friend_alias alias' style='color: #597a96;'>" + (user.userInfo.userNickNm != null ? user.userInfo.userNickNm + "(나)" : user.userNm + "(나)") + "</strong>";
             htmlText += "       <strong class='friend_message'>" + (user.userInfo.aboutMe != null ? user.userInfo.aboutMe : "") + "</strong>";
             htmlText += "   </div>";
@@ -131,15 +133,15 @@ function myInfoMaker(user, rowClickActivate) {
 }
 
 //행 클릭
-function rowClick(p_obj, rowClickActivate) {
+function rowClick(p_obj, rowClickActivate, p_division) {
     if($(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop('checked')){
         $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", false);
     }else{
         $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", true);
     }
     if(rowClickActivate){
-        console.log($(p_obj).parents('.chat_row')[0]);
-        openPopupProfile($(p_obj).parents('.chat_row'));
+        console.log($(p_obj).parents('.chat_row'))
+        openPopupProfile($(p_obj).parents('.chat_row'), p_division);
     }
 }
 

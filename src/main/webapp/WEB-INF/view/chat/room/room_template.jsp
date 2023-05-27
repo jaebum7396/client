@@ -6,7 +6,7 @@
   Time: 오후 3:54
 --%>
 <script src="js/room/chat.js" type="text/javascript"></script>
-<div id="chatview" class="p1">
+<div id="chat_room_view" class="p1">
     <input type='hidden' name='current_page_num' value='0'/>
     <div id="chat_header">
         <!-- 사이드메뉴 -->
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div id='chat-message-box' style='height: calc(100% - 130px);'>
-        <div id="chat-messages" style='height: 100%;'></div>
+        <div id="chat_messages" style='height: 100%;'></div>
     </div>
     <div id="sendmessage">
         <input type="text" id='msg' class='msg' value="Send message..."/>

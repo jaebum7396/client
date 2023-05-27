@@ -13,6 +13,19 @@ $(document).ready(function() {
         loadChannelUserListHub();
         window.location.hash = "#open";
     });
+
+    $("#sendmessage input").focus(function() {
+        if ($(this).val() == "Send message...") {
+            $(this).val("");
+        }
+    });
+    $("#sendmessage input").focusout(function() {
+        if ($(this).val() == "") {
+            $(this).val("Send message...");
+
+        }
+    });
+
     $('#sendmessage #msg').keydown((e) => {
         if (e.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
             sendChatHub(document.getElementById("msg").value, isValidURL(document.getElementById("msg").value)?'5' : '1')
@@ -33,24 +46,24 @@ function leftSideMenuOpen(){
 }
 
 function leftSideMenuClose(){
-    $("#menu,.page_cover,html").removeClass("open");
+    $("#menu,.page_cover, html").removeClass("open");
 }
 
 //채팅방 보이기 함수
 function chatRoomVisible(p_flag) {
     $("#chat_header p").addClass("animate"); $("#chat_header").addClass("animate");;
-    $("#chat-messages").addClass("animate");
+    $("#chat_messages").addClass("animate");
     $('.cx, .cy').addClass('s1');
     $('.cx, .cy').addClass('s2');
     $('.cx, .cy').addClass('s3');
 
     $('#tab_container').fadeOut();
-    $('#chatview').fadeIn();
+    $('#chat_room_view').fadeIn();
 
     $('#close_chat').unbind("click").click(function() {
-        $("#chat-messages, #chat_header, #chat_header p").removeClass("animate");
+        $("#chat_messages, #chat_header, #chat_header p").removeClass("animate");
         $('.cx, .cy').removeClass("s1 s2 s3");
-        $('#chatview').fadeOut();
+        $('#chat_room_view').fadeOut();
         $('#tab_container').fadeIn();
         localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트
         if("channel" == p_flag){
@@ -94,8 +107,8 @@ function openChannelWithUserHub(p_me){
     // 전역변수 초기화
     localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트// 채팅방 번호
 
-    $('#chat-messages').off('scroll'); // 채팅 스크롤
-    $('#chat-messages').html(''); // 채팅 메시지
+    $('#chat_messages').off('scroll'); // 채팅 스크롤
+    $('#chat_messages').html(''); // 채팅 메시지
     let p_objArr = new Array(); // 선택된 친구들의 채팅 행 정보를 저장할 배열 초기화
     if (p_me != 'me') { // 로그인한 사용자가 아닌 경우
         $("input[class='friend_check']").each(function (idx, item) { // friend_check 클래스를 가진 모든 input 태그에 대해 반복문 수행
@@ -112,19 +125,19 @@ function openChannelWithUserHub(p_me){
         console.log('openChannelWithUserResp', response)
         channelUsers = response.data.result.channel.channelUsers; // 채팅방에 참여한 사용자 정보들
         for(let i=0; i< channelUsers.length; i++){ // 사용자 정보들을 반복문으로 돌면서
-            if(channelUsers[i].userCd==$('#LOGIN_USER_CD').val()){ // 로그인한 사용자의 채팅방 별명 설정
+            if(channelUsers[i].userCd==localStorage.getItem('loginUserCd')){ // 로그인한 사용자의 채팅방 별명 설정
                 $('#channel_alias').html(channelUsers[i].channelAlias);
             }
         }
         let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
         console.log('channelCd : '+channelCd)
         localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
-        //updateUnreadCountHub($('#LOGIN_USER_CD').val(), channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
+        //updateUnreadCountHub(localStorage.getItem('loginUserCd'), channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
 
         channelJoin(channelCd, channelUsers); // 채팅방 참여
 
         //메시지 초기화
-        //loadMessageListHub(channelCd, 'Y');
+        loadChatListHub(channelCd, 'Y');
         $("input[class='friend_check']").prop('checked', false)
         console.log('rowClick done')
         chatRoomVisible('friend', channelUsers.length);
@@ -157,4 +170,20 @@ function openChannelWithUser(p_objArr) {
             reject(error.response)
         });
     })
+}
+
+//채팅 리스트에서 클릭시 채팅방 오픈하기 위한 함수
+function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
+    let channelCd = p_channelCd;
+    localStorage.setItem("channelCd", p_channelCd);
+    $('#chat-messages').off('scroll');
+    $('#chat-messages').html('');
+
+    //updateUnreadCountHub($('#LOGIN_USER_CD').val(), channelCd);
+
+    $('#channel_alias').html(p_channelAlias);
+    $('#channel_user_count').html(p_channelUserCount);
+    //메시지 초기화
+    loadChatListHub(channelCd, 'Y')
+    chatRoomVisible('channel');
 }
