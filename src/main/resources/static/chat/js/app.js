@@ -146,7 +146,7 @@ function openChannelWithUserHub(p_me){
         console.log(response)
     })
 
-    invite_list_close();
+    //invite_list_close();
 }
 
 //채널생성 -- 현재 로그인 되어있는 세션 유저코드와 클릭한 행의 유저코드를 통해 채널 생성함

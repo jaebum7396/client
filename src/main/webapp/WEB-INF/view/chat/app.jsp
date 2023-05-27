@@ -16,6 +16,9 @@
             location.href = "login";
         }
     </script>
+    <div id='alarm_popup' style='position:absolute;bottom:0;right:0;'>
+        <div id='chat_contents'></div>
+    </div>
     <body>
         <div id="chatbox">
             <%--main_template Start--%>

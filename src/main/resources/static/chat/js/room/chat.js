@@ -39,9 +39,10 @@ function onMessage(msg) {
                 .then((response) => {
                     console.log('getChatResp', response)
                     let chatArr = response.data.result.chatArr;
+                    let channelInfo = response.data.result.channelInfo;
                     //채팅 목록이 활성화 되어 있을때
                     if($('#channel_list_container').css('display')=='block'){
-                        let channelUsers = chatArr[0].channelInfo.channelUsers;
+                        let channelUsers = channelInfo.channelUsers;
                         let unreadCount = 0;
                         for(let i =0; i<channelUsers.length; i++){
                             //메시지 수신자 중 로그인한 유저코드와 같은 유저코드를 찾아서 안읽음 메시지 카운트 세팅
@@ -99,6 +100,23 @@ function onMessage(msg) {
                 })
         }
     }
+}
+
+function alarmMaker(p_message){
+    console.log('alarmMaker>>>>>>>>>>>>', p_message)
+    let html = '';
+    html+="<div class='alarm "+p_message.messageCd+"' style='max-width: 400px; display:flex; border-radius: 5px; margin: 5px; background-color:white;' onclick='closeAlarm(this)'>"
+    //html+=		"<div style='width: 50px; height:50px; background:url(\""+p_message.sender.userProfile.userProfileImages[0].profileImgUrl+"\");background-size: cover; border-radius:5px;'></div>"
+    html+=		"<div class='oneLine' style='padding: 10px; font-size: 15px; font-weight: 600;'>"+p_message.message+"</div>"
+    html+="</div>"
+
+    $('#alarm_popup #chat_contents').prepend(html);
+
+    setTimeout(function() {
+        $(".alarm."+p_message.messageCd).fadeOut('slow', function() {
+            $(this).remove();
+        });
+    }, 5000);
 }
 
 //url 판별 함수

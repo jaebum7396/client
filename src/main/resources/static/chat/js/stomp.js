@@ -30,10 +30,11 @@ function webSocketConnectHub() {
 		let loadMyChannelPromise = loadMyChannel();
 		loadMyChannelPromise
 		.then((response) => {
-			let channelList = response.result.channelList;
-			console.log(channelList)
-			for(let i = 0; i<channelList.length; i++){
-				stompSubscribe(clientDomainCd, channelList[i].channelCd)
+			console.log("loadMyChannelResp", response);
+			let channelArr = response.data.result.channelArr;
+			console.log(channelArr)
+			for(let i = 0; i<channelArr.length; i++){
+				stompSubscribe(clientDomainCd, channelArr[i].channelCd)
 			}
 		})
 		.catch((response) => {
@@ -50,6 +51,25 @@ function webSocketConnectHub() {
 			}, 10 * 1000);
 		}
 	});
+}
+
+//현재 로그인 된 사용자의 모든 채널목록을 불러온다.
+function loadMyChannel() {
+	console.log('loadMyChannel>>>>>>>>>>>>');
+	return new Promise(function (resolve, reject) {
+		axios.get(API_CHAT_URL + '/channels?page=null&size=null', {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: localStorage.getItem('token')
+			}
+		})
+		.then(response => {
+			resolve(response)
+		})
+		.catch(error => {
+			reject(error.response)
+		});
+	})
 }
 
 // Set 객체 생성 (구독 정보를 저장하기 위한 Set)
