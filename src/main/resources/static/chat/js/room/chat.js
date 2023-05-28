@@ -342,6 +342,7 @@ function talkMaker(chatArr, singleMessageYn) {
     var loginUserCd = localStorage.getItem('loginUserCd')
     var chatStr = '';
     //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
+    console.log(loginUserCd, chatArr[0].sender.userCd)
     if (loginUserCd == chatArr[0].sender.userCd) {
         chatStr += "<div class='message right'>";
         chatStr += "	<input type='hidden' class='messageDate' value='"+chatArr[0].messageDt.substr(0, 10)+"'/>"
