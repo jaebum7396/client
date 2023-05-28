@@ -271,7 +271,7 @@ body {
 	flex-direction: column;
 	align-items: start;
 	padding: 10px;
-	width: 300px;
+	width: 100%;
 	float: left;
 }
 
@@ -839,4 +839,28 @@ input[type=checkbox]:disabled + label {
 }
 .channel_user_add_btn .channel_user_add_btn_img{
 	width:25px;margin:10px;transform: rotate( 45deg );
+}
+
+#search_user_container{
+	width: 100%; max-height:60%; overflow-y:scroll; display: none; position:absolute; z-index:9999; background-color:white;
+}
+.friend_list_item{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin:5px;
+	padding:5px;
+	border: 1px solid #f18a1c;
+	cursor: pointer;
+}
+.friend_list_item_info{
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+}
+.friend_list_item_img{
+	width: 20%;
+}
+.friend_info {
+	width:80%;
 }

@@ -44,10 +44,11 @@ function getFriendsWithPageable(p_page) {
     console.log('getFriendsWithPageable>>>>>>>>>>>>')
     $('#channel_list_container').css('display', 'none')
     $('#friend_list_container').css('display', 'block')
+    var p_page;
     if (OPEN_FRIEND_LIST_YN == false) {
         OPEN_FRIEND_LIST_YN = true;
         if (!p_page) {
-            var p_page = $("#tab_container input[name='current_page_num']").val();
+            p_page = $("#tab_container input[name='current_page_num']").val();
         } else {
             if (p_page == '0') {
                 $("#friend_list_container").html('');
@@ -60,6 +61,7 @@ function getFriendsWithPageable(p_page) {
             }
         })
         .then(response => {
+
             console.log('getFriendsWithPageableResp', response)
             let result = response.data.result;
             let friendArr = result.friendArr
@@ -71,13 +73,18 @@ function getFriendsWithPageable(p_page) {
         })
         .catch((error) => {
             console.log(error.response);
-            if(error.response.data.statusCode == 401){
-                localStorage.setItem('token', '');
-                alert(error.response.data.message);
-                location.href = 'login';
+            if(error){
+                if(error.response.data.statusCode == 401){
+                    localStorage.setItem('token', '');
+                    alert(error.response.data.message);
+                    location.href = 'login';
+                }else{
+                    alert(error.response.data.message);
+                    console.error(error);
+                }
             }else{
-                alert(error.response.data.message);
-                console.error(error);
+                alert("알 수 없는 에러가 발생했습니다.");
+                location.reload();
             }
         })
     }
@@ -119,7 +126,7 @@ function myInfoMaker(user, rowClickActivate) {
             htmlText += 	    profileMakerResp;
             htmlText += "   </div>";
             htmlText += "   <div onclick='rowClick(this, "+rowClickActivate+", \"me\");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
-            htmlText += "       <strong class='friend_alias alias' style='color: #597a96;'>" + (user.userInfo.userNickNm != null ? user.userInfo.userNickNm + "(나)" : user.userNm + "(나)") + "</strong>";
+            htmlText += "       <strong class='friend_alias alias' style='color: #f18a1c;'>" + (user.userInfo.userNickNm != null ? user.userInfo.userNickNm + "(나)" : user.userNm + "(나)") + "</strong>";
             htmlText += "       <strong class='friend_message'>" + (user.userInfo.aboutMe != null ? user.userInfo.aboutMe : "") + "</strong>";
             htmlText += "   </div>";
             htmlText += "   <div style='margin: auto;'>";
@@ -157,7 +164,7 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += 	    "</div>";
         htmlText += 	"</div>";
         htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
-        htmlText += 		"<strong class='friend_alias alias' style='color: #597a96;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
+        htmlText += 		"<strong class='friend_alias alias' style='color: #f18a1c;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
         htmlText += 		"<strong class='friend_message'>" + (friend.userMessage!=null? friend.userMessage:"") + "</strong>";
         htmlText += 	"</div>";
         htmlText += 	"<div style='margin: auto;'>";
@@ -170,14 +177,23 @@ function friendMaker(friend, rowClickActivate) {
 }
 
 //채팅리스트 및 친구 리스트 프로필 생성
-function profileMaker(friend, imgSizestr){
+function profileMaker(friend, imgSizeStr){
     console.log('profileMaker', friend);
     return new Promise((resolve, reject) => {
         let htmlText = '';
+
+        if (!friend.userInfo) {
+            console.log('프로필 이미지가 없습니다.');
+            htmlText += "<div class='profile_img' style='" + imgSizeStr + "'>";
+            htmlText += "<img src='image/face_common.jpg'>";
+            htmlText += '</div>';
+            resolve(htmlText);
+            return;
+        }
         if (friend.userInfo.userProfileImages){
             let userProfileImages = friend.userInfo.userProfileImages;
             if(friend.userInfo.userProfileImages.length == 0){
-                htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
+                htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
                 htmlText += 		"<img src='image/face_common.jpg'>";
                 htmlText += 	"</div>";
                 resolve(htmlText);
@@ -191,13 +207,13 @@ function profileMaker(friend, imgSizestr){
                 }).then(response => {
                     console.log('해당 이미지가 있습니다.',response);
                     const imageURL = window.URL.createObjectURL(response.data)
-                    htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
+                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
                     htmlText += 		"<img src='"+ imageURL +"'>";
                     htmlText += 	"</div>";
                     resolve(htmlText);
                 }).catch(error => {
                     console.log('해당 이미지가 없습니다.', error.response);
-                    htmlText += 	"<div class='profile_img' style='"+imgSizestr+"'>"
+                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>"
                     htmlText += 		"<img src='image/face_common.jpg'>";
                     htmlText += 	"</div>";
                     resolve(htmlText);
@@ -205,10 +221,101 @@ function profileMaker(friend, imgSizestr){
             }
         }else{
             console.log('프로필 이미지가 없습니다.', error.response);
-            htmlText += 	"<div class='profile_img' style='"+imgSizestr+"'>";
+            htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>";
             htmlText += 		"<img src='image/face_common.jpg'>";
             htmlText += 	"</div>";
             resolve(htmlText);
         }
     });
+}
+
+function toggleSearchUserContainer() {
+    if ($('#search_user_container').css('display') === 'block') {
+        closeSearchUserContainer();
+    } else {
+        openSearchUserContainer();
+    }
+}
+function openSearchUserContainer() {
+    $('.search_input input').val('');
+    $('#search_user_list').html('');
+    $('#search_user_container').css('display', 'block');
+}
+function closeSearchUserContainer() {
+    $('.search_input input').val('');
+    $('#search_user_list').html('');
+    $('#search_user_container').css('display', 'none');
+}
+function search(p_page) {
+    $('#search_user_container').off('scroll')
+    const searchInput = document.querySelector('.search_input input').value;
+    // 입력이 비어있을 경우 검색하지 않음
+    if (searchInput.trim() === '') {
+        return;
+    }
+    // 실시간 검색 요청
+    axios.get(API_USER_URL+'/users?size=11&page='+p_page, {
+        params: {
+            queryString: searchInput
+        }
+        , headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem("token"),
+        }
+    })
+        .then(function (response) {
+            // 이전 검색 결과 초기화
+            $('#search_user_list').html('');
+            const data = response.data;
+            console.log(data)
+            // 검색 결과를 동적으로 표시
+            data.result.userArr.forEach(function (user) {
+                let innerHTML = '';
+                innerHTML += '<div class="friend_list_item" onclick="addFriend(\''+user.userCd+'\')">'
+                innerHTML += '   <div class="friend_info">'
+                innerHTML += '       <div class="friend_list_item_img">'
+                //innerHTML += '       <img src="'+user+'" alt="">'
+                innerHTML += '       </div>'
+                innerHTML += '       <div class="friend_list_item_info">'
+                innerHTML += '           <div class="name">'+user.userNm+'</div>'
+                innerHTML += '           <div class="aboutMe">'+user.userInfo.aboutMe+'</div>'
+                innerHTML += '       </div>'
+                innerHTML += '   </div>'
+                innerHTML += '   <div>'
+                innerHTML += '      친구추가'
+                innerHTML += '   </div>'
+                innerHTML += '</div>'
+                $('#search_user_list').append(innerHTML);
+            });
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+}
+function addFriend(p_userCd){
+    axios.post(API_CHAT_URL+'/friend', {
+        userCd: p_userCd
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem("token"),
+        }
+    })
+        .then(function (response) {
+            const data = response.data;
+            console.log(data)
+            if(data.result.processYn === 'Y'){
+                alert(data.message);
+                closeSearchUserContainer();
+                initFriendTab();
+            }
+            else if(data.result.processYn === 'N'){
+                alert(data.message);
+                closeSearchUserContainer();
+                initFriendTab();
+            }
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 }

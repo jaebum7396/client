@@ -15,11 +15,12 @@
         </div>
     </div>
     <div id='app_header_menu'>
-        <span class="app_header user_add">
-            <img src="image/user_add.svg" onclick=""/>
+        <span class="app_header user_add" onclick="toggleSearchUserContainer()">
+            <img src="image/user_add.svg"/>
         </span>
         <span class="app_header settings">
             <img src="image/settings.svg" onclick=""/>
         </span>
     </div>
 </div>
+

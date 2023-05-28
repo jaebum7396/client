@@ -187,3 +187,36 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     loadChatListHub(channelCd, 'Y')
     chatRoomVisible('channel');
 }
+
+
+function imageProvider(fileLocation, imgSizeStr){
+    return new Promise((resolve, reject) => {
+        let htmlText = "";
+        axios.get(API_FILE_STORAGE_URL+'/display?fileLocation='+fileLocation, {
+            responseType:'blob',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: localStorage.getItem("token"),
+            }
+        }).then(response => {
+            console.log('해당 이미지가 있습니다.',response);
+            const imageURL = window.URL.createObjectURL(response.data)
+            htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
+            htmlText += 		"<img src='"+ imageURL +"'>";
+            htmlText += 	"</div>";
+
+            //$(p_obj).html(htmlText)
+            //return htmlText;
+            resolve(htmlText);
+        }).catch(error => {
+            console.log('해당 이미지가 없습니다.', error.response);
+            htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>"
+            htmlText += 		"<img src='image/face_common.jpg'>";
+            htmlText += 	"</div>";
+
+            //$(p_obj).html(htmlText)
+            //return htmlText;
+            resolve(htmlText);
+        })
+    });
+}

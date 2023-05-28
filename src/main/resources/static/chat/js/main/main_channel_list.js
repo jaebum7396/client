@@ -28,7 +28,7 @@ function getChannelsWithPageable(p_page) {
             $("#tab_container input[name='current_page_num']").val(p_page);
             channelMakerHub(channelArr);
 
-            OPEN_FRIEND_LIST_YN = false;
+            OPEN_CHANNEL_LIST_YN = false;
         })
         .catch((error) => {
             console.log(error.response);
@@ -60,12 +60,47 @@ function channelRowMaker(channel){
     let channelMakerPromise = channelMaker(channel);
     channelMakerPromise.then((channelMakerResp) => {
         $("#channel_list_container").append(channelMakerResp);
-        let profileMakerPromise = profileMaker(friend, ' left:auto; top:auto;');
-        profileMakerPromise.then((profileMakerResp) => {
-            console.log('.chat_row .profile_container#'+friend.userInfo.userCd);
-            $('.chat_row .profile_container#'+friend.userInfo.userCd).html(profileMakerResp);
-        })
+        //let profileMakerPromise = profileMaker(friend, ' left:auto; top:auto;');
+        //profileMakerPromise.then((profileMakerResp) => {
+        //    console.log('.chat_row .profile_container#'+friend.userInfo.userCd);
+        //    $('.chat_row .profile_container#'+friend.userInfo.userCd).html(profileMakerResp);
+        //})
     });
+}
+
+function channelProfileMaker(profileArr) {
+    console.log('channelProfileMaker', profileArr);
+    let htmlText = '';
+    let imgSizeStr = '';
+
+    // 프로필 이미지의 갯수에 따라 각 프로필 이미지 사이즈를 정의해준다.
+    if (profileArr.length == 1) {
+        imgSizeStr = 'height : 50px; width: 50px;';
+    } else if (profileArr.length == 2) {
+        imgSizeStr = 'height : 35px; width: 35px;';
+    } else if (profileArr.length == 3) {
+        imgSizeStr = 'height : 30px; width: 30px;';
+    } else if (profileArr.length == 4) {
+        imgSizeStr = 'height : 25px; width: 25px;';
+    }
+
+    const promises = profileArr.map((item, idx) => {
+        console.log('profileArr.map', item, idx, imgSizeStr)
+        if (idx >= 4) {
+            return Promise.resolve(); // Skip iteration
+        }
+        return profileMaker(item, imgSizeStr);
+    });
+
+    return Promise.all(promises)
+        .then(htmlTextArray => {
+            htmlText = htmlTextArray.join('');
+            return htmlText;
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            return ''; // Return empty HTML text
+        });
 }
 
 //채널 생성 해주는 함수
@@ -83,6 +118,7 @@ function channelMaker(channel){
             return false;
         }
         //해당 채팅방의 유저를 순회
+        let channelName;
         for (let j = 0; j < channelUsers.length; j++) {
             //현재 로그인한 유저의 채널 별칭을 가져온다.
             if (channelUsers[j].userCd == localStorage.getItem('loginUserCd')) {
@@ -101,99 +137,41 @@ function channelMaker(channel){
             }
         }
 
-        let imgSizestr = '';
+        let channelProfileMakerPromise = channelProfileMaker(profileArr)
+        channelProfileMakerPromise.then((channelProfileMakerResp) => {
+            console.log('channelProfileMakerResp : ' + channelProfileMakerResp)
+            htmlText += "<div class='chat_row channel " + channel.channelCd + "' style='display:flex;'>";
+            htmlText +=     "<input class='CHANNEL_CD' id='CHANNEL_CD' name='CHANNEL_CD' type='hidden' value='" + channel.channelCd + "'/>";
+            htmlText +=     "<div id='"+channel.channelCd+"' class='profile_container' onclick='rowClick(this, " + true + ");'>"
 
-        //프로필 이미지의 갯수에 따라 각 프로필 이미지 사이즈를 정의해준다.
-        if (profileArr.length == 1) {
-            imgSizestr = 'height : 50px; width: 50px;'
-        } else if (profileArr.length == 2) {
-            imgSizestr = 'height : 35px; width: 35px;'
-        } else if (profileArr.length == 3) {
-            imgSizestr = 'height : 30px; width: 30px;'
-        } else if (profileArr.length == 4) {
-            imgSizestr = 'height : 25px; width: 25px;'
-        }
+            //프로필 이미지를 순회하며 화면에 세팅
+            htmlText +=         channelProfileMakerResp;
 
-        htmlText += "<div class='chat_row channel " + channel.channelCd + "' style='display:flex;'>";
-        htmlText += "<input class='CHANNEL_CD' id='CHANNEL_CD' name='CHANNEL_CD' type='hidden' value='" + channel.channelCd + "'/>";
-        htmlText += "<div id='"+channel.channelCd+"' class='profile_container' onclick='rowClick(this, " + true + ");'>"
-
-        profileArr.forEach((item, idx) => {
-            if (idx >= 4) {
-                return false;
+            htmlText +=     "</div>";
+            htmlText +=     "<div style='display: flex;flex-direction: column;width: 100%; padding: 10px; justify-content:space-between;'>";
+            htmlText +=         "<div style='display: flex;'>";
+            htmlText +=             "<strong class='channel_alias alias' onclick='openChannel(\"" + channel.channelCd + "\" ,\"" + channelName + "\",\"" + channelUsers.length + "\");' style=''>" + channelName + "</strong>";
+            if (channelUsers.length > 2) {
+                htmlText +=         "<div class='channel_user_count' style='display:inline;'>" + (channelUsers.length) + "</div>"
             }
-            if (profileArr.length == 1) {
-                // htmlText += profileMaker(item, imgSizestr + ' left:auto; top:auto;');
-                htmlText += 	    "<div class='profile_img' style='left:auto; top:auto;'>"
-                htmlText += 	    	"<img src='image/face_common.jpg'>";
-                htmlText += 	    "</div>";
-            } else if (profileArr.length == 2 && idx == 1) {
-                // htmlText += profileMaker(item, imgSizestr + ' left:40%; top:40%; z-index:3;');
-                htmlText += 	    "<div class='profile_img' style='"+imgSizestr + "left:40%; top:40%; z-index:3;"+"'>"
-                htmlText += 	    	"<img src='image/face_common.jpg'>";
-                htmlText += 	    "</div>";
-            } else if (profileArr.length == 3) {
-                if (idx == 0) {
-                    // htmlText += profileMaker(item, imgSizestr + 'left:27%; top:10%; z-index:3;');
-                    htmlText += 	    "<div class='profile_img' style='"+imgSizestr + "left:27%; top:10%; z-index:3;"+"'>"
-                    htmlText += 	    	"<img src='image/face_common.jpg'>";
-                    htmlText += 	    "</div>";
-                } else if (idx == 1) {
-                    // htmlText += profileMaker(item, imgSizestr + 'left:48%; top:45%');
-                    htmlText += 	    "<div class='profile_img' style='"+imgSizestr + "left:48%; top:45%"+"'>"
-                    htmlText += 	    	"<img src='image/face_common.jpg'>";
-                    htmlText += 	    "</div>";
-                } else if (idx == 2) {
-                    //htmlText += profileMaker(item, imgSizestr + 'left:7%; top:45%; z-index:3; ');
-                    htmlText += 	    "<div class='profile_img' style='"+imgSizestr + "left:7%; top:45%; z-index:3;"+"'>"
-                    htmlText += 	    	"<img src='image/face_common.jpg'>";
-                    htmlText += 	    "</div>";
-                }
-            } else if (profileArr.length == 4) {
-                //if (idx == 0) {
-                //    htmlText += profileMaker(item, imgSizestr + ' ');
-                //} else if (idx == 1) {
-                //    htmlText += profileMaker(item, imgSizestr + ' ');
-                //} else if (idx == 2) {
-                //    htmlText += profileMaker(item, imgSizestr + ' ');
-                //} else if (idx == 3) {
-                //    htmlText += profileMaker(item, imgSizestr + ' ');
-                //}
-                htmlText += 	    "<div class='profile_img' style='"+imgSizestr + "'>"
-                htmlText += 	    	"<img src='image/face_common.jpg'>";
-                htmlText += 	    "</div>";
-            } else {
-                //htmlText += profileMaker(item, imgSizestr);
-                htmlText += 	    "<div class='profile_img' style='"+imgSizestr + "'>"
-                htmlText += 	    	"<img src='image/face_common.jpg'>";
-                htmlText += 	    "</div>";
+            htmlText +=             "<div class='exit btn' style='border-radius: 10%; background-color:red; color:white; padding:3px;' onclick='exitChannelHub(\"" + channel.channelCd + "\")'>나가기</div>";
+            htmlText +=         "</div>";
+            htmlText +=         "<div class='recent_message_container' style='color:#737373'>"
+            if (lastChat != null && lastChat && lastChat.message) {
+                htmlText +=         "<div class='recent_message'>" + lastChat.message + "</div>";
+                htmlText +=         "<div class='recent_messageDt'>" + lastChat.messageDt.substr(0, 16) + "</div>";
             }
-        });
+            htmlText +=         "</div>";
+            htmlText +=     "</div>";
+            htmlText +=     "<div class='unread_count_container' style=''>"
+            htmlText +=         "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
+            htmlText +=             "<div>" + unreadCount + "</div>"
+            htmlText +=         "</div>"
+            htmlText +=     "</div>";
+            htmlText += "</div>";
 
-        htmlText += "</div>";
-        htmlText += "<div  style='display: flex;flex-direction: column;width: 100%; padding: 10px; justify-content:space-between;'>";
-        htmlText += "<div style='display: flex;'>";
-        htmlText += "<strong class='channel_alias alias' onclick='openChannel(\"" + channel.channelCd + "\" ,\"" + channelName + "\",\"" + channelUsers.length + "\");' style=''>" + channelName + "</strong>";
-        if (channelUsers.length > 2) {
-            htmlText += "<div class='channel_user_count' style='display:inline;'>" + (channelUsers.length) + "</div>"
-        }
-        htmlText += "<div class='exit btn' style='border-radius: 10%; background-color:red; color:white; padding:3px;' onclick='exitChannelHub(\"" + channel.channelCd + "\")'>나가기</div>";
-        htmlText += "</div>";
-        htmlText += "<div class='recent_message_container' style='color:#737373'>"
-        if (lastChat != null && lastChat && lastChat.message) {
-            htmlText += "<div class='recent_message'>" + lastChat.message + "</div>";
-            htmlText += "<div class='recent_messageDt'>" + lastChat.messageDt.substr(0, 16) + "</div>";
-        }
-        htmlText += "</div>";
-        htmlText += "</div>";
-        htmlText += "<div class='unread_count_container' style=''>"
-        htmlText += "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
-        htmlText += "<div>" + unreadCount + "</div>"
-        htmlText += "</div>"
-        htmlText += "</div>";
-        htmlText += "</div>";
-
-        resolve(htmlText);
+            resolve(htmlText);
+        })
     })
 }
 

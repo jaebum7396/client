@@ -20,6 +20,15 @@
     <script src="js/main/main_channel_list.js" type="text/javascript"></script>
 
     <div id="friend_list_container" class='list_container' style=''>
+        <div id = 'search_user_container' style=''>
+            <input type='hidden' name='current_page_num' value='0'/>
+            <div class='search_input' style='display:flex;'>
+                <input type='text' style='margin:5px; padding:5px; width: 100%; border: 1px solid #f18a1c; border-radius:5px;' onkeyup='search(0)'/>
+                <%--<button style='margin:5px; padding:5px; width: 20%;'>검색</button>--%>
+            </div>
+            <div id = 'search_user_list'>
+            </div>
+        </div>
         <input type='hidden' name='current_page_num' value='0'/>
         <div class='friend_list'></div>
     </div>

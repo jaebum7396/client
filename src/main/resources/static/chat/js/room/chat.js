@@ -1,4 +1,3 @@
-
 //메시지 수신
 function onMessage(msg) {
     console.log('onMessage>>>>>>>>>>>>', msg)
@@ -87,7 +86,8 @@ function onMessage(msg) {
                             $('#chat_messages').append(talkMaker(chatArr,'Y'))
                         }
                         //수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
-                        if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight == Number($('#chat_messages').scrollTop() + innerHeight)) {
+                        console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
+                        if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight-5 <= Number($('#chat_messages').scrollTop() + innerHeight)) {
                             //스크롤을 아래로 내려준다.
                             moveBottom();
                         }
