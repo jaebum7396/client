@@ -64,7 +64,7 @@ function onMessage(msg) {
                                 $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','flex');
                             }
                         }else{ //채팅방이 없을때
-                            $("#channel_list_container").append(channelMaker(chatArr[0].channelInfo));
+                            $("#channel_list_container").append(channelMaker(channelInfo));
                         }
                     }
                     //채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
@@ -284,7 +284,35 @@ function loadChatList(p_channelCd) {
         })
     });
 }
+async function talkMakerHub(chatArr) {
+    console.log('talkMakerHub start', chatArr)
 
+    let bubbleArr = new Array();
+    for (let i = 0; i < chatArr.length; i++) {
+        if(i==0){
+            console.log(i,chatArr[i],0)
+            bubbleArr.push(chatArr[i]);
+            if(chatArr.length==1){
+                await $('#chat-messages').prepend(talkMaker(bubbleArr));
+            }
+        }else{
+            if(chatArr[i-1].userCd == chatArr[i].userCd && chatArr[i-1].messageDt.substr(0, 16) == chatArr[i].messageDt.substr(0, 16)){
+                bubbleArr.push(chatArr[i]);
+                if(i == chatArr.length-1){
+                    await $('#chat-messages').prepend(talkMaker(bubbleArr));
+                }
+            }else{
+                await $('#chat-messages').prepend(talkMaker(bubbleArr));
+                bubbleArr = new Array();
+                bubbleArr.push(chatArr[i]);
+                if(i == chatArr.length-1){
+                    await $('#chat-messages').prepend(talkMaker(bubbleArr));
+                }
+            }
+        }
+    }
+    console.log('talkMakerHub done')
+}
 
 async function talkMakerHub(chatArr) {
     console.log('talkMakerHub start', chatArr)
@@ -298,7 +326,7 @@ async function talkMakerHub(chatArr) {
                 await $('#chat_messages').prepend(talkMaker(bubbleArr));
             }
         }else{
-            if(chatArr[i-1].userCd == chatArr[i].userCd && chatArr[i-1].messageDt.substr(0, 16) == chatArr[i].messageDt.substr(0, 16)){
+            if(chatArr[i-1].sender.userCd == chatArr[i].sender.userCd && chatArr[i-1].messageDt.substr(0, 16) == chatArr[i].messageDt.substr(0, 16)){
                 bubbleArr.push(chatArr[i]);
                 if(i == chatArr.length-1){
                     await $('#chat_messages').prepend(talkMaker(bubbleArr));
@@ -325,16 +353,16 @@ function dateMaker(p_date){
 
 //talk 세팅을 위한 함수
 function talkMaker(chatArr, singleMessageYn) {
-    console.log(chatArr[0].messageDt.substr(0, 10),$('#chat_messages div.message').first().find('.messageDate').val());
+    console.log(chatArr[0].messageDt.substr(0, 10),$('#chat-messages div.message').first().find('.messageDate').val());
     if(singleMessageYn=='Y'){
-        console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '마지막 메시지 날짜 : '+ $('#chat_messages div.message').last().find('.messageDate').val())
-        if(chatArr[0].messageDt.substr(0, 10)!=$('#chat_messages div.message').last().find('.messageDate').val()){
-            $('#chat_messages').append(dateMaker(chatArr[0].messageDt.substr(0, 10)));
+        console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '마지막 메시지 날짜 : '+ $('#chat-messages div.message').last().find('.messageDate').val())
+        if(chatArr[0].messageDt.substr(0, 10)!=$('#chat-messages div.message').last().find('.messageDate').val()){
+            $('#chat-messages').append(dateMaker(chatArr[0].messageDt.substr(0, 10)));
         }
     }else{
-        console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '첫번째 메시지 날짜 : '+ $('#chat_messages div.message').first().find('.messageDate').val(), $('#chat_messages div.message').first().find('.messageDate').val())
-        if(chatArr[0].messageDt.substr(0, 10)!=$('#chat_messages div.message').first().find('.messageDate').val()&&$('#chat_messages div.message').first().find('.messageDate').val()){
-            $('#chat_messages').prepend(dateMaker($('#chat_messages div.message').first().find('.messageDate').val()));
+        console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '첫번째 메시지 날짜 : '+ $('#chat-messages div.message').first().find('.messageDate').val(), $('#chat-messages div.message').first().find('.messageDate').val())
+        if(chatArr[0].messageDt.substr(0, 10)!=$('#chat-messages div.message').first().find('.messageDate').val()&&$('#chat-messages div.message').first().find('.messageDate').val()){
+            $('#chat-messages').prepend(dateMaker($('#chat-messages div.message').first().find('.messageDate').val()));
         }
     }
     console.log('talkMaker>>>>>>>>>>>>',chatArr)
@@ -342,7 +370,6 @@ function talkMaker(chatArr, singleMessageYn) {
     var loginUserCd = localStorage.getItem('loginUserCd')
     var chatStr = '';
     //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
-    console.log(loginUserCd, chatArr[0].sender.userCd)
     if (loginUserCd == chatArr[0].sender.userCd) {
         chatStr += "<div class='message right'>";
         chatStr += "	<input type='hidden' class='messageDate' value='"+chatArr[0].messageDt.substr(0, 10)+"'/>"
@@ -377,6 +404,7 @@ function talkMaker(chatArr, singleMessageYn) {
         chatStr += "		    </div>"
         chatStr += "		</div>"
         chatStr += "	</div>";
+        //chatStr += "	<span style='display:block;'>" + convertTimeFormat(chatArr[0].messageDt.substring(chatArr[0].messageDt.indexOf(" "), chatArr[0].messageDt.lastIndexOf(":"))) + "</span>"
         chatStr += "	<span style='display:block;'>" + formatDate(chatArr[0].messageDt) + "</span>"
         chatStr += "</div>";
     }

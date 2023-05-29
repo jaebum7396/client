@@ -188,6 +188,73 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     chatRoomVisible('channel');
 }
 
+//채팅리스트 및 친구 리스트 프로필 생성
+function profileMaker(profileImgUrl, imgSizestr){
+    let htmlText='';
+    if(profileImgUrl){
+        htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
+        htmlText += 		"<img src='"+profileImgUrl+"'>";
+        htmlText += 	"</div>";
+    }else{
+        htmlText += 	"<div class='profile_img' style='"+imgSizestr+"'>";
+        htmlText += 		"<img src='chat/image/profile/common.jpg'>";
+        htmlText += 	"</div>";
+    }
+    return htmlText;
+}
+
+//채팅리스트 및 친구 리스트 프로필 생성
+//function profileMaker(friend, imgSizeStr){
+//    console.log('profileMaker', friend);
+//    return new Promise((resolve, reject) => {
+//        let htmlText = '';
+//
+//        if (!friend.userInfo) {
+//            console.log('프로필 이미지가 없습니다.');
+//            htmlText += "<div class='profile_img' style='" + imgSizeStr + "'>";
+//            htmlText += "<img src='image/face_common.jpg'>";
+//            htmlText += '</div>';
+//            resolve(htmlText);
+//            return;
+//        }
+//        if (friend.userInfo.userProfileImages){
+//            let userProfileImages = friend.userInfo.userProfileImages;
+//            if(friend.userInfo.userProfileImages.length == 0){
+//                htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
+//                htmlText += 		"<img src='image/face_common.jpg'>";
+//                htmlText += 	"</div>";
+//                resolve(htmlText);
+//            }else if(friend.userInfo.userProfileImages.length > 0){
+//                axios.get(API_FILE_STORAGE_URL+'/display?fileLocation='+userProfileImages[userProfileImages.length-1].profileImgUrl, {
+//                    responseType:'blob',
+//                    headers: {
+//                        'Content-Type': 'application/json',
+//                        Authorization: localStorage.getItem("token"),
+//                    }
+//                }).then(response => {
+//                    console.log('해당 이미지가 있습니다.',response);
+//                    const imageURL = window.URL.createObjectURL(response.data)
+//                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
+//                    htmlText += 		"<img src='"+ imageURL +"'>";
+//                    htmlText += 	"</div>";
+//                    resolve(htmlText);
+//                }).catch(error => {
+//                    console.log('해당 이미지가 없습니다.', error.response);
+//                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>"
+//                    htmlText += 		"<img src='image/face_common.jpg'>";
+//                    htmlText += 	"</div>";
+//                    resolve(htmlText);
+//                })
+//            }
+//        }else{
+//            console.log('프로필 이미지가 없습니다.', error.response);
+//            htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>";
+//            htmlText += 		"<img src='image/face_common.jpg'>";
+//            htmlText += 	"</div>";
+//            resolve(htmlText);
+//        }
+//    });
+//}
 
 function imageProvider(fileLocation, imgSizeStr){
     return new Promise((resolve, reject) => {

@@ -105,37 +105,29 @@ function friendRowMaker(friend, p_obj, rowClickActivate){
     let friendMakerPromise = friendMaker(friend, rowClickActivate);
     friendMakerPromise.then((friendMakerResp) => {
         p_obj.append(friendMakerResp);
-        let profileMakerPromise = profileMaker(friend, ' left:auto; top:auto;');
-        profileMakerPromise.then((profileMakerResp) => {
-            console.log('.chat_row .profile_container#'+friend.userInfo.userCd);
-            $('.chat_row .profile_container#'+friend.userInfo.userCd).html(profileMakerResp);
-        })
     });
 }
 
 function myInfoMaker(user, rowClickActivate) {
     console.log(user)
     return new Promise((resolve, reject) => {
-        let profileMakerPromise = profileMaker(user, ' left:auto; top:auto;');
-        profileMakerPromise.then((profileMakerResp) => {
-            let htmlText = "";
-            let p_division = 'me';
-            htmlText += "<div class='chat_row friend " + user.userCd + "' style='border:3px solid #f1f4f6'>";
-            htmlText += "   <input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + user.userCd + "'/>";
-            htmlText += "   <div id='"+user.userCd+"' class='profile_container'>"
-            htmlText += 	    profileMakerResp;
-            htmlText += "   </div>";
-            htmlText += "   <div onclick='rowClick(this, "+rowClickActivate+", \"me\");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
-            htmlText += "       <strong class='friend_alias alias' style='color: #f18a1c;'>" + (user.userInfo.userNickNm != null ? user.userInfo.userNickNm + "(나)" : user.userNm + "(나)") + "</strong>";
-            htmlText += "       <strong class='friend_message'>" + (user.userInfo.aboutMe != null ? user.userInfo.aboutMe : "") + "</strong>";
-            htmlText += "   </div>";
-            htmlText += "   <div style='margin: auto;'>";
-            htmlText += "       <input id='check_" + user.userCd + "' class='friend_check' type='checkbox' style='' value='" + user.userCd + "'/>";
-            htmlText += "       <label for='check_" + user.userCd + "' class='friend_check_label'></label>"
-            htmlText += "   </div>";
-            htmlText += "</div>";
-            resolve(htmlText);
-        })
+        let htmlText = "";
+        let p_division = 'me';
+        htmlText += "<div class='chat_row friend " + user.userCd + "' style='border:3px solid #f1f4f6'>";
+        htmlText += "   <input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + user.userCd + "'/>";
+        htmlText += "   <div id='"+user.userCd+"' class='profile_container'>"
+        htmlText += 	    profileMaker(user.userInfo.userProfileImages[0].profileImgUrl, ' left:auto; top:auto;');
+        htmlText += "   </div>";
+        htmlText += "   <div onclick='rowClick(this, "+rowClickActivate+", \"me\");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+        htmlText += "       <strong class='friend_alias alias' style='color: #f18a1c;'>" + (user.userInfo.userNickNm != null ? user.userInfo.userNickNm + "(나)" : user.userNm + "(나)") + "</strong>";
+        htmlText += "       <strong class='friend_message'>" + (user.userInfo.aboutMe != null ? user.userInfo.aboutMe : "") + "</strong>";
+        htmlText += "   </div>";
+        htmlText += "   <div style='margin: auto;'>";
+        htmlText += "       <input id='check_" + user.userCd + "' class='friend_check' type='checkbox' style='' value='" + user.userCd + "'/>";
+        htmlText += "       <label for='check_" + user.userCd + "' class='friend_check_label'></label>"
+        htmlText += "   </div>";
+        htmlText += "</div>";
+        resolve(htmlText);
     })
 }
 
@@ -159,9 +151,7 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += "<div class='chat_row friend " + friend.userInfo.userCd + "'>";
         htmlText += 	"<input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + friend.userInfo.userCd + "'/>";
         htmlText += "   <div id='"+friend.userInfo.userCd+"' class='profile_container'>"
-        htmlText += 	    "<div class='profile_img' style='left:auto; top:auto;'>"
-        htmlText += 	    	"<img src='image/face_common.jpg'>";
-        htmlText += 	    "</div>";
+        htmlText += 	    profileMaker(friend.userInfo.userProfileImages[0].profileImgUrl, ' left:auto; top:auto;');
         htmlText += 	"</div>";
         htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
         htmlText += 		"<strong class='friend_alias alias' style='color: #f18a1c;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userNm) + "</strong>";
@@ -174,59 +164,6 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += "</div>";
         resolve(htmlText);
     })
-}
-
-//채팅리스트 및 친구 리스트 프로필 생성
-function profileMaker(friend, imgSizeStr){
-    console.log('profileMaker', friend);
-    return new Promise((resolve, reject) => {
-        let htmlText = '';
-
-        if (!friend.userInfo) {
-            console.log('프로필 이미지가 없습니다.');
-            htmlText += "<div class='profile_img' style='" + imgSizeStr + "'>";
-            htmlText += "<img src='image/face_common.jpg'>";
-            htmlText += '</div>';
-            resolve(htmlText);
-            return;
-        }
-        if (friend.userInfo.userProfileImages){
-            let userProfileImages = friend.userInfo.userProfileImages;
-            if(friend.userInfo.userProfileImages.length == 0){
-                htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
-                htmlText += 		"<img src='image/face_common.jpg'>";
-                htmlText += 	"</div>";
-                resolve(htmlText);
-            }else if(friend.userInfo.userProfileImages.length > 0){
-                axios.get(API_FILE_STORAGE_URL+'/display?fileLocation='+userProfileImages[userProfileImages.length-1].profileImgUrl, {
-                    responseType:'blob',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: localStorage.getItem("token"),
-                    }
-                }).then(response => {
-                    console.log('해당 이미지가 있습니다.',response);
-                    const imageURL = window.URL.createObjectURL(response.data)
-                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
-                    htmlText += 		"<img src='"+ imageURL +"'>";
-                    htmlText += 	"</div>";
-                    resolve(htmlText);
-                }).catch(error => {
-                    console.log('해당 이미지가 없습니다.', error.response);
-                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>"
-                    htmlText += 		"<img src='image/face_common.jpg'>";
-                    htmlText += 	"</div>";
-                    resolve(htmlText);
-                })
-            }
-        }else{
-            console.log('프로필 이미지가 없습니다.', error.response);
-            htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>";
-            htmlText += 		"<img src='image/face_common.jpg'>";
-            htmlText += 	"</div>";
-            resolve(htmlText);
-        }
-    });
 }
 
 function toggleSearchUserContainer() {

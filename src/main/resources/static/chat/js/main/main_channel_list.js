@@ -27,7 +27,6 @@ function getChannelsWithPageable(p_page) {
             let p_page = result.p_page;
             $("#tab_container input[name='current_page_num']").val(p_page);
             channelMakerHub(channelArr);
-
             OPEN_CHANNEL_LIST_YN = false;
         })
         .catch((error) => {
@@ -45,27 +44,82 @@ function getChannelsWithPageable(p_page) {
     addInfiniteScroll('channel_list_container');
 }
 
+
+
 async function channelMakerHub(channelArr){
     console.log('channelMakerHub start', channelArr)
     for (let i = 0; i < channelArr.length; i++) {
         let channel = channelArr[i];
-        await channelRowMaker(channel);
-        //await $("#channel_list_container").append(channelMaker(channelArr[i]));
+        //await channelRowMaker(channel);
+        await $("#channel_list_container").append(channelMaker(channel));
     }
     console.log('channelMakerHub done')
 }
 
-function channelRowMaker(channel){
-    console.log('channelRowMaker', channel)
-    let channelMakerPromise = channelMaker(channel);
-    channelMakerPromise.then((channelMakerResp) => {
-        $("#channel_list_container").append(channelMakerResp);
-        //let profileMakerPromise = profileMaker(friend, ' left:auto; top:auto;');
-        //profileMakerPromise.then((profileMakerResp) => {
-        //    console.log('.chat_row .profile_container#'+friend.userInfo.userCd);
-        //    $('.chat_row .profile_container#'+friend.userInfo.userCd).html(profileMakerResp);
-        //})
-    });
+//채널 생성 해주는 함수
+function channelMaker(channel){
+    console.log('channelMaker', channel)
+    let htmlText = "";
+    let channelUsers = channel.channelUsers;
+    let lastChat = channel.lastChat;
+    let unreadCount = '';
+    let profileArr = new Array();
+
+    //마지막 메시지 코드가 없을시(메시지가 한개도 없을시) 채팅방 화면에서 생성 하지 않는다.
+    if (!channel.lastChat) {
+        return false;
+    }
+    //해당 채팅방의 유저를 순회
+    let channelName;
+    for (let j = 0; j < channelUsers.length; j++) {
+        //현재 로그인한 유저의 채널 별칭을 가져온다.
+        if (channelUsers[j].userCd == localStorage.getItem('loginUserCd')) {
+            if (channelUsers.length == 1) {
+                profileArr.push(channelUsers[j]);
+            }
+            channelName = channelUsers[j].channelAlias
+            //안읽음 메시지가 있을시 화면에 세팅
+            if (channelUsers[j].unreadCount != 0) {
+                unreadCount = channelUsers[j].unreadCount
+            }
+        } else {
+            if (profileArr.length < 4) {
+                profileArr.push(channelUsers[j]);
+            }
+        }
+    }
+
+    htmlText += "<div class='chat_row channel " + channel.channelCd + "' style='display:flex;'>";
+    htmlText +=     "<input class='CHANNEL_CD' id='CHANNEL_CD' name='CHANNEL_CD' type='hidden' value='" + channel.channelCd + "'/>";
+    htmlText +=     "<div id='"+channel.channelCd+"' class='profile_container' onclick='rowClick(this, " + true + ");'>"
+
+    //프로필 이미지를 순회하며 화면에 세팅
+    htmlText +=         channelProfileMaker(profileArr);
+
+    htmlText +=     "</div>";
+    htmlText +=     "<div style='display: flex;flex-direction: column;width: 100%; padding: 10px; justify-content:space-between;'>";
+    htmlText +=         "<div style='display: flex;'>";
+    htmlText +=             "<strong class='channel_alias alias' onclick='openChannel(\"" + channel.channelCd + "\" ,\"" + channelName + "\",\"" + channelUsers.length + "\");' style=''>" + channelName + "</strong>";
+    if (channelUsers.length > 2) {
+        htmlText +=         "<div class='channel_user_count' style='display:inline;'>" + (channelUsers.length) + "</div>"
+    }
+    htmlText +=             "<div class='exit btn' style='border-radius: 10%; background-color:red; color:white; padding:3px;' onclick='exitChannelHub(\"" + channel.channelCd + "\")'>나가기</div>";
+    htmlText +=         "</div>";
+    htmlText +=         "<div class='recent_message_container' style='color:#737373'>"
+    if (lastChat != null && lastChat && lastChat.message) {
+        htmlText +=         "<div class='recent_message'>" + lastChat.message + "</div>";
+        htmlText +=         "<div class='recent_messageDt'>" + lastChat.messageDt.substr(0, 16) + "</div>";
+    }
+    htmlText +=         "</div>";
+    htmlText +=     "</div>";
+    htmlText +=     "<div class='unread_count_container' style=''>"
+    htmlText +=         "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
+    htmlText +=             "<div>" + unreadCount + "</div>"
+    htmlText +=         "</div>"
+    htmlText +=     "</div>";
+    htmlText += "</div>";
+
+    return htmlText;
 }
 
 function channelProfileMaker(profileArr) {
@@ -84,95 +138,37 @@ function channelProfileMaker(profileArr) {
         imgSizeStr = 'height : 25px; width: 25px;';
     }
 
-    const promises = profileArr.map((item, idx) => {
-        console.log('profileArr.map', item, idx, imgSizeStr)
-        if (idx >= 4) {
-            return Promise.resolve(); // Skip iteration
-        }
-        return profileMaker(item, imgSizeStr);
-    });
-
-    return Promise.all(promises)
-        .then(htmlTextArray => {
-            htmlText = htmlTextArray.join('');
-            return htmlText;
-        })
-        .catch(error => {
-            console.log('Error:', error);
-            return ''; // Return empty HTML text
-        });
-}
-
-//채널 생성 해주는 함수
-function channelMaker(channel){
-    console.log('channelMaker', channel)
-    return new Promise((resolve, reject) => {
-        let htmlText = "";
-        let channelUsers = channel.channelUsers;
-        let lastChat = channel.lastChat;
-        let unreadCount = '';
-        let profileArr = new Array();
-
-        //마지막 메시지 코드가 없을시(메시지가 한개도 없을시) 채팅방 화면에서 생성 하지 않는다.
-        if (!channel.lastChat) {
+    profileArr.forEach((item, idx) => {
+        if(idx>=4){
             return false;
         }
-        //해당 채팅방의 유저를 순회
-        let channelName;
-        for (let j = 0; j < channelUsers.length; j++) {
-            //현재 로그인한 유저의 채널 별칭을 가져온다.
-            if (channelUsers[j].userCd == localStorage.getItem('loginUserCd')) {
-                if (channelUsers.length == 1) {
-                    profileArr.push(channelUsers[j]);
-                }
-                channelName = channelUsers[j].channelAlias
-                //안읽음 메시지가 있을시 화면에 세팅
-                if (channelUsers[j].unreadCount != 0) {
-                    unreadCount = channelUsers[j].unreadCount
-                }
-            } else {
-                if (profileArr.length < 4) {
-                    profileArr.push(channelUsers[j]);
-                }
+        if(profileArr.length==1){
+            htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+' left:auto; top:auto;');
+        }else if(profileArr.length==2 && idx==1){
+            htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+' left:40%; top:40%; z-index:3;');
+        }else if(profileArr.length==3){
+            if(idx==0){
+                htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+'left:27%; top:10%; z-index:3;');
+            }else if(idx==1){
+                htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+'left:48%; top:45%');
+            }else if(idx==2){
+                htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+'left:7%; top:45%; z-index:3; ');
             }
+        }else if(profileArr.length==4){
+            if(idx==0){
+                htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+' ');
+            }else if(idx==1){
+                htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+' ');
+            }else if(idx==2){
+                htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+' ');
+            }else if(idx==3){
+                htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr+' ');
+            }
+        }else{
+            htmlText += profileMaker(item.userInfo.userProfileImages[0].profileImgUrl,imgSizeStr);
         }
-
-        let channelProfileMakerPromise = channelProfileMaker(profileArr)
-        channelProfileMakerPromise.then((channelProfileMakerResp) => {
-            console.log('channelProfileMakerResp : ' + channelProfileMakerResp)
-            htmlText += "<div class='chat_row channel " + channel.channelCd + "' style='display:flex;'>";
-            htmlText +=     "<input class='CHANNEL_CD' id='CHANNEL_CD' name='CHANNEL_CD' type='hidden' value='" + channel.channelCd + "'/>";
-            htmlText +=     "<div id='"+channel.channelCd+"' class='profile_container' onclick='rowClick(this, " + true + ");'>"
-
-            //프로필 이미지를 순회하며 화면에 세팅
-            htmlText +=         channelProfileMakerResp;
-
-            htmlText +=     "</div>";
-            htmlText +=     "<div style='display: flex;flex-direction: column;width: 100%; padding: 10px; justify-content:space-between;'>";
-            htmlText +=         "<div style='display: flex;'>";
-            htmlText +=             "<strong class='channel_alias alias' onclick='openChannel(\"" + channel.channelCd + "\" ,\"" + channelName + "\",\"" + channelUsers.length + "\");' style=''>" + channelName + "</strong>";
-            if (channelUsers.length > 2) {
-                htmlText +=         "<div class='channel_user_count' style='display:inline;'>" + (channelUsers.length) + "</div>"
-            }
-            htmlText +=             "<div class='exit btn' style='border-radius: 10%; background-color:red; color:white; padding:3px;' onclick='exitChannelHub(\"" + channel.channelCd + "\")'>나가기</div>";
-            htmlText +=         "</div>";
-            htmlText +=         "<div class='recent_message_container' style='color:#737373'>"
-            if (lastChat != null && lastChat && lastChat.message) {
-                htmlText +=         "<div class='recent_message'>" + lastChat.message + "</div>";
-                htmlText +=         "<div class='recent_messageDt'>" + lastChat.messageDt.substr(0, 16) + "</div>";
-            }
-            htmlText +=         "</div>";
-            htmlText +=     "</div>";
-            htmlText +=     "<div class='unread_count_container' style=''>"
-            htmlText +=         "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
-            htmlText +=             "<div>" + unreadCount + "</div>"
-            htmlText +=         "</div>"
-            htmlText +=     "</div>";
-            htmlText += "</div>";
-
-            resolve(htmlText);
-        })
-    })
+    });
+    return htmlText;
 }
 
 function exitChannelHub(p_channelCd){

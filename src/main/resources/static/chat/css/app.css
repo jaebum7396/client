@@ -666,7 +666,7 @@ input[type=checkbox]:disabled + label {
 	/* margin: 5px; */
 	position: absolute;
 	float: left;
-	background-color:black;
+	/*background-color:black;*/
 	border-radius: 50%;
 	border: 1px solid white;
 	overflow:hidden;

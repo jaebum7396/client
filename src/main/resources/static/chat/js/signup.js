@@ -5,6 +5,7 @@ function signup(){
         , userPw: $('#userPw').val()
         , userPhoneNo: $('#userPhoneNo').val()
         , userNm: $('#userNm').val()
+        , userGender: $('#userGender').val()
     }, {
         headers: {
             'Content-Type': 'application/json'
