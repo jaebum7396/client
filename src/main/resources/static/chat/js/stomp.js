@@ -8,7 +8,6 @@ var reconnect;
 var websocket;
 function webSocketConnectHub() {
 	console.log('webSocketConnectHub start')
-	console.log('Authorization', localStorage.getItem("token"));
 	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp?Authorization="+localStorage.getItem("token"));
 	sock.onopen = function () {
 		// 연결이 열리면 실행되는 코드
@@ -32,7 +31,6 @@ function webSocketConnectHub() {
 		.then((response) => {
 			console.log("loadMyChannelResp", response);
 			let channelArr = response.data.result.channelArr;
-			console.log(channelArr)
 			for(let i = 0; i<channelArr.length; i++){
 				stompSubscribe(clientDomainCd, channelArr[i].channelCd)
 			}

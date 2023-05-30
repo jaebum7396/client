@@ -7,6 +7,7 @@
 --%>
 <script src="js/room/chat.js" type="text/javascript"></script>
 <div id="chat_room_view" class="p1">
+    <input type='hidden' id='OPEN_CHANNEL_CD' value=''/>
     <input type='hidden' name='current_page_num' value='0'/>
     <div id="chat_header">
         <!-- 사이드메뉴 -->

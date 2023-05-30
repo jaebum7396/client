@@ -101,7 +101,6 @@ async function friendMakerHub(friendArr, p_obj, rowClickActivate){
 }
 
 function friendRowMaker(friend, p_obj, rowClickActivate){
-    console.log('friendRowMaker',friend)
     let friendMakerPromise = friendMaker(friend, rowClickActivate);
     friendMakerPromise.then((friendMakerResp) => {
         p_obj.append(friendMakerResp);
@@ -109,7 +108,6 @@ function friendRowMaker(friend, p_obj, rowClickActivate){
 }
 
 function myInfoMaker(user, rowClickActivate) {
-    console.log(user)
     return new Promise((resolve, reject) => {
         let htmlText = "";
         let p_division = 'me';

@@ -68,7 +68,7 @@ function onMessage(msg) {
                         }
                     }
                     //채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
-                    if (chatArr[0].channelCd == localStorage.getItem("channelCd")) {
+                    if (chatArr[0].channelCd == $('#OPEN_CHANNEL_CD').val()) {
                         //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
                         if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
                             //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
@@ -110,10 +110,6 @@ function channelReadHub(p_channelCd) {
         .then((response) => {
             console.log("channelReadHubResp", response);
             let chat = response.data.result.prevLastChat;
-            if(!chat){
-                chat = new Object();
-                chat.chatCd = 0;
-            }
             chat.transferType = 9;
             console.log('이게 맞습니까?', chat)
             sendChat(chat);
@@ -254,7 +250,7 @@ function sendChatHub(message, p_chatType) {
     // chat 객체 생성
     let chat = new Object();
     chat.domainCd = 1; // 상점 코드
-    chat.channelCd = localStorage.getItem("channelCd"); // 채널 코드
+    chat.channelCd = $('#OPEN_CHANNEL_CD').val(); // 채널 코드
     chat.transferType = '4'; // 전송 타입
     chat.messageType = p_chatType; // 메시지 타입
     chat.message = message; // 메시지 내용

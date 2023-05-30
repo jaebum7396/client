@@ -65,7 +65,8 @@ function chatRoomVisible(p_flag) {
         $('.cx, .cy').removeClass("s1 s2 s3");
         $('#chat_room_view').fadeOut();
         $('#tab_container').fadeIn();
-        localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트
+        $('#OPEN_CHANNEL_CD').val('');
+        //localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트
         if("channel" == p_flag){
             getChannelsWithPageable('0')
         }else{
@@ -105,8 +106,8 @@ function openChannelWithUserHub(p_me){
     console.log('openChannelWithUserHub start')
 
     // 전역변수 초기화
-    localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트// 채팅방 번호
-
+    //localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트// 채팅방 번호
+    $('#OPEN_CHANNEL_CD').val('');
     $('#chat_messages').off('scroll'); // 채팅 스크롤
     $('#chat_messages').html(''); // 채팅 메시지
     let p_objArr = new Array(); // 선택된 친구들의 채팅 행 정보를 저장할 배열 초기화
@@ -131,7 +132,8 @@ function openChannelWithUserHub(p_me){
         }
         let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
         console.log('channelCd : '+channelCd)
-        localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
+        //localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
+        $('#OPEN_CHANNEL_CD').val(channelCd);
         channelReadHub(channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
 
         channelJoin(channelCd, channelUsers); // 채팅방 참여
@@ -175,7 +177,9 @@ function openChannelWithUser(p_objArr) {
 //채팅 리스트에서 클릭시 채팅방 오픈하기 위한 함수
 function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     let channelCd = p_channelCd;
-    localStorage.setItem("channelCd", p_channelCd);
+    //localStorage.setItem("channelCd", p_channelCd);
+    $('#OPEN_CHANNEL_CD').val(channelCd);
+
     $('#chat-messages').off('scroll');
     $('#chat-messages').html('');
 
