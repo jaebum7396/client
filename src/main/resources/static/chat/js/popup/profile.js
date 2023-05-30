@@ -140,9 +140,7 @@ function uploadProfileImageFile() {
 }
 
 function saveProfileImage(fileLocation){
-    console.log(saveProfileImage);
     return axios.post(API_USER_URL+'/userInfo', {
-    //return axios.post('localhost:8001/userInfo', {
         userProfileImages: [
             {
                 profileImgUrl: 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+fileLocation
