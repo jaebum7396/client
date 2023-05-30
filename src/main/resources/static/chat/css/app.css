@@ -94,7 +94,7 @@ body {
 	border-bottom: 1px solid #e7ebee;
 	position: relative;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	padding:5px;
 }
 
@@ -717,12 +717,12 @@ input[type=checkbox]:disabled + label {
 	overflow: hidden;
 	height: 20px;
 	white-space: nowrap;
-	width: 200px;
+	width: 80%;
 	display:inline-block; font-weight: 600; font-size: 15px; color: #f18a1c;
 }
 
 .chat_row .unread_count_container{
-	display: flex; justify-content: center; align-items: center;
+	display: flex; align-items: center; width:30px;
 }
 
 .chat_row .unread_count_container .unread_count{
@@ -734,12 +734,13 @@ input[type=checkbox]:disabled + label {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	width: 150px;
+	width: 75%;
 	font-size: 13px;
 }
 
 .recent_message_container {
 	display:flex;
+	justify-content: space-between;
 }
 
 #profile_popup .profile_container .profile_img{
@@ -863,4 +864,8 @@ input[type=checkbox]:disabled + label {
 }
 .friend_info {
 	width:80%;
+}
+
+.channel_row_contents{
+	display: flex;flex-direction: column;width: 60%; padding: 10px; justify-content:space-between;
 }

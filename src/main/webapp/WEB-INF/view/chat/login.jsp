@@ -33,10 +33,10 @@
                                     <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
                                     <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
                                 </div>--%>
-                                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                <div class="mt-4 mb-0" style='display:flex; justify-content: flex-end;'>
                                     <%--<a class="small" href="password">Forgot Password?</a>--%>
-                                    <div class="btn btn-primary" onclick="location.href='signup'">회원가입</div>
-                                    <div class="btn btn-primary" onclick='login();'>로그인</div>
+                                    <div class="btn btn-primary" style='margin:5px;' onclick="location.href='signup'">회원가입</div>
+                                    <div class="btn btn-primary" style='margin:5px;' onclick='login();'>로그인</div>
                                 </div>
                             </form>
                         </div>

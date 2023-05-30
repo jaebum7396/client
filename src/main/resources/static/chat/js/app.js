@@ -132,7 +132,7 @@ function openChannelWithUserHub(p_me){
         let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
         console.log('channelCd : '+channelCd)
         localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
-        //updateUnreadCountHub(localStorage.getItem('loginUserCd'), channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
+        channelReadHub(channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
 
         channelJoin(channelCd, channelUsers); // 채팅방 참여
 
@@ -179,7 +179,7 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     $('#chat-messages').off('scroll');
     $('#chat-messages').html('');
 
-    //updateUnreadCountHub($('#LOGIN_USER_CD').val(), channelCd);
+    channelReadHub(channelCd);
 
     $('#channel_alias').html(p_channelAlias);
     $('#channel_user_count').html(p_channelUserCount);

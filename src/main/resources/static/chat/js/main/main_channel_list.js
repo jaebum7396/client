@@ -97,18 +97,18 @@ function channelMaker(channel){
     htmlText +=         channelProfileMaker(profileArr);
 
     htmlText +=     "</div>";
-    htmlText +=     "<div style='display: flex;flex-direction: column;width: 100%; padding: 10px; justify-content:space-between;'>";
+    htmlText +=     "<div class='channel_row_contents' style=''>";
     htmlText +=         "<div style='display: flex;'>";
     htmlText +=             "<strong class='channel_alias alias' onclick='openChannel(\"" + channel.channelCd + "\" ,\"" + channelName + "\",\"" + channelUsers.length + "\");' style=''>" + channelName + "</strong>";
     if (channelUsers.length > 2) {
         htmlText +=         "<div class='channel_user_count' style='display:inline;'>" + (channelUsers.length) + "</div>"
     }
-    htmlText +=             "<div class='exit btn' style='border-radius: 10%; background-color:red; color:white; padding:3px;' onclick='exitChannelHub(\"" + channel.channelCd + "\")'>나가기</div>";
+    //htmlText +=             "<div class='exit btn' style='border-radius: 10%; background-color:red; color:white; padding:3px;' onclick='exitChannelHub(\"" + channel.channelCd + "\")'>나가기</div>";
     htmlText +=         "</div>";
     htmlText +=         "<div class='recent_message_container' style='color:#737373'>"
     if (lastChat != null && lastChat && lastChat.message) {
         htmlText +=         "<div class='recent_message'>" + lastChat.message + "</div>";
-        htmlText +=         "<div class='recent_messageDt'>" + lastChat.messageDt.substr(0, 16) + "</div>";
+        htmlText +=         "<div class='recent_messageDt'>" + formatLastChatDateTime(lastChat.messageDt.substr(0, 16)) + "</div>";
     }
     htmlText +=         "</div>";
     htmlText +=     "</div>";
@@ -175,7 +175,7 @@ function exitChannelHub(p_channelCd){
     let deleteChannelUserPromise = deleteChannelUser(p_channelCd);
     deleteChannelUserPromise
         .then((response) => {
-            sendMessageHub(p_channelCd, response.result.friendList[0].userNm+' 님이 나가셨습니다.', 1)
+            sendChatHub(p_channelCd, response.result.friendList[0].userNm+' 님이 나가셨습니다.', 1)
 
             unsubscribe(p_channelCd);
             getChannelsWithPageable('0');

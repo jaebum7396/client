@@ -10,16 +10,16 @@ function onMessage(msg) {
         }else if(data.transferType == 9){
             console.log('읽음처리resp', data);
             // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
-            let getMessagesByMessageCdPromise = getMessagesByGreaterThanLastMessageCd(data);
+            let getChatsAfterReadChatPromise = getChatsAfterReadChat(data);
             // 화면에 라스트 메시지 이후의 데이터들을 업데이트 해준다.
-            getMessagesByMessageCdPromise
+            getChatsAfterReadChatPromise
                 .then((response) => {
-                    console.log('getMessagesByGreaterThanLastMessageCdResp', response);
-                    let updateMessageArr = response.result.chatArr;
-                    for(let i=0; i<updateMessageArr.length; i++){
-                        $('.bubble_box.'+updateMessageArr[i].chatCd).find('.unread_count').html(updateMessageArr[i].unreadCount)
-                        if(updateMessageArr[i].unreadCount==0){
-                            $('.bubble_box.'+updateMessageArr[i].chatCd).find('.unread_count').css('display','none');
+                    console.log('getChatsAfterReadChatResp', response);
+                    let chatArr = response.data.result.chatArr;
+                    for(let i=0; i<chatArr.length; i++){
+                        $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
+                        if(chatArr[i].unreadCount==0){
+                            $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').css('display','none');
                         }
                     }
                 })
@@ -72,7 +72,7 @@ function onMessage(msg) {
                         //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
                         if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
                             //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
-                            //updateUnreadCountPerHub(localStorage.getItem('loginUserCd'), chatArr[0]);
+                            chatReadHub(chatArr[0]);
                         }
                         let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
                         //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
@@ -102,18 +102,124 @@ function onMessage(msg) {
     }
 }
 
-function alarmMaker(p_message){
-    console.log('alarmMaker>>>>>>>>>>>>', p_message)
+//마지막 읽은 메시지 이후의 메시지들을 모두 읽음 처리 해주기 위한 함수
+function channelReadHub(p_channelCd) {
+    console.log('channelReadHub start')
+    let channelReadPromise = channelRead(p_channelCd);
+    channelReadPromise
+        .then((response) => {
+            console.log("channelReadHubResp", response);
+            let chat = response.data.result.prevLastChat;
+            if(!chat){
+                chat = new Object();
+                chat.chatCd = 0;
+            }
+            chat.transferType = 9;
+            console.log('이게 맞습니까?', chat)
+            sendChat(chat);
+        })
+        .catch((response) => {
+            console.log(response)
+        })
+    console.log('channelReadHub done')
+}
+
+//메시지 읽음 처리
+function channelRead(p_channelCd) {
+    console.log('updateUnreadCount>>>>>>>>>>>>', p_channelCd)
+    return new Promise((resolve, reject) => {
+        axios.post(API_CHAT_URL +'/channel/read'
+            , {
+                channelCd : p_channelCd
+            }
+            , {
+                headers: {
+                    'Content-Type': 'application/json'
+                    , Authorization: localStorage.getItem("token")
+                }
+            })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error.response)
+            });
+    })
+}
+
+//단일 메시지를 읽음 표시 해주기 위해 사용하는 함
+function chatReadHub(p_chat) {
+    console.log('updateUnreadCountPerHub start')
+    let chatReadPromise = chatRead(p_chat);
+    chatReadPromise
+        .then((response) => {
+            console.log("chatReadResp", response);
+            let chat = response.data.result.chat;
+            chat.domainCd = 1;
+            chat.transferType = 9;
+            sendChat(chat);
+        })
+        .catch((response) => {
+            console.log(response)
+        })
+    console.log('updateUnreadCountPerHub done')
+}
+
+//메시지 읽음 처리
+function chatRead(p_chat) {
+    console.log('chatRead>>>>>>>>>>>>', p_chat)
+    return new Promise((resolve, reject) => {
+        axios.post(API_CHAT_URL +'/chat/read'
+            , p_chat
+            , {
+                headers: {
+                    'Content-Type': 'application/json'
+                    , Authorization: localStorage.getItem("token")
+                }
+            })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error.response)
+            });
+    })
+}
+
+//마지막으로 읽은 메시지를 포함한 이후의 메시지들을 가져오는 함수
+function getChatsAfterReadChat(p_chat) {
+    console.log('getChatsAfterReadChat>>>>>>>>>>>>', p_chat)
+    return new Promise((resolve, reject) => {
+        axios.get(API_CHAT_URL +'/chats/read', {
+            params: {
+                chatCd :p_chat.chatCd
+            }
+            ,headers: {
+                'Content-Type': 'application/json'
+                , Authorization: localStorage.getItem("token")
+            }
+        })
+        .then(response => {
+            resolve(response)
+        })
+        .catch(error => {
+            reject(error.response)
+        });
+    })
+}
+
+function alarmMaker(p_chat){
+    console.log('alarmMaker>>>>>>>>>>>>', p_chat)
     let html = '';
-    html+="<div class='alarm "+p_message.messageCd+"' style='max-width: 400px; display:flex; border-radius: 5px; margin: 5px; background-color:white;' onclick='closeAlarm(this)'>"
-    //html+=		"<div style='width: 50px; height:50px; background:url(\""+p_message.sender.userProfile.userProfileImages[0].profileImgUrl+"\");background-size: cover; border-radius:5px;'></div>"
-    html+=		"<div class='oneLine' style='padding: 10px; font-size: 15px; font-weight: 600;'>"+p_message.message+"</div>"
+    html+="<div class='alarm "+p_chat.chatCd+"' style='max-width: 400px; display:flex; border-radius: 5px; margin: 5px; background-color:white;' onclick='closeAlarm(this)'>"
+    html+=		"<div style='width: 50px; height:50px; background:url(\""+p_chat.sender.userProfileImages[0].profileImgUrl+"\");background-size: cover; border-radius:5px;'></div>"
+    html+=		"<div class='oneLine' style='padding: 10px; font-size: 15px; font-weight: 600;'>"+p_chat.message+"</div>"
     html+="</div>"
 
     $('#alarm_popup #chat_contents').prepend(html);
 
     setTimeout(function() {
-        $(".alarm."+p_message.messageCd).fadeOut('slow', function() {
+        $(".alarm."+p_chat.chatCd).fadeOut('slow', function() {
             $(this).remove();
         });
     }, 5000);
@@ -138,19 +244,19 @@ function moveBottom() {
 }
 
 //메시지 전송 API 호출
-function sendChatHub(message, p_messageType) {
+function sendChatHub(message, p_chatType) {
     console.log(message, message.length)
     if(message.trim().length==0){
         return;
     }
-    console.log('sendChatHub start', p_messageType)
+    console.log('sendChatHub start', p_chatType)
 
     // chat 객체 생성
     let chat = new Object();
     chat.domainCd = 1; // 상점 코드
     chat.channelCd = localStorage.getItem("channelCd"); // 채널 코드
     chat.transferType = '4'; // 전송 타입
-    chat.messageType = p_messageType; // 메시지 타입
+    chat.messageType = p_chatType; // 메시지 타입
     chat.message = message; // 메시지 내용
 
     // saveChat 함수 호출하여 메시지 저장하기
@@ -293,36 +399,6 @@ async function talkMakerHub(chatArr) {
             console.log(i,chatArr[i],0)
             bubbleArr.push(chatArr[i]);
             if(chatArr.length==1){
-                await $('#chat-messages').prepend(talkMaker(bubbleArr));
-            }
-        }else{
-            if(chatArr[i-1].userCd == chatArr[i].userCd && chatArr[i-1].messageDt.substr(0, 16) == chatArr[i].messageDt.substr(0, 16)){
-                bubbleArr.push(chatArr[i]);
-                if(i == chatArr.length-1){
-                    await $('#chat-messages').prepend(talkMaker(bubbleArr));
-                }
-            }else{
-                await $('#chat-messages').prepend(talkMaker(bubbleArr));
-                bubbleArr = new Array();
-                bubbleArr.push(chatArr[i]);
-                if(i == chatArr.length-1){
-                    await $('#chat-messages').prepend(talkMaker(bubbleArr));
-                }
-            }
-        }
-    }
-    console.log('talkMakerHub done')
-}
-
-async function talkMakerHub(chatArr) {
-    console.log('talkMakerHub start', chatArr)
-
-    let bubbleArr = new Array();
-    for (let i = 0; i < chatArr.length; i++) {
-        if(i==0){
-            console.log(i,chatArr[i],0)
-            bubbleArr.push(chatArr[i]);
-            if(chatArr.length==1){
                 await $('#chat_messages').prepend(talkMaker(bubbleArr));
             }
         }else{
@@ -409,6 +485,33 @@ function talkMaker(chatArr, singleMessageYn) {
         chatStr += "</div>";
     }
     return chatStr;
+}
+
+function formatLastChatDateTime(messageDt) {
+    var now = new Date();
+    var messageDate = new Date(messageDt);
+
+    if (
+        now.getFullYear() === messageDate.getFullYear() &&
+        now.getMonth() === messageDate.getMonth() &&
+        now.getDate() === messageDate.getDate()
+    ) {
+        // 오늘일 경우 오전 XX:XX 포맷으로 표기
+        var formattedTime = messageDate.toLocaleTimeString('ko-KR', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        });
+        return formattedTime;
+    } else {
+        // 오늘이 아닐 경우 날짜로 표기
+        var formattedDate = messageDate.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        return formattedDate;
+    }
 }
 
 function formatDate(inputDate) {
