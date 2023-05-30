@@ -869,3 +869,8 @@ input[type=checkbox]:disabled + label {
 .channel_row_contents{
 	display: flex;flex-direction: column;width: 60%; padding: 10px; justify-content:space-between;
 }
+
+.friend_message{
+	color:#737373;
+	font-size: 12px;
+}
