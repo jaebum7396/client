@@ -145,7 +145,7 @@ function saveProfileImage(fileLocation){
     //return axios.post('localhost:8001/userInfo', {
         userProfileImages: [
             {
-                profileImgUrl: fileLocation
+                profileImgUrl: 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+fileLocation
             }
         ]
     }, {
