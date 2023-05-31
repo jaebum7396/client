@@ -31,12 +31,16 @@
                                     <label for="userGender">찾고 싶은 친구의 성별</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <select class="form-control" id="appearance" required>
-                                        <option value="">평범</option>
-                                        <option value="M">남자</option>
-                                        <option value="W">여자</option>
-                                    </select>
-                                    <label for="userGender">외모</label>
+                                    <div onclick='openCharacterSelectionPopup()'></div>
+                                    <div class="characterSelectionPopup">
+                                        <div class="button" onclick="characterSelect(this)">머리꽃밭</div>
+                                        <div class="button" onclick="characterSelect(this)">우리엄마는 내가 제일 예쁘댔어</div>
+                                        <div class="button" onclick="characterSelect(this)">주량 한잔</div>
+                                    </div>
+                                    <div id="character">
+
+                                    </div>
+                                    <label for="character">내 특징</label>
                                 </div>
                                 <div class="mt-4 mb-0">
                                     <div class="d-grid"><div class="btn btn-primary btn-block" onclick="saveUserInfo();">저장</div></div>

@@ -29,6 +29,8 @@ $(document).ready(function() {
     $('#sendmessage #msg').keydown((e) => {
         if (e.keyCode == 13) {//키가 13이면 실행 (엔터는 13)
             sendChatHub(document.getElementById("msg").value, isValidURL(document.getElementById("msg").value)?'5' : '1')
+        }else{
+            sendTypingAlarmHub();
         }
     });
     webSocketConnectHub();
