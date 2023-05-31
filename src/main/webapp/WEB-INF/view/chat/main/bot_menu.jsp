@@ -11,9 +11,9 @@
     }
 
     function initUserInfoTab() {
-        alert('준비중입니다.');
-        //$('.list_container').css('display', 'none');
-        //$('#user_info_container').css('display', 'block');
+        //alert('준비중입니다.');
+        $('.list_container').css('display', 'none');
+        $('#user_info_container').css('display', 'block');
     }
 </script>
 <div id="botmenu">

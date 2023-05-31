@@ -113,7 +113,7 @@ function myInfoMaker(user, rowClickActivate) {
     return new Promise((resolve, reject) => {
         let htmlText = "";
         let p_division = 'me';
-        htmlText += "<div class='chat_row friend " + user.userCd + "' style='border:3px solid #f1f4f6'>";
+        htmlText += "<div class='chat_row friend " + user.userCd + "' style='border-top:2px solid #f1f4f6'>";
         htmlText += "   <input class='FRIEND_USER_CD' id='FRIEND_USER_CD' name='FRIEND_USER_CD' type='hidden' value='" + user.userCd + "'/>";
         htmlText += "   <div id='"+user.userCd+"' class='profile_container'>"
         htmlText += 	    profileMaker(user.userInfo.userProfileImages[0].profileImgUrl, ' left:auto; top:auto;');

@@ -293,3 +293,66 @@ function imageProvider(fileLocation, imgSizeStr){
         })
     });
 }
+
+function formatLastChatDateTime(messageDt) {
+    var now = new Date();
+    var messageDate = new Date(messageDt);
+
+    if (
+        now.getFullYear() === messageDate.getFullYear() &&
+        now.getMonth() === messageDate.getMonth() &&
+        now.getDate() === messageDate.getDate()
+    ) {
+        // 오늘일 경우 오전 XX:XX 포맷으로 표기
+        var formattedTime = messageDate.toLocaleTimeString('ko-KR', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        });
+        return formattedTime;
+    } else {
+        // 오늘이 아닐 경우 날짜로 표기
+        var formattedDate = messageDate.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        return formattedDate;
+    }
+}
+
+function formatDate(inputDate) {
+    var date = new Date(inputDate);
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var period = hours >= 12 ? '오후' : '오전';
+
+    // 시간 형식 조정
+    if (hours > 12) {
+        hours -= 12;
+    } else if (hours === 0) {
+        hours = 12;
+    }
+
+    // 분 형식 조정
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    }
+
+    var formattedTime = period + ' ' + hours + ':' + minutes + '분';
+    return formattedTime;
+}
+
+function convertTimeFormat(timeString) {
+    const [hours, minutes] = timeString.split(':');
+
+    let period = '오전';
+    let hour = parseInt(hours, 10);
+
+    if (hour >= 12) {
+        period = '오후';
+        hour = hour === 12 ? hour : hour - 12;
+    }
+
+    return `${period} ${hour}:${minutes}분`;
+}

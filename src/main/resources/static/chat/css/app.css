@@ -338,6 +338,12 @@ body {
 	border-radius: 5px 5px 5px 0px;
 }
 
+.recent_messageDt{
+	font-size: 11px;
+	color: #8495a3;
+	margin: 0 0 0 10px;
+}
+
 .bubble .corner {
 	background:
 			url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/bubble-corner.png")
@@ -725,6 +731,10 @@ input[type=checkbox]:disabled + label {
 	height:35px;
 }
 
+.chat_row.channel{
+	border-top: 2px solid #f1f4f6;
+}
+
 .chat_row .channel_alias{
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -880,7 +890,7 @@ input[type=checkbox]:disabled + label {
 }
 
 .channel_row_contents{
-	display: flex;flex-direction: column;width: 60%; padding: 10px; justify-content:space-between;
+	display: flex;flex-direction: column;width: 65%; padding: 10px; justify-content:space-between;
 }
 
 .friend_message{

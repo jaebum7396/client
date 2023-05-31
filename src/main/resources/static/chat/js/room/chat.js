@@ -53,7 +53,7 @@ function onMessage(msg) {
                         if($('.chat_row.'+chatArr[0].channelCd).length!=0){
                             //수신한 최신 메시지를 미리보기에 세팅한다.
                             $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_message').html(chatArr[0].message);
-                            $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_messageDt').html(chatArr[0].messageDt.substr(0, 16));
+                            $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_messageDt').html(formatLastChatDateTime(chatArr[0].messageDt.substr(0, 16)));
                             //수신한 최신 메시지에 해당하는 채팅룸을 맨 위로 올린다.
                             $('.chat_row.'+chatArr[0].channelCd).insertBefore($('#channel_list_container .chat_row')[0]);
                             //안읽음 메시지 카운트를 미리보기에 세팅한다.
@@ -454,7 +454,7 @@ function talkMaker(chatArr, singleMessageYn) {
         chatStr += "		    </div>";
         chatStr += "		</div>";
         chatStr += "	</div>";
-        chatStr += "	<span style='display:block;'>" + formatDate(chatArr[0].messageDt) + "</span>"
+        chatStr += "	<span class='' style='display:block; font-size:12px;'>" + formatDate(chatArr[0].messageDt) + "</span>"
         chatStr += "</div>";
     } else {
         chatStr += "<div class='message'>";
@@ -477,75 +477,11 @@ function talkMaker(chatArr, singleMessageYn) {
         chatStr += "		</div>"
         chatStr += "	</div>";
         //chatStr += "	<span style='display:block;'>" + convertTimeFormat(chatArr[0].messageDt.substring(chatArr[0].messageDt.indexOf(" "), chatArr[0].messageDt.lastIndexOf(":"))) + "</span>"
-        chatStr += "	<span style='display:block;'>" + formatDate(chatArr[0].messageDt) + "</span>"
+        chatStr += "	<span style='display:block; font-size:12px;'>" + formatDate(chatArr[0].messageDt) + "</span>"
         chatStr += "</div>";
     }
     return chatStr;
 }
-
-function formatLastChatDateTime(messageDt) {
-    var now = new Date();
-    var messageDate = new Date(messageDt);
-
-    if (
-        now.getFullYear() === messageDate.getFullYear() &&
-        now.getMonth() === messageDate.getMonth() &&
-        now.getDate() === messageDate.getDate()
-    ) {
-        // 오늘일 경우 오전 XX:XX 포맷으로 표기
-        var formattedTime = messageDate.toLocaleTimeString('ko-KR', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true
-        });
-        return formattedTime;
-    } else {
-        // 오늘이 아닐 경우 날짜로 표기
-        var formattedDate = messageDate.toLocaleDateString('ko-KR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        });
-        return formattedDate;
-    }
-}
-
-function formatDate(inputDate) {
-    var date = new Date(inputDate);
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var period = hours >= 12 ? '오후' : '오전';
-
-    // 시간 형식 조정
-    if (hours > 12) {
-        hours -= 12;
-    } else if (hours === 0) {
-        hours = 12;
-    }
-
-    // 분 형식 조정
-    if (minutes < 10) {
-        minutes = '0' + minutes;
-    }
-
-    var formattedTime = period + ' ' + hours + ':' + minutes + '분';
-    return formattedTime;
-}
-
-function convertTimeFormat(timeString) {
-    const [hours, minutes] = timeString.split(':');
-
-    let period = '오전';
-    let hour = parseInt(hours, 10);
-
-    if (hour >= 12) {
-        period = '오후';
-        hour = hour === 12 ? hour : hour - 12;
-    }
-
-    return `${period} ${hour}:${minutes}분`;
-}
-
 function createThumbnailDom(url, target, maxWidth, maxHeight, callback) {
     if(url.indexOf('https://')<0&&url.indexOf('http://')<0){
         url = 'https://'+url
