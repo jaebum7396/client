@@ -1,5 +1,7 @@
-
 function initFriendTab(){
+    $('.list_container').css('display', 'none');
+    $('#friend_list_container').css('display', 'block');
+
     $("#friend_list_container input[name='current_page_num']").val('0');
     $('#friend_list_container .friend_list').empty();
     let getMyInfoPromise = getMyInfo();

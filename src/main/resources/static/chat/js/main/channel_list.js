@@ -1,3 +1,9 @@
+function initChannelTab(){
+    $('.list_container').css('display', 'none');
+    $('#channel_list_container').css('display', 'block');
+    getChannelsWithPageable('0');
+}
+
 //채팅리스트 무한스크롤
 var OPEN_CHANNEL_LIST_YN = false;
 function getChannelsWithPageable(p_page) {

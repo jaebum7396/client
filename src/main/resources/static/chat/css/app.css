@@ -47,17 +47,29 @@ body {
 	position:fixed;
 	display: flex;
 	justify-content: space-around;
-	border-top: 1px solid #f18a1c;
 	height: 69px;
 	width: 100%;
 	bottom:0;
+	box-shadow: 6px 6px 10px 4px rgba(226, 154, 22, 0.6);
+}
+
+.list_container{
+	background-color: #f1f4f6;
+	margin-top: 44.8px;
+	height: calc(100% - 115px);
+	overflow-y: scroll;
+}
+
+.chat_header{
+	font-size:25px;
 }
 
 #topmenu {
 	position:fixed;
 	display: flex;
 	justify-content: space-between;
-	border-bottom: 1px solid #f18a1c;
+	/*box-shadow: 4px 4px 4px 4px rgba(226, 154, 22, 0.6);*/
+	/*border-bottom: 1px solid #f18a1c;*/
 	width: 100%;
 }
 
@@ -91,6 +103,7 @@ body {
 
 .chat_row {
 	height: 70px;
+	background-color:white;
 	border-bottom: 1px solid #e7ebee;
 	position: relative;
 	display: flex;
