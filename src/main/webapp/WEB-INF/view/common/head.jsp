@@ -1,8 +1,6 @@
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="org.springframework.core.env.*" %>
-<%@ page import="java.util.stream.StreamSupport" %>
-<%@ page import="java.util.Arrays" %>
 <%
 //**********************************************************************************
 // ○ 파일	: page_head
@@ -22,7 +20,7 @@ System.out.println("API_FILE_STORAGE_URL : " + API_FILE_STORAGE_URL);
 String API_SOCKET_STREAM_URL = env.getProperty("api.socket-stream.url");
 System.out.println("API_SOCKET_STREAM_URL : " + API_SOCKET_STREAM_URL);
 %>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="description" content="" />

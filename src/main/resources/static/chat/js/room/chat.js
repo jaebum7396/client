@@ -82,8 +82,13 @@ function onMessage(msg) {
                     if (chatArr[0].channelCd == $('#OPEN_CHANNEL_CD').val()) {
                         //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
                         if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
-                            //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
-                            chatReadHub(chatArr[0]);
+                            if(hasFocus||hasFocusApp){
+                                console.log("해당 채팅을 읽었습니다.");
+                                chatReadHub(chatArr[0]);
+                                //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
+                            }else{
+                                console.log("해당 채팅을 읽지않았습니다.");
+                            }
                         }
                         let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
                         //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
@@ -115,9 +120,9 @@ function onMessage(msg) {
 
 
 //마지막 읽은 메시지 이후의 메시지들을 모두 읽음 처리 해주기 위한 함수
-function channelReadHub(p_channelCd) {
+function channelReadHub() {
     console.log('channelReadHub start')
-    let channelReadPromise = channelRead(p_channelCd);
+    let channelReadPromise = channelRead($('#OPEN_CHANNEL_CD').val());
     channelReadPromise
         .then((response) => {
             console.log("channelReadHubResp", response);

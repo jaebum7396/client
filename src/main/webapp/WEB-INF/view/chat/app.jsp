@@ -15,6 +15,7 @@
         if (!localStorage.getItem("token")) {
             location.href = "login";
         }
+
     </script>
     <div id='alarm_popup' style='position:absolute;bottom:0;right:0;z-index:9999;'>
         <div id='chat_contents'></div>

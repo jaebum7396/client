@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
     // #menu 요소 하위의 ul 요소 중 class 속성이 channel_user_list인 요소를 숨깁니다.
     $("#menu ul.channel_user_list").hide();
@@ -36,6 +37,46 @@ $(document).ready(function() {
     webSocketConnectHub();
     initFriendTab();
 });
+
+var hasFocus = document.hasFocus();
+var hasFocusApp;
+
+function updateFocusStatus() {
+    if (document.hasFocus()) {
+        hasFocus = true;
+        console.log("해당 창이 포커스를 가지고 있습니다.");
+        channelReadHub();
+    } else {
+        hasFocus = false;
+        console.log("해당 창이 포커스를 잃었습니다.");
+    }
+}
+
+document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === "visible") {
+        hasFocusApp = true;
+        console.log("앱이 활성화되었습니다.");
+        if($('#OPEN_CHANNEL_CD').val()){
+            channelReadHub();
+        }
+    } else {
+        hasFocusApp = false;
+        console.log("앱이 백그라운드에 있습니다.");
+    }
+});
+
+window.addEventListener("focus", function() {
+    updateFocusStatus();
+});
+
+window.addEventListener("blur", function() {
+    updateFocusStatus();
+});
+
+if (hasFocus || hasFocusApp) {
+    console.log("해당 창이 활성화되어 있습니다.");
+    // 안 읽은 카운트를 0으로 갱신해준다. (채팅방에 현재 들어와 있으므로)
+}
 
 window.onhashchange = function() {
     if (location.hash != "#open") {
@@ -144,7 +185,7 @@ function openChannelWithUserHub(p_me){
         console.log('channelCd : '+channelCd)
         //localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
         $('#OPEN_CHANNEL_CD').val(channelCd);
-        channelReadHub(channelCd); // 채팅방 읽지 않은 메시지 개수 업데이트
+        channelReadHub(); // 채팅방 읽지 않은 메시지 개수 업데이트
 
         channelJoin(channelCd, channelUsers); // 채팅방 참여
 
@@ -193,7 +234,7 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     $('#chat-messages').off('scroll');
     $('#chat-messages').html('');
 
-    channelReadHub(channelCd);
+    channelReadHub();
 
     $('#channel_alias').html(p_channelAlias);
     $('#channel_user_count').html(p_channelUserCount);
