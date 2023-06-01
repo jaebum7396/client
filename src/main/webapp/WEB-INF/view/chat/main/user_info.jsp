@@ -3,36 +3,18 @@
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-
-<script>
-    function openCharacterSelectionPopup() {
-        $('#characterSelectionPopup').css('display', 'block');
-    }
-
-    function closeCharacterSelectionPopup() {
-        $('#characterSelectionPopup').css('display', 'none');
-    }
-
-    function characterSelect(element) {
-        var characterSelectionTrigger = document.getElementById("characterSelectionTrigger");
-        var character = document.getElementById("character");
-        var button = document.createElement("div");
-        button.classList.add("button");
-        button.innerText = element.innerText;
-        character.appendChild(button);
-        //characterSelectionTrigger.innerText = element.innerText;
-    }
-</script>
 <div id="layoutAuthentication">
     <div id="layoutAuthentication_content">
         <main>
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center" style="margin-bottom: 20px;">
                     <div class="col-lg-7">
                         <div class="card-body">
                             <form>
-                                <div style="display:flex;justify-content: center;">
-                                    <img src="/chat/image/logo_app.png" style="width:200px;">
+                                <div style="display:flex;justify-content: center; margin:10px;">
+                                    <div id='profile_container' class='profile_container' style='width:200px; height:200px;'>
+                                    </div>
+                                    <input style='display:none;' type='file' id='imageInput' onchange='updateProfileImageHub()'>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="userNickNm" type="text" required />

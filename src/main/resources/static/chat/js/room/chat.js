@@ -152,9 +152,22 @@ function channelRead(p_channelCd) {
             .then(response => {
                 resolve(response)
             })
-            .catch(error => {
-                reject(error.response)
-            });
+            .catch((error) => {
+                console.log(error.response);
+                if(error){
+                    if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
+                        localStorage.setItem('token', '');
+                        alert('로그인이 만료되었습니다');
+                        location.href = 'login';
+                    }else{
+                        alert(error.response.data.message);
+                        console.error(error);
+                    }
+                }else{
+                    alert("알 수 없는 에러가 발생했습니다.");
+                    location.reload();
+                }
+            })
     })
 }
 
