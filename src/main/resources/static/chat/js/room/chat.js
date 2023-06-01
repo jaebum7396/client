@@ -32,15 +32,13 @@ function onMessage(msg) {
                 stompSubscribe(data.domainCd, data.channelCd);
             }
         }else if(data.transferType == 89){
-            if (localStorage.getItem('loginUserCd') != data.userCd){
-                //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
+            if (localStorage.getItem('loginUserCd') != data.userCd && data.channelCd == $('#OPEN_CHANNEL_CD').val()){
                 console.log('상대방이 타이핑 중입니다.', data);
                 $('#chat_alarm').css('display', 'flex');
                 $('#chat_alarm').html("<div class='alarm_payload'>상대방이 타이핑 중입니다.</div")
                 setTimeout(function() {
-                    $('#chat_alarm').fadeOut('slow', function() {
-                    });
-                }, 5000);
+                    $('#chat_alarm').fadeOut('slow', function() {});
+                }, 2000);
             }
         }else{
             //수신한 메시지를 조회한다.
@@ -275,16 +273,16 @@ function sendChatHub(message, p_chatType) {
     // saveChat 함수 호출하여 메시지 저장하기
     let saveChatPromise = saveChat(chat)
     saveChatPromise
-        .then((response) => {
-            let result = response.data.result
-            console.log('saveChatResp', response)
-            result.chat.domainCd = 1;
-            // sendChat 함수 호출하여 메시지 전송하기
-            sendChat(result.chat);
-        })
-        .catch((response) => {
-            console.log(response);
-        })
+    .then((response) => {
+        let result = response.data.result
+        console.log('saveChatResp', response)
+        result.chat.domainCd = 1;
+        // sendChat 함수 호출하여 메시지 전송하기
+        sendChat(result.chat);
+    })
+    .catch((response) => {
+        console.log(response);
+    })
     document.getElementById("msg").value = '';
     document.getElementById("msg").defaultValue = '';
 }
@@ -302,8 +300,16 @@ function saveChat(p_chat) {
             resolve(response)
         })
         .catch(error => {
-            reject(error.response)
-        });
+            console.log(error.response);
+            if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
+                localStorage.setItem('token', '');
+                alert('로그인이 만료되었습니다.');
+                location.href = 'login';
+            }else{
+                alert(error.response.data.message);
+                console.error(error);
+            }
+        })
     })
 }
 
@@ -378,8 +384,16 @@ function loadChatListHub(p_channelCd, p_openYn) {
             noMore = true;
         }
     })
-    .catch((response) => {
-        console.log(response)
+    .catch(error => {
+        console.log(error.response);
+        if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
+            localStorage.setItem('token', '');
+            alert('로그인이 만료되었습니다.');
+            location.href = 'login';
+        }else{
+            alert(error.response.data.message);
+            console.error(error);
+        }
     })
 }
 

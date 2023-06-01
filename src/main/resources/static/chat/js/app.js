@@ -45,7 +45,9 @@ function updateFocusStatus() {
     if (document.hasFocus()) {
         hasFocus = true;
         console.log("해당 창이 포커스를 가지고 있습니다.");
-        channelReadHub();
+        if($('#OPEN_CHANNEL_CD').val()){
+            channelReadHub();
+        }
     } else {
         hasFocus = false;
         console.log("해당 창이 포커스를 잃었습니다.");
@@ -55,13 +57,10 @@ function updateFocusStatus() {
 document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
         hasFocusApp = true;
-        console.log("앱이 활성화되었습니다.");
-        if($('#OPEN_CHANNEL_CD').val()){
-            channelReadHub();
-        }
+        //console.log("앱이 활성화되었습니다.");
     } else {
         hasFocusApp = false;
-        console.log("앱이 백그라운드에 있습니다.");
+        //console.log("앱이 백그라운드에 있습니다.");
     }
 });
 
@@ -72,11 +71,6 @@ window.addEventListener("focus", function() {
 window.addEventListener("blur", function() {
     updateFocusStatus();
 });
-
-if (hasFocus || hasFocusApp) {
-    console.log("해당 창이 활성화되어 있습니다.");
-    // 안 읽은 카운트를 0으로 갱신해준다. (채팅방에 현재 들어와 있으므로)
-}
 
 window.onhashchange = function() {
     if (location.hash != "#open") {

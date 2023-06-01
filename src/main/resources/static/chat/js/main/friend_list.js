@@ -20,7 +20,7 @@ function initFriendTab(){
         console.log(error);
         if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
             localStorage.setItem('token', '');
-            alert(error.response.data.message);
+            alert('로그인이 만료되었습니다');
             location.href = 'login';
         }else{
             alert(error.response.data.message);
@@ -76,9 +76,9 @@ function getFriendsWithPageable(p_page) {
         .catch((error) => {
             console.log(error.response);
             if(error){
-                if(error.response.data.statusCode == 401){
+                if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
                     localStorage.setItem('token', '');
-                    alert(error.response.data.message);
+                    alert('로그인이 만료되었습니다');
                     location.href = 'login';
                 }else{
                     alert(error.response.data.message);
