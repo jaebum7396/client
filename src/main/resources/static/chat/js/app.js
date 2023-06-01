@@ -43,6 +43,14 @@ window.onhashchange = function() {
     }
 };
 
+function sendTypingAlarmHub(){
+    let p_chat = new Object();
+    p_chat.transferType = 89 //타이핑 알람
+    p_chat.domainCd = clientDomainCd
+    p_chat.channelCd = $('#OPEN_CHANNEL_CD').val();
+    sendChat(p_chat);
+}
+
 function leftSideMenuOpen(){
     $("#menu,.page_cover,html").addClass("open");
 }

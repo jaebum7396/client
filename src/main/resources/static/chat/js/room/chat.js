@@ -31,6 +31,17 @@ function onMessage(msg) {
             if(data.userCd!=localStorage.getItem('loginUserCd')){
                 stompSubscribe(data.domainCd, data.channelCd);
             }
+        }else if(data.transferType == 89){
+            if (localStorage.getItem('loginUserCd') != data.userCd){
+                //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
+                console.log('상대방이 타이핑 중입니다.', data);
+                $('#chat_alarm').css('display', 'flex');
+                $('#chat_alarm').html("<div class='alarm_payload'>상대방이 타이핑 중입니다.</div")
+                setTimeout(function() {
+                    $('#chat_alarm').fadeOut('slow', function() {
+                    });
+                }, 5000);
+            }
         }else{
             //수신한 메시지를 조회한다.
             let getChatPromise = getChat(data)
@@ -92,7 +103,7 @@ function onMessage(msg) {
                             moveBottom();
                         }
                     }else{
-                        alarmMaker(chatArr[0])
+                        //alarmMaker(chatArr[0])
                     }
                 })
                 .catch((response) => {
@@ -101,6 +112,7 @@ function onMessage(msg) {
         }
     }
 }
+
 
 //마지막 읽은 메시지 이후의 메시지들을 모두 읽음 처리 해주기 위한 함수
 function channelReadHub(p_channelCd) {

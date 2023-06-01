@@ -897,3 +897,7 @@ input[type=checkbox]:disabled + label {
 	color:#737373;
 	font-size: 12px;
 }
+
+.alarm_payload{
+	text-align:center; border-radius:10px; background-color:#eb8b1b; width:70%; margin-top:10px; color:white;
+}

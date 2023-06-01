@@ -21,7 +21,10 @@
         </div>
     </div>
     <div id='chat-message-box' style='height: calc(100% - 130px);'>
-        <div id="chat_messages" style='height: 100%;'></div>
+        <div id='chat_alarm' style="display:none; width: 100%; z-index:9999; justify-content: center; position:absolute;"></div>
+        <div id="chat_messages" style='height: 100%;'>
+
+        </div>
     </div>
     <div id="sendmessage">
         <input type="text" id='msg' class='msg' value="Send message..."/>
