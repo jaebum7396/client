@@ -2,19 +2,20 @@
 <head>
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="js/main/user_info.js" type="text/javascript"></script>
 </head>
 <div id="layoutAuthentication">
     <div id="layoutAuthentication_content">
         <main>
-            <div class="container">
+            <div id='user_info_container' class="container">
                 <div class="row justify-content-center" style="margin-bottom: 20px;">
                     <div class="col-lg-7">
                         <div class="card-body">
                             <form>
-                                <div style="display:flex;justify-content: center; margin:10px;">
-                                    <div id='profile_container' class='profile_container' style='width:200px; height:200px;'>
-                                    </div>
+                                <div style="display:flex;justify-content:center;margin:10px;overflow:hidden;">
                                     <input style='display:none;' type='file' id='imageInput' onchange='updateProfileImageHub()'>
+                                    <div id='profile_container' class='profile_container' style='width:300px; height:300px;'>
+                                    </div>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="userNickNm" type="text" required />

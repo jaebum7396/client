@@ -34,6 +34,7 @@ $(document).ready(function() {
             sendTypingAlarmHub();
         }
     });
+    preventBrowserZoom();
     webSocketConnectHub();
     initFriendTab();
 });
@@ -71,6 +72,16 @@ window.addEventListener("focus", function() {
 window.addEventListener("blur", function() {
     updateFocusStatus();
 });
+
+function preventBrowserZoom() {
+    function listener(event) {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+        }
+    }
+
+    document.addEventListener("touchmove", listener, { passive: false });
+}
 
 window.onhashchange = function() {
     if (location.hash != "#open") {
