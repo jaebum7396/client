@@ -339,12 +339,17 @@ function getChat(p_chat) {
                 , Authorization: localStorage.getItem('token')
             }
         })
-        .then(response => {
-            resolve(response)
-        })
         .catch(error => {
-            reject(error.response)
-        });
+            console.log(error.response);
+            if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
+                localStorage.setItem('token', '');
+                alert('로그인이 만료되었습니다.');
+                location.href = 'login';
+            }else{
+                alert(error.response.data.message);
+                console.error(error);
+            }
+        })
     });
 }
 

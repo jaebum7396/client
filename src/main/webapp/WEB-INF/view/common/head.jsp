@@ -34,6 +34,8 @@ System.out.println("API_SOCKET_STREAM_URL : " + API_SOCKET_STREAM_URL);
 <script src="/webjars/axios/0.21.1/dist/axios.min.js"></script>
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
+<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 <script>
     const BACKEND_URL = '<%=BACKEND_URL%>';
     const API_USER_URL = '<%=API_USER_URL%>';
