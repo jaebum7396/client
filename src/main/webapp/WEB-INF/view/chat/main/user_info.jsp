@@ -2,6 +2,7 @@
 <head>
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="js/main/user_info.js" type="text/javascript"></script>
 </head>
 <div id="layoutAuthentication">
     <div id="layoutAuthentication_content">
@@ -32,8 +33,7 @@
                                     </select>
                                     <label for="userGender">찾고 싶은 친구의 성별</label>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <div onclick="openCharacterSelectionPopup()" id="characterSelectionTrigger"></div>
+                                <div class="form-floating mb-3" onclick="openCharacterSelectionPopup()">
                                     <div id="character" class="form-control"></div>
                                     <label for="character">내 특징</label>
                                 </div>
