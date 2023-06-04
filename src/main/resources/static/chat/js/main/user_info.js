@@ -12,10 +12,13 @@ function initUserInfoTab() {
     getMyInfoPromise
     .then((response) => {
         console.log('getMyInfoResp', response)
-        if(response.data.result.user.userInfo.userProfileImages.length>0){
-            profileImgUrl = response.data.result.user.userInfo.userProfileImages[0].profileImgUrl;
+        let userInfo = response.data.result.user.userInfo;
+        if(userInfo.userProfileImages.length>0){
+            profileImgUrl = userInfo.userProfileImages[0].profileImgUrl;
             $('#profile_container').html("<img src='"+profileImgUrl+"' style='width: 100%;'>");
         }
+        $('#user_info_container').find('#userNickNm').val(userInfo.userNickNm);
+        $('#user_info_container').find('#aboutMe').val(userInfo.aboutMe);
     })
     .catch((error) => {
         console.log(error);
@@ -131,7 +134,7 @@ function saveProfileImage(fileLocation){
 }
 
 function openCharacterSelectionPopup() {
-    $('#characterSelectionPopup').css('display', 'block');
+    $('#characterSelectionPopup').css('display', 'flex');
 }
 
 function closeCharacterSelectionPopup() {
@@ -140,9 +143,25 @@ function closeCharacterSelectionPopup() {
 
 function characterSelect(element) {
     var character = document.getElementById("character");
-    var button = document.createElement("div");
-    button.classList.add("button");
-    button.innerText = element.innerText;
-    character.appendChild(button);
+    var characterSelectHashTag = document.createElement("div");
+    var index = Array.prototype.indexOf.call(element.parentNode.children, element);
+    if (element.tagName.toLowerCase() === "select") {
+        $('#characterSelectHashTag-'+index).remove();
+        characterSelectHashTag.id = "characterSelectHashTag-" + index;
+        characterSelectHashTag.classList.add("characterSelectHashTag");
+        characterSelectHashTag.innerText = '#' + $(element).val();
+        character.appendChild(characterSelectHashTag);
+    }else{
+        if($('#characterSelectHashTag-'+index).length>0){
+            $(element).css('background-color', '#eb8b1b');
+            $('#characterSelectHashTag-'+index).remove();
+        }else{
+            $(element).css('background-color', '#eb6fa7');
+            characterSelectHashTag.id = "characterSelectHashTag-" + index;
+            characterSelectHashTag.classList.add("characterSelectHashTag");
+            characterSelectHashTag.innerText = '#'+element.innerText;
+            character.appendChild(characterSelectHashTag);
+        }
+    }
 }
 

@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="form-floating mb-3">
                                     <textarea class="form-control" id="aboutMe" ></textarea>
-                                    <label for="userNickNm">자기소개</label>
+                                    <label for="aboutMe">자기소개</label>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <select class="form-control" id="userGender" required>
@@ -49,25 +49,61 @@
     </div>
 </div>
 <div class="characterSelectionPopup" id="characterSelectionPopup">
-    <div class="close-button">
+    <div class="close-button" style="width:100%;">
         <div onclick="closeCharacterSelectionPopup()">닫기</div>
     </div>
-    <div class="button" onclick="characterSelect(this)">머리꽃밭</div>
-    <div class="button" onclick="characterSelect(this)">우리엄마는 내가 제일 예쁘댔어</div>
-    <div class="button" onclick="characterSelect(this)">주량 한잔</div>
+    <select class="characterSelectButton" onchange="characterSelect(this)">
+        <option value="MBTI?몰?루">MBTI?몰?루</option>
+        <option value="ENFP">ENFP</option>
+        <option value="ENTP">ENTP</option>
+        <option value="ENFJ">ENFJ</option>
+        <option value="ENTJ">ENTJ</option>
+        <option value="ESFP">ESFP</option>
+        <option value="ESTP">ESTP</option>
+        <option value="ESFJ">ESFJ</option>
+        <option value="ESTJ">ESTJ</option>
+        <option value="INFP">INFP</option>
+        <option value="INTP">INTP</option>
+        <option value="INFJ">INFJ</option>
+        <option value="INTJ">INTJ</option>
+        <option value="ISFP">ISFP</option>
+        <option value="ISTP">ISTP</option>
+        <option value="ISFJ">ISFJ</option>
+        <option value="ISTJ">ISTJ</option>
+    </select>
+    <div class="characterSelectButton" onclick="characterSelect(this)">우리엄마는 내가 제일 예쁘댔어..</div>
+    <select class="characterSelectButton" onchange="characterSelect(this)">
+        <option>주량 한잔</option>
+        <option>술에 취해본 적이 없음</option>
+    </select>
+    <div class="characterSelectButton" onclick="characterSelect(this)">자취해요</div>
+    <div class="characterSelectButton" onclick="characterSelect(this)">돈이 너무 많음</div>
+    <div class="characterSelectButton" onclick="characterSelect(this)">금손</div>
+    <div class="characterSelectButton" onclick="characterSelect(this)">유명인(셀럽이란뜻)</div>
 </div>
 
 <style>
-    .button {
+    .characterSelectButton {
         max-width: 150px;
         height: auto;
-        background-color: #ccc;
+        border-radius: 5px;
+        background-color: #eb8b1b;
+        color:white;
         margin: 5px;
+        padding: 5px;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
         word-wrap: break-word;
+        border:0;
+    }
+
+    .characterSelectHashTag{
+        margin:3px;
+        padding:3px;
+        border-radius: 5px;
+        border:1px solid black;
     }
 
     .characterSelectionPopup {
