@@ -4,7 +4,7 @@ function onMessage(msg) {
     let innerHeight = $('#chat_messages').height();
     if (msg) {
         let data = msg;
-        console.log('onMessageResp', data)
+        console.log('height: calc(100% - 115px);', data)
         if(data.transferType==3){
             //$('#WSS_KEY').val(data.objMap.wssKey);
         }else if(data.transferType == 9){
@@ -109,8 +109,16 @@ function onMessage(msg) {
                         //alarmMaker(chatArr[0])
                     }
                 })
-                .catch((response) => {
+                .catch(response => {
                     console.log(response);
+                    if(response.data.statusCode == 401||response.data.body.statusCode == 401){
+                        localStorage.setItem('token', '');
+                        alert('로그인이 만료되었습니다.');
+                        location.href = 'login';
+                    }else{
+                        alert(response.data.message);
+                        console.error(error);
+                    }
                 })
         }
     }
@@ -339,17 +347,12 @@ function getChat(p_chat) {
                 , Authorization: localStorage.getItem('token')
             }
         })
-        .catch(error => {
-            console.log(error.response);
-            if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
-                localStorage.setItem('token', '');
-                alert('로그인이 만료되었습니다.');
-                location.href = 'login';
-            }else{
-                alert(error.response.data.message);
-                console.error(error);
-            }
+        .then(response => {
+            resolve(response)
         })
+        .catch(error => {
+            reject(error.response)
+        });
     });
 }
 
