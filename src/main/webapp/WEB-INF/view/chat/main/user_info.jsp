@@ -38,7 +38,7 @@
                                     <label for="character">내 특징</label>
                                 </div>
                                 <div class="mt-4 mb-0">
-                                    <div class="d-grid"><div class="btn btn-primary btn-block" onclick="saveUserInfo();">저장</div></div>
+                                    <div class="d-grid"><div class="btn btn-primary btn-block" onclick="saveUserInfoHub();">저장</div></div>
                                 </div>
                             </form>
                         </div>

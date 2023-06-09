@@ -165,3 +165,29 @@ function characterSelect(element) {
     }
 }
 
+function saveUserInfoHub(){
+    saveUserInfo();
+}
+
+function saveUserInfo(){
+    let userInfo = {
+        userNickNm: $('#user_info_container').find('#userNickNm').val(),
+        aboutMe: $('#user_info_container').find('#aboutMe').val(),
+    };
+    let userCharacterArr = [];
+    $('#character').find('.characterSelectHashTag').each(function(){
+        userCharacterArr.push($(this).text());
+    });
+    userInfo.userCharacter = userCharacterArr.toString();
+    console.log(userInfo);
+    return axios.post(API_USER_URL+'/userInfo', userInfo, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem("token"),
+        },
+        params: {
+            // 기타 파라미터가 있다면 여기에 추가
+        }
+    });
+}
+
