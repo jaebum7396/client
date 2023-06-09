@@ -19,6 +19,11 @@ function initUserInfoTab() {
         }
         $('#user_info_container').find('#userNickNm').val(userInfo.userNickNm);
         $('#user_info_container').find('#aboutMe').val(userInfo.aboutMe);
+
+        userInfo.userCharacter.split(',').forEach((item, idx) => {
+            console.log(item, idx);
+            $('#characterSelectionPopup').find(item).click();
+        })
     })
     .catch((error) => {
         console.log(error);
