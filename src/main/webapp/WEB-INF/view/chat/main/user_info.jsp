@@ -53,7 +53,7 @@
         <div onclick="closeCharacterSelectionPopup()">닫기</div>
     </div>
     <select class="characterSelectButton" onchange="characterSelect(this)">
-        <option value="MBTI?몰?루">MBTI?</option>
+        <option value="MBTI?">MBTI?</option>
         <option value="ENFP">ENFP</option>
         <option value="ENTP">ENTP</option>
         <option value="ENFJ">ENFJ</option>
