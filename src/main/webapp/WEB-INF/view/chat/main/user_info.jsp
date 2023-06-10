@@ -73,28 +73,13 @@
     </select>
     <div class="characterSelectButton" onclick="characterSelect(this)">우리엄마는 내가 제일 예쁘댔어..</div>
     <select class="characterSelectButton" onchange="characterSelect(this)">
-        <option>술 못해요</option>
         <option>주량 한잔</option>
-        <option>너랑은 한병 정도는 가능</option>
-        <option>나름 술 즐기는 편?</option>
-        <option>평생 술에 취해본 적이 없음</option>
+        <option>술에 취해본 적이 없음</option>
     </select>
     <div class="characterSelectButton" onclick="characterSelect(this)">자취해요</div>
     <div class="characterSelectButton" onclick="characterSelect(this)">돈이 너무 많음</div>
     <div class="characterSelectButton" onclick="characterSelect(this)">금손</div>
     <div class="characterSelectButton" onclick="characterSelect(this)">유명인(셀럽이란뜻)</div>
-    <div class="characterSelectButton" onclick="characterSelect(this)">운동매니아</div>
-    <div class="characterSelectButton" onclick="characterSelect(this)">다큐멘터리 좋아함</div>
-    <div class="characterSelectButton" onclick="characterSelect(this)">지적 수준이 높음</div>
-    <select class="characterSelectButton" onchange="characterSelect(this)">
-        <option>넷플릭스 같이볼래?</option>
-        <option>SF 영화 보러갈래?</option>
-        <option>로맨틱 코미디 영화 보러갈래?</option>
-        <option>누아르 영화 보러갈래?</option>
-        <option>공포 영화 보러갈래?</option>
-        <option>애니메이션 영화 보러갈래?</option>
-        <option>러브라이브 보러갈래?</option>
-    </select>
 </div>
 
 <style>
