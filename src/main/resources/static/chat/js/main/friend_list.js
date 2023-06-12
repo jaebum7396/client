@@ -1,4 +1,6 @@
 function initFriendTab(){
+    $('#app_header_menu').css('display', 'block');
+    $('#app_title_text').html('친구 목록');
     $('.list_container').css('display', 'none');
     $('#friend_list_container').css('display', 'block');
 

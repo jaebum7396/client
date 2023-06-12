@@ -1,4 +1,6 @@
 function initChannelTab(){
+    $('#app_header_menu').css('display', 'none');
+    $('#app_title_text').html('채팅 목록');
     $('.list_container').css('display', 'none');
     $('#channel_list_container').css('display', 'block');
     getChannelsWithPageable('0');
