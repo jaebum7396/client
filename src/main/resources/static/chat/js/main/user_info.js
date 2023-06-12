@@ -7,6 +7,8 @@ function initUserInfoTab() {
     $('#profile_container').click(function() {
         $("#imageInput")[0].click()
     })
+    //캐릭터 선택 초기화
+    $('#user_info_container').find('#character').html('');
 
     let getMyInfoPromise = getMyInfo();
     getMyInfoPromise
@@ -22,7 +24,17 @@ function initUserInfoTab() {
 
         userInfo.userCharacter.split(',').forEach((item, idx) => {
             console.log(item, idx);
-            $('#characterSelectionPopup').find(item).click();
+            let element = $('#characterSelectionPopup').find(item);
+            console.log(element);
+            let tagName = element.prop("tagName"); // 선택한 요소의 태그 이름을 가져옵니다.
+            console.log(tagName); // 태그 이름을 콘솔에 출력합니다.
+            if(tagName == 'OPTION'){
+                $('#characterSelectionPopup').find(item).parent('select').val(item.replaceAll('#',''));
+                console.log($('#characterSelectionPopup').find(item).parent('select'))
+                characterSelect($('#characterSelectionPopup').find(item).parent('select')[0]);
+            }else{
+                $('#characterSelectionPopup').find(item).click();
+            }
         })
     })
     .catch((error) => {
@@ -35,6 +47,13 @@ function initUserInfoTab() {
             alert(error.response.data.message);
             console.error(error);
         }
+    })
+}
+
+function userCharacterInit(){
+    let userCharacter = $('#characterSelectionPopup').find('.character');
+    userCharacter.each(function(){
+        $(this).removeClass('selected');
     })
 }
 
@@ -149,7 +168,8 @@ function closeCharacterSelectionPopup() {
 function characterSelect(element) {
     var character = document.getElementById("character");
     var characterSelectHashTag = document.createElement("div");
-    var index = Array.prototype.indexOf.call(element.parentNode.children, element);
+    //var index = Array.prototype.indexOf.call(element.parentNode.children, element);
+    var index = Array.from(element.parentNode.children).indexOf(element);
     if (element.tagName.toLowerCase() === "select") {
         $('#characterSelectHashTag-'+index).remove();
         characterSelectHashTag.id = "characterSelectHashTag-" + index;

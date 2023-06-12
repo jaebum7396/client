@@ -71,15 +71,17 @@
         <option value="ISFJ">ISFJ</option>
         <option value="ISTJ">ISTJ</option>
     </select>
-    <div class="characterSelectButton" onclick="characterSelect(this)">우리엄마는 내가 제일 예쁘댔어..</div>
+    <%--<div class="characterSelectButton" onclick="characterSelect(this)">우리엄마는 내가 제일 예쁘댔어..</div>--%>
     <select class="characterSelectButton" onchange="characterSelect(this)">
-        <option>주량 한잔</option>
-        <option>술에 취해본 적이 없음</option>
+        <option id='주량?'>주량?</option>
+        <option id='주량_한잔'>주량_한잔</option>
+        <option id='너보다는_한잔_더'>너보다는_한잔_더</option>
+        <option id='술에_취해본적이_없음'>술에_취해본적이_없음</option>
     </select>
-    <div class="characterSelectButton" onclick="characterSelect(this)">자취해요</div>
-    <div class="characterSelectButton" onclick="characterSelect(this)">돈이 너무 많음</div>
-    <div class="characterSelectButton" onclick="characterSelect(this)">금손</div>
-    <div class="characterSelectButton" onclick="characterSelect(this)">유명인(셀럽이란뜻)</div>
+    <div id='자취해요' class="characterSelectButton" onclick="characterSelect(this)">자취해요</div>
+    <div id='돈이_너무_많음' class="characterSelectButton" onclick="characterSelect(this)">돈이_너무_많음</div>
+    <div id='금손' class="characterSelectButton" onclick="characterSelect(this)">금손</div>
+    <div id='유명인(셀럽이란뜻)' class="characterSelectButton" onclick="characterSelect(this)">유명인(셀럽이란뜻)</div>
 </div>
 
 <style>
