@@ -32,7 +32,7 @@ function initFriendTab(){
 }
 
 function getMyInfo(){
-    return axios.get(API_USER_URL+'/me', {
+    return axios.get(USER_URL+'/me', {
         headers: {
             'Content-Type': 'application/json',
             Authorization: localStorage.getItem("token"),
@@ -58,7 +58,7 @@ function getFriendsWithPageable(p_page) {
                 $("#friend_list_container").html('');
             }
         }
-        axios.get(API_CHAT_URL+'/friends?size=11&page='+p_page, {
+        axios.get(CHAT_URL+'/friends?size=11&page='+p_page, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: localStorage.getItem("token"),
@@ -120,7 +120,7 @@ function myInfoMaker(user, rowClickActivate) {
         htmlText += "   <div id='"+user.userCd+"' class='profile_container'>"
         htmlText += 	    profileMaker(user.userInfo.userProfileImages[0].profileImgUrl, ' left:auto; top:auto;');
         htmlText += "   </div>";
-        htmlText += "   <div onclick='rowClick(this, "+rowClickActivate+", \"me\");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+        htmlText += "   <div onclick='rowClick(this, "+rowClickActivate+", \"me\");' style='padding:10px; width:65%;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
         htmlText += "       <strong class='friend_alias alias' style='color: #f18a1c;'>" + (user.userInfo.userNickNm != null ? user.userInfo.userNickNm + "(나)" : user.userNm + "(나)") + "</strong>";
         htmlText += "       <div class='friend_message'>" + (user.userInfo.aboutMe != null ? user.userInfo.aboutMe : "") + "</div>";
         htmlText += "   </div>";
@@ -193,7 +193,7 @@ function search(p_page) {
         return;
     }
     // 실시간 검색 요청
-    axios.get(API_USER_URL+'/users?size=11&page='+p_page, {
+    axios.get(USER_URL+'/users?size=11&page='+p_page, {
         params: {
             queryString: searchInput
         }
@@ -232,7 +232,7 @@ function search(p_page) {
         });
 }
 function addFriend(p_userCd){
-    axios.post(API_CHAT_URL+'/friend', {
+    axios.post(CHAT_URL+'/friend', {
         userCd: p_userCd
     }, {
         headers: {

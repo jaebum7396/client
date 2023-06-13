@@ -22,6 +22,7 @@ function initUserInfoTab() {
         }
         $('#user_info_container').find('#userNickNm').val(userInfo.userNickNm);
         $('#user_info_container').find('#aboutMe').val(userInfo.aboutMe);
+        $('#user_info_container').find('#lookingForGender').val(userInfo.lookingForGender);
 
         userInfo.userCharacter.split(',').forEach((item, idx) => {
             console.log(item, idx);
@@ -37,6 +38,14 @@ function initUserInfoTab() {
                 $('#characterSelectionPopup').find(item).click();
             }
         })
+
+        $('#aboutMe').on('scroll', function() {
+            if ($(this).scrollTop() > 0) {
+                $('label[for="aboutMe"]').css('display', 'none');
+            } else {
+                $('label[for="aboutMe"]').css('display', 'block');
+            }
+        });
     })
     .catch((error) => {
         console.log(error);
@@ -121,7 +130,7 @@ function uploadProfileImageFile() {
 
     // HTTP 요청 생성
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", API_FILE_STORAGE_URL+'/upload?division=profile', true);
+    xhr.open("POST", FILE_STORAGE_URL+'/upload?division=profile', true);
     //xhr.open("POST", "localhost:7100/upload", true);
     xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
 
@@ -141,7 +150,7 @@ function uploadProfileImageFile() {
 }
 
 function saveProfileImage(fileLocation){
-    return axios.post(API_USER_URL+'/userInfo', {
+    return axios.post(USER_URL+'/userInfo', {
         userProfileImages: [
             {
                 profileImgUrl: 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+fileLocation
@@ -164,9 +173,10 @@ function openCharacterSelectionPopup() {
 
 function closeCharacterSelectionPopup() {
     $('#characterSelectionPopup').css('display', 'none');
+    makeAboutMeHub();
 }
 
-function characterSelect(element) {
+function characterSelect(element, aboutMeMakeYn) {
     var character = document.getElementById("character");
     var characterSelectHashTag = document.createElement("div");
     //var index = Array.prototype.indexOf.call(element.parentNode.children, element);
@@ -191,6 +201,44 @@ function characterSelect(element) {
     }
 }
 
+function makeAboutMeHub(){
+    let aboutMe = '';
+    let userCharacterArr = [];
+    $('#character').find('.characterSelectHashTag').each(function(){
+        userCharacterArr.push($(this).text());
+    });
+    console.log(userCharacterArr)
+    let prompt = '';
+        prompt += '너의 이름은 '+$('#userNickNm').val() +'이고 ';
+        prompt += '너는 성별이 '+$('#lookingForGender').val() +'인 친구를 찾고 있어. ';
+        prompt += '이 해시태그들에 해당하는 사람이라고 생각하고 200글자 이내의 자기소개 작성해줘 '+userCharacterArr.toString();
+    prompt = encodeURIComponent(prompt);
+    //console.log('gptPrompt : ' + prompt);
+    gptQuery(prompt, [])
+        .then(function(response){
+            console.log(response);
+            let returnMessage = response.data.result.messages[1].content.replace(/<br>/gi, '\n');
+            $('#user_info_container').find('#aboutMe').val(returnMessage);
+            //console.log(returnMessage);
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+    //$('#aboutMe').val(aboutMe);
+}
+
+function gptQuery(prompt, prevMessages) {
+    return axios.post(GPT_CONNECTOR_URL+'/query?prompt='+prompt, prevMessages, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem("token"),
+        },
+        params: {
+            // 기타 파라미터가 있다면 여기에 추가
+        }
+    });
+}
+
 function saveUserInfoHub(){
     saveUserInfo();
 }
@@ -199,6 +247,7 @@ function saveUserInfo(){
     let userInfo = {
         userNickNm: $('#user_info_container').find('#userNickNm').val(),
         aboutMe: $('#user_info_container').find('#aboutMe').val(),
+        lookingForGender: $('#user_info_container').find('#lookingForGender').val(),
     };
     let userCharacterArr = [];
     $('#character').find('.characterSelectHashTag').each(function(){
@@ -206,7 +255,7 @@ function saveUserInfo(){
     });
     userInfo.userCharacter = userCharacterArr.toString();
     console.log(userInfo);
-    return axios.post(API_USER_URL+'/userInfo', userInfo, {
+    return axios.post(USER_URL+'/userInfo', userInfo, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: localStorage.getItem("token"),

@@ -11,14 +11,16 @@ WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplica
 Environment env = context.getEnvironment();
 
 String BACKEND_URL = env.getProperty("backend.url");
-String API_USER_URL = env.getProperty("api.user.url");
-System.out.println("API_USER_URL : " + API_USER_URL);
-String API_CHAT_URL = env.getProperty("api.chat.url");
-System.out.println("API_CHAT_URL : " + API_CHAT_URL);
-String API_FILE_STORAGE_URL = env.getProperty("api.file-storage.url");
-System.out.println("API_FILE_STORAGE_URL : " + API_FILE_STORAGE_URL);
-String API_SOCKET_STREAM_URL = env.getProperty("api.socket-stream.url");
-System.out.println("API_SOCKET_STREAM_URL : " + API_SOCKET_STREAM_URL);
+String USER_URL = env.getProperty("api.user.url");
+System.out.println("USER_URL : " + USER_URL);
+String CHAT_URL = env.getProperty("api.chat.url");
+System.out.println("CHAT_URL : " + CHAT_URL);
+String FILE_STORAGE_URL = env.getProperty("api.file-storage.url");
+System.out.println("FILE_STORAGE_URL : " + FILE_STORAGE_URL);
+String SOCKET_STREAM_URL = env.getProperty("api.socket-stream.url");
+System.out.println("SOCKET_STREAM_URL : " + SOCKET_STREAM_URL);
+String GPT_CONNECTOR_URL = env.getProperty("api.gpt-connector.url");
+System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 %>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -38,8 +40,9 @@ System.out.println("API_SOCKET_STREAM_URL : " + API_SOCKET_STREAM_URL);
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 <script>
     const BACKEND_URL = '<%=BACKEND_URL%>';
-    const API_USER_URL = '<%=API_USER_URL%>';
-    const API_CHAT_URL = '<%=API_CHAT_URL%>';
-    const API_FILE_STORAGE_URL = '<%=API_FILE_STORAGE_URL%>';
-    const SOCKET_STREAM_URL = '<%=API_SOCKET_STREAM_URL%>';
+    const USER_URL = '<%=USER_URL%>';
+    const CHAT_URL = '<%=CHAT_URL%>';
+    const FILE_STORAGE_URL = '<%=FILE_STORAGE_URL%>';
+    const SOCKET_STREAM_URL = '<%=SOCKET_STREAM_URL%>';
+    const GPT_CONNECTOR_URL = '<%=GPT_CONNECTOR_URL%>';
 </script>

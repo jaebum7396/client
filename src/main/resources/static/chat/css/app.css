@@ -901,3 +901,9 @@ input[type=checkbox]:disabled + label {
 .alarm_payload{
 	text-align:center; border-radius:10px; background-color:#eb8b1b; width:70%; margin-top:10px; color:white;
 }
+
+.friend_message{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}

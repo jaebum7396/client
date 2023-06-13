@@ -147,7 +147,7 @@ function channelReadHub() {
 function channelRead(p_channelCd) {
     console.log('updateUnreadCount>>>>>>>>>>>>', p_channelCd)
     return new Promise((resolve, reject) => {
-        axios.post(API_CHAT_URL +'/channel/read'
+        axios.post(CHAT_URL +'/channel/read'
             , {
                 channelCd : p_channelCd
             }
@@ -201,7 +201,7 @@ function chatReadHub(p_chat) {
 function chatRead(p_chat) {
     console.log('chatRead>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.post(API_CHAT_URL +'/chat/read'
+        axios.post(CHAT_URL +'/chat/read'
             , p_chat
             , {
                 headers: {
@@ -222,7 +222,7 @@ function chatRead(p_chat) {
 function getChatsAfterReadChat(p_chat) {
     console.log('getChatsAfterReadChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.get(API_CHAT_URL +'/chats/read', {
+        axios.get(CHAT_URL +'/chats/read', {
             params: {
                 chatCd :p_chat.chatCd
             }
@@ -311,7 +311,7 @@ function sendChatHub(message, p_chatType) {
 function saveChat(p_chat) {
     console.log('saveChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.post(API_CHAT_URL +'/chat', p_chat, {
+        axios.post(CHAT_URL +'/chat', p_chat, {
             headers: {
                 'Content-Type': 'application/json'
                 , Authorization: localStorage.getItem("token")
@@ -338,7 +338,7 @@ function saveChat(p_chat) {
 function getChat(p_chat) {
     console.log('getChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.get(API_CHAT_URL + '/chat', {
+        axios.get(CHAT_URL + '/chat', {
             params: {
                 chatCd: p_chat.chatCd
             }
@@ -423,7 +423,7 @@ function loadChatList(p_channelCd) {
     console.log('loadChatList>>>>>>>>>>>>')
     let p_page = $("#chat_room_view input[name='current_page_num']").val();
     return new Promise((resolve, reject) => {
-        axios.get(API_CHAT_URL + '/chats?size=100&page=' + p_page + '&channelCd=' + p_channelCd, {
+        axios.get(CHAT_URL + '/chats?size=100&page=' + p_page + '&channelCd=' + p_channelCd, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: localStorage.getItem("token"),

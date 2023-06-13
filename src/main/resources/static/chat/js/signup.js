@@ -55,7 +55,7 @@ function signup(){
         return;
     };
 
-    axios.post(API_USER_URL+'/signup', {
+    axios.post(USER_URL+'/signup', {
         userId: $('#userId').val()
         , userPw: $('#userPw').val()
         , userPhoneNo: $('#userPhoneNo').val()

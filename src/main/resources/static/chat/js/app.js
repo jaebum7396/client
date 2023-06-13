@@ -215,7 +215,7 @@ function openChannelWithUser(p_objArr) {
         p_objArr.forEach((p_obj) => {
             userCdArr.push($(p_obj).find('#FRIEND_USER_CD').val());
         })
-        axios.get(API_CHAT_URL + '/channel?userCdArr=' + encodeURIComponent(userCdArr.join(',')), {
+        axios.get(CHAT_URL + '/channel?userCdArr=' + encodeURIComponent(userCdArr.join(',')), {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: localStorage.getItem('token')
@@ -285,7 +285,7 @@ function profileMaker(profileImgUrl, imgSizestr){
 //                htmlText += 	"</div>";
 //                resolve(htmlText);
 //            }else if(friend.userInfo.userProfileImages.length > 0){
-//                axios.get(API_FILE_STORAGE_URL+'/display?fileLocation='+userProfileImages[userProfileImages.length-1].profileImgUrl, {
+//                axios.get(FILE_STORAGE_URL+'/display?fileLocation='+userProfileImages[userProfileImages.length-1].profileImgUrl, {
 //                    responseType:'blob',
 //                    headers: {
 //                        'Content-Type': 'application/json',
@@ -319,7 +319,7 @@ function profileMaker(profileImgUrl, imgSizestr){
 function imageProvider(fileLocation, imgSizeStr){
     return new Promise((resolve, reject) => {
         let htmlText = "";
-        axios.get(API_FILE_STORAGE_URL+'/display?fileLocation='+fileLocation, {
+        axios.get(FILE_STORAGE_URL+'/display?fileLocation='+fileLocation, {
             responseType:'blob',
             headers: {
                 'Content-Type': 'application/json',

@@ -55,7 +55,7 @@ function webSocketConnectHub() {
 function loadMyChannel() {
 	console.log('loadMyChannel>>>>>>>>>>>>');
 	return new Promise(function (resolve, reject) {
-		axios.get(API_CHAT_URL + '/channels?page=null&size=null', {
+		axios.get(CHAT_URL + '/channels?page=null&size=null', {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: localStorage.getItem('token')

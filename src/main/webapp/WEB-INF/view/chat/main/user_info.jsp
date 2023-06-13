@@ -22,16 +22,16 @@
                                     <label for="userNickNm">닉네임</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="aboutMe" ></textarea>
+                                    <textarea class="form-control" id="aboutMe" style='height:auto;  min-height: 150px; resize:none;'></textarea>
                                     <label for="aboutMe">자기소개</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <select class="form-control" id="userGender" required>
-                                        <option value="">무관</option>
-                                        <option value="M">남자</option>
-                                        <option value="W">여자</option>
+                                    <select class="form-control" id="lookingForGender" required>
+                                        <option value="무관">무관</option>
+                                        <option value="남자">남자</option>
+                                        <option value="여자">여자</option>
                                     </select>
-                                    <label for="userGender">찾고 싶은 친구의 성별</label>
+                                    <label for="lookingForGender">찾고 싶은 친구의 성별</label>
                                 </div>
                                 <div class="form-floating mb-3" onclick="openCharacterSelectionPopup()">
                                     <div id="character" class="form-control"></div>

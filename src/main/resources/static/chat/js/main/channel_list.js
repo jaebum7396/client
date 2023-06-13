@@ -22,7 +22,7 @@ function getChannelsWithPageable(p_page) {
                 $("#channel_list_container").html('');
             }
         }
-        axios.get(API_CHAT_URL+'/channels?size=11&page='+p_page, {
+        axios.get(CHAT_URL+'/channels?size=11&page='+p_page, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: localStorage.getItem("token"),

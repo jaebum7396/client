@@ -1,5 +1,5 @@
 function login(){
-    axios.post(API_USER_URL+'/login', {
+    axios.post(USER_URL+'/login', {
         userId: $('#userId').val(),
         userPw: $('#userPw').val()
     }, {
