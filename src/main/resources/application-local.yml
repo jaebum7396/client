@@ -1,9 +1,11 @@
 api:
   user:
-    url: ${API_USER_URL_DEPLOY}
+    url: ${USER_URL_DEPLOY}
   chat:
-    url: ${API_CHAT_URL_DEPLOY}
+    url: ${CHAT_URL_DEPLOY}
   file-storage:
-    url: ${API_FILE_STORAGE_URL_DEPLOY}
+    url: ${FILE_STORAGE_URL_DEPLOY}
   socket-stream:
     url: ${SOCKET_STREAM_URL_DEPLOY}
+  gpt-connector:
+    url: ${GPT_CONNECTOR_URL_DEPLOY}
