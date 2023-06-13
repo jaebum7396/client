@@ -1,4 +1,5 @@
 let changeUserInfoFlag = false;
+var cropper;
 
 function initUserInfoTab() {
     $('#app_header_menu').css('display', 'none');
@@ -100,8 +101,18 @@ function updateProfileImageHub(){
         .then(function(){
             //uploadProfileImageFile();
             console.log($('#profile_container img')[0]);
-            let cropper = new Cropper($('#profile_container img')[0], {
-                aspectRatio: 1 / 1,
+            cropper = new Cropper($('#profile_container img')[0], {
+                viewMode: 3,
+                dragMode: 'move',
+                autoCropArea: 1,
+                restore: false,
+                modal: false,
+                guides: false,
+                preview: true,
+                highlight: false,
+                cropBoxMovable: false,
+                cropBoxResizable: false,
+                toggleDragModeOnDblclick: false,
                 crop(event) {
                     console.log(event.detail.x);
                     console.log(event.detail.y);
@@ -149,31 +160,33 @@ function previewProfileImage(){
 // 이미지 업로드
 function uploadProfileImageFile() {
     // input 요소에서 선택된 파일 가져오기
-    const file = document.getElementById("imageInput").files[0];
+    //const file = document.getElementById("imageInput").files[0];
+    cropper.getCroppedCanvas().toBlob((blob) => {
+        // FormData 객체 생성
+        const formData = new FormData();
+        formData.append('file', blob /*, 'example.png' , 0.7*/);
+        //formData.append("file", file);
 
-    // FormData 객체 생성
-    const formData = new FormData();
-    formData.append("file", file);
+        // HTTP 요청 생성
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", FILE_STORAGE_URL+'/upload?division=profile', true);
+        //xhr.open("POST", "localhost:7100/upload", true);
+        xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
 
-    // HTTP 요청 생성
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", FILE_STORAGE_URL+'/upload?division=profile', true);
-    //xhr.open("POST", "localhost:7100/upload", true);
-    xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
-
-    // 요청 완료 시 처리할 콜백 함수 등록
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            let response = JSON.parse(xhr.response);
-            console.log("이미지 업로드 성공 >>>>>", response);
-            console.log("파일위치 >>>>>", response.result.fileLocation);
-            saveProfileImage(response.result.fileLocation);
-        } else {
-            console.log("이미지 업로드 실패" + xhr.response);
-        }
-    };
-    // HTTP 요청 전송
-    xhr.send(formData);
+        // 요청 완료 시 처리할 콜백 함수 등록
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                let response = JSON.parse(xhr.response);
+                console.log("이미지 업로드 성공 >>>>>", response);
+                console.log("파일위치 >>>>>", response.result.fileLocation);
+                saveProfileImage(response.result.fileLocation);
+            } else {
+                console.log("이미지 업로드 실패" + xhr.response);
+            }
+        };
+        // HTTP 요청 전송
+        xhr.send(formData);
+    })
 }
 
 function saveProfileImage(fileLocation){
@@ -278,6 +291,7 @@ function gptQuery(prompt, prevMessages) {
 function saveUserInfoHub(){
     if(confirm('저장할까요?')){
         saveUserInfo().then(function(response){
+            uploadProfileImageFile();
             console.log(response);
             alert('저장되었습니다.');
         })
