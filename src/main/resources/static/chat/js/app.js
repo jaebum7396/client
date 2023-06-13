@@ -410,3 +410,16 @@ function convertTimeFormat(timeString) {
 
     return `${period} ${hour}:${minutes}분`;
 }
+
+function openLoadingCover(loadingText){
+    if(loadingText){
+        $('#loadingCover').find('#loadingText').text(loadingText);
+    }else{
+        $('#loadingCover').find('#loadingText').text('로딩중...');
+    }
+    $('#loadingCover').css('display', 'flex');
+}
+
+function closeLoadingCover(){
+    $('#loadingCover').css('display', 'none');
+}

@@ -220,6 +220,7 @@ function makeAboutMeHub(){
             let returnMessage = response.data.result.messages[1].content.replace(/<br>/gi, '\n');
             $('#user_info_container').find('#aboutMe').val(returnMessage);
             //console.log(returnMessage);
+            closeLoadingCover();
         })
         .catch(function(error){
             console.log(error);
@@ -228,6 +229,7 @@ function makeAboutMeHub(){
 }
 
 function gptQuery(prompt, prevMessages) {
+    openLoadingCover('AI가 자기소개를 작성중이에요. 잠시만 기다려주세요!');
     return axios.post(GPT_CONNECTOR_URL+'/query?prompt='+prompt, prevMessages, {
         headers: {
             'Content-Type': 'application/json',

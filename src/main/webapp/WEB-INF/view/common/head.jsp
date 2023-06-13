@@ -46,3 +46,7 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
     const SOCKET_STREAM_URL = '<%=SOCKET_STREAM_URL%>';
     const GPT_CONNECTOR_URL = '<%=GPT_CONNECTOR_URL%>';
 </script>
+<div id='loadingCover' style=''>
+    <div id="circonf"></div>
+    <div id='loadingText'>Loading...</div>
+</div>
