@@ -1,3 +1,4 @@
+let changeUserInfoFlag = false;
 
 function initUserInfoTab() {
     $('#app_header_menu').css('display', 'none');
@@ -46,6 +47,27 @@ function initUserInfoTab() {
                 $('label[for="aboutMe"]').css('display', 'block');
             }
         });
+
+        // 변경을 감지할 대상 요소를 선택합니다.
+        var targetElement = document.getElementById('user_info_container');
+        // MutationObserver 인스턴스를 생성하고 콜백 함수를 정의합니다.
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                // 변경된 내용에 대한 처리를 수행합니다.
+                console.log('내용변경')
+                changeUserInfoFlag = true;
+            });
+        });
+        // MutationObserver를 대상 요소에 등록합니다.
+        observer.observe(targetElement, { childList: true, subtree: true });
+
+        var inputs = document.querySelectorAll('#user_info_container input, #user_info_container select');
+        inputs.forEach(function(input) {
+            input.addEventListener('change', function() {
+                console.log('내용변경')
+                changeUserInfoFlag = true;
+            });
+        });
     })
     .catch((error) => {
         console.log(error);
@@ -60,6 +82,11 @@ function initUserInfoTab() {
     })
 }
 
+// input과 select 태그의 변경을 감지하는 함수
+function observeInputAndSelect() {
+
+}
+
 function userCharacterInit(){
     let userCharacter = $('#characterSelectionPopup').find('.character');
     userCharacter.each(function(){
@@ -72,8 +99,8 @@ function updateProfileImageHub(){
     previewProfileImagePromise
         .then(function(){
             //uploadProfileImageFile();
-            console.log($('#profile_container img'));
-            let cropper = new Cropper($('#profile_container img'), {
+            console.log($('#profile_container img')[0]);
+            let cropper = new Cropper($('#profile_container img')[0], {
                 aspectRatio: 1 / 1,
                 crop(event) {
                     console.log(event.detail.x);
@@ -173,10 +200,14 @@ function openCharacterSelectionPopup() {
 
 function closeCharacterSelectionPopup() {
     $('#characterSelectionPopup').css('display', 'none');
-    makeAboutMeHub();
+    if(changeUserInfoFlag){
+        if(confirm('변경된 특징을 바탕으로 자기소개를 작성할까요?')){
+            makeAboutMeHub();
+        }
+    }
 }
 
-function characterSelect(element, aboutMeMakeYn) {
+function characterSelect(element) {
     var character = document.getElementById("character");
     var characterSelectHashTag = document.createElement("div");
     //var index = Array.prototype.indexOf.call(element.parentNode.children, element);
@@ -211,25 +242,28 @@ function makeAboutMeHub(){
     let prompt = '';
         prompt += '너의 이름은 '+$('#userNickNm').val() +'이고 ';
         prompt += '너는 성별이 '+$('#lookingForGender').val() +'인 친구를 찾고 있어. ';
-        prompt += '이 해시태그들에 해당하는 사람이라고 생각하고 200글자 이내의 자기소개 작성해줘 '+userCharacterArr.toString();
+        prompt += '네가 해시태그('+userCharacterArr.toString()+')에 해당하는 사람이라고 생각하고 200글자 이내의 자기소개 작성해줘 ';
+    console.log('prompt : ' + prompt);
     prompt = encodeURIComponent(prompt);
     //console.log('gptPrompt : ' + prompt);
     gptQuery(prompt, [])
-        .then(function(response){
-            console.log(response);
-            let returnMessage = response.data.result.messages[1].content.replace(/<br>/gi, '\n');
-            $('#user_info_container').find('#aboutMe').val(returnMessage);
-            //console.log(returnMessage);
-            closeLoadingCover();
-        })
-        .catch(function(error){
-            console.log(error);
-        });
+    .then(function(response){
+        console.log(response);
+        let returnMessage = response.data.result.messages[1].content.replace(/<br>/gi, '\n');
+        $('#user_info_container').find('#aboutMe').val(returnMessage);
+        //console.log(returnMessage);
+        closeLoadingCover();
+    })
+    .catch(function(error){
+        console.log(error);
+        alert('네트워크 오류입니다. 잠시 후 다시 시도해주세요.')
+        closeLoadingCover();
+    });
     //$('#aboutMe').val(aboutMe);
 }
 
 function gptQuery(prompt, prevMessages) {
-    openLoadingCover('AI가 자기소개를 작성중이에요. 잠시만 기다려주세요!');
+    openLoadingCover('AI가 자기소개를 작성중이에요. </br> 잠시만 기다려주세요!');
     return axios.post(GPT_CONNECTOR_URL+'/query?prompt='+prompt, prevMessages, {
         headers: {
             'Content-Type': 'application/json',
@@ -242,7 +276,12 @@ function gptQuery(prompt, prevMessages) {
 }
 
 function saveUserInfoHub(){
-    saveUserInfo();
+    if(confirm('저장할까요?')){
+        saveUserInfo().then(function(response){
+            console.log(response);
+            alert('저장되었습니다.');
+        })
+    }
 }
 
 function saveUserInfo(){

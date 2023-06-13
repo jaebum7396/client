@@ -155,7 +155,7 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += "   <div id='"+friend.userInfo.userCd+"' class='profile_container'>"
         htmlText += 	    profileMaker(friend.userInfo.userProfileImages[0].profileImgUrl, ' left:auto; top:auto;');
         htmlText += 	"</div>";
-        htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+        htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='width:65%;padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
         htmlText += 		"<strong class='friend_alias alias' style='color: #f18a1c;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userInfo.userNickNm) + "</strong>";
         htmlText +=         "<div class='friend_message'>" + (friend.userInfo.aboutMe != null ? friend.userInfo.aboutMe : "") + "</div>";
         htmlText += 	"</div>";

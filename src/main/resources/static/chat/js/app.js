@@ -413,9 +413,9 @@ function convertTimeFormat(timeString) {
 
 function openLoadingCover(loadingText){
     if(loadingText){
-        $('#loadingCover').find('#loadingText').text(loadingText);
+        $('#loadingCover').find('#loadingText').html(loadingText);
     }else{
-        $('#loadingCover').find('#loadingText').text('로딩중...');
+        $('#loadingCover').find('#loadingText').html('로딩중...');
     }
     $('#loadingCover').css('display', 'flex');
 }

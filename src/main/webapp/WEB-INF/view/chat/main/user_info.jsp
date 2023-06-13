@@ -38,7 +38,7 @@
                                     <label for="character">내 특징</label>
                                 </div>
                                 <div class="mt-4 mb-0">
-                                    <div class="d-grid"><div class="btn btn-primary btn-block" onclick="saveUserInfo();">저장</div></div>
+                                    <div class="d-grid"><div class="btn btn-primary btn-block" onclick="saveUserInfoHub();">저장</div></div>
                                 </div>
                             </form>
                         </div>
@@ -74,13 +74,14 @@
     <%--<div class="characterSelectButton" onclick="characterSelect(this)">우리엄마는 내가 제일 예쁘댔어..</div>--%>
     <select class="characterSelectButton" onchange="characterSelect(this)">
         <option id='주량?'>주량?</option>
-        <option id='주량_한잔'>주량_한잔</option>
-        <option id='너보다는_한잔_더'>너보다는_한잔_더</option>
-        <option id='술에_취해본적이_없음'>술에_취해본적이_없음</option>
+        <option id='한잔_밖에_못마셔요'>한잔_밖에_못마셔요</option>
+        <option id='분위기를_즐기는_수준의_주량'>분위기를_즐기는_수준의_주량</option>
+        <option id='잘은_못마시지만_너랑은_더_마실_수_있어'>잘은_못마시지만_너랑은_더_마실_수_있어</option>
+        <option id='술을_너무_잘마셔서_술에_취해본적이_없음'>술을_너무_잘마셔서_술에_취해본적이_없음</option>
     </select>
-    <div id='자취해요' class="characterSelectButton" onclick="characterSelect(this)">자취해요</div>
-    <div id='돈이_너무_많음' class="characterSelectButton" onclick="characterSelect(this)">돈이_너무_많음</div>
-    <div id='금손' class="characterSelectButton" onclick="characterSelect(this)">금손</div>
+    <div id='혼자살아요' class="characterSelectButton" onclick="characterSelect(this)">혼자살아요</div>
+    <div id='돈이많음' class="characterSelectButton" onclick="characterSelect(this)">돈이많음</div>
+    <div id='요리를_좋아해요' class="characterSelectButton" onclick="characterSelect(this)">요리를_좋아해요</div>
     <div id='유명인(셀럽이란뜻)' class="characterSelectButton" onclick="characterSelect(this)">유명인(셀럽이란뜻)</div>
 </div>
 
