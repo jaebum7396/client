@@ -76,13 +76,17 @@
         <option id='주량?'>주량?</option>
         <option id='한잔_밖에_못마셔요'>한잔_밖에_못마셔요</option>
         <option id='분위기를_즐기는_수준의_주량'>분위기를_즐기는_수준의_주량</option>
-        <option id='잘은_못마시지만_너랑은_더_마실_수_있어'>잘은_못마시지만_너랑은_더_마실_수_있어</option>
-        <option id='술을_너무_잘마셔서_술에_취해본적이_없음'>술을_너무_잘마셔서_술에_취해본적이_없음</option>
+        <option id='잘은_못마시지만_너랑은_더_마실_수_있어'>잘_못마시지만_너랑은_더_마실_수_있어</option>
+        <option id='술을_너무_잘마셔서_술에_취해본적이_없음'>술을_너무_잘마셔서_술에_취해본적_없음</option>
     </select>
+    <div id='운이좋은편' class="characterSelectButton" onclick="characterSelect(this)">운이좋은편</div>
     <div id='혼자살아요' class="characterSelectButton" onclick="characterSelect(this)">혼자살아요</div>
     <div id='돈이많음' class="characterSelectButton" onclick="characterSelect(this)">돈이많음</div>
-    <div id='요리를_좋아해요' class="characterSelectButton" onclick="characterSelect(this)">요리를_좋아해요</div>
+    <div id='책벌레' class="characterSelectButton" onclick="characterSelect(this)">책벌레</div>
+    <div id='머리가좋아요' class="characterSelectButton" onclick="characterSelect(this)">머리가좋아요</div>
+    <div id='요리를좋아해요' class="characterSelectButton" onclick="characterSelect(this)">요리를좋아해요</div>
     <div id='유명인(셀럽이란뜻)' class="characterSelectButton" onclick="characterSelect(this)">유명인(셀럽이란뜻)</div>
+    <div id='액티비티한타입' class="characterSelectButton" onclick="characterSelect(this)">액티비티한타입</div>
 </div>
 
 <style>

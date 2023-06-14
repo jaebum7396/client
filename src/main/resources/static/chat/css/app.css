@@ -757,7 +757,7 @@ input[type=checkbox]:disabled + label {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	width: 60%;
+	width: 50%;
 	font-size: 13px;
 }
 
