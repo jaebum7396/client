@@ -165,31 +165,68 @@ function uploadProfileImageFile() {
     // input 요소에서 선택된 파일 가져오기
     //const file = document.getElementById("imageInput").files[0];
     cropper.getCroppedCanvas().toBlob((blob) => {
-        // FormData 객체 생성
-        const formData = new FormData();
-        formData.append('file', blob /*, 'example.png' , 0.7*/);
-        //formData.append("file", file);
+        // 이미지 최적화
+        const maxFileSize = 1024; // 최대 파일 크기 (KB)
+        const imageQuality = 0.7; // 이미지 품질 (0 ~ 1)
 
-        // HTTP 요청 생성
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", FILE_STORAGE_URL+'/upload?division=profile', true);
-        //xhr.open("POST", "localhost:7100/upload", true);
-        xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+        const resizedBlobPromise = new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const image = new Image();
+                image.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    const maxWidth = 300; // 최대 가로 크기 (픽셀)
 
-        // 요청 완료 시 처리할 콜백 함수 등록
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                let response = JSON.parse(xhr.response);
-                console.log("이미지 업로드 성공 >>>>>", response);
-                console.log("파일위치 >>>>>", response.result.fileLocation);
-                saveProfileImage(response.result.fileLocation);
-            } else {
-                console.log("이미지 업로드 실패" + xhr.response);
-            }
-        };
-        // HTTP 요청 전송
-        xhr.send(formData);
-    })
+                    let width = image.width;
+                    let height = image.height;
+
+                    if (width > maxWidth) {
+                        height = (maxWidth / width) * height;
+                        width = maxWidth;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    ctx.drawImage(image, 0, 0, width, height);
+
+                    canvas.toBlob((blob) => {
+                        resolve(blob);
+                    }, "image/jpeg", imageQuality);
+                };
+                image.src = event.target.result;
+            };
+            reader.readAsDataURL(blob);
+        });
+
+        // 이미지 최적화 완료 후 업로드
+        resizedBlobPromise.then((resizedBlob) => {
+            // FormData 객체 생성
+            const formData = new FormData();
+            formData.append("file", resizedBlob);
+
+            // HTTP 요청 생성
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", FILE_STORAGE_URL + '/upload?division=profile', true);
+            //xhr.open("POST", "localhost:7100/upload", true);
+            xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+
+            // 요청 완료 시 처리할 콜백 함수 등록
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    let response = JSON.parse(xhr.response);
+                    console.log("이미지 업로드 성공 >>>>>", response);
+                    console.log("파일위치 >>>>>", response.result.fileLocation);
+                    saveProfileImage(response.result.fileLocation);
+                } else {
+                    console.log("이미지 업로드 실패" + xhr.response);
+                }
+            };
+            // HTTP 요청 전송
+            xhr.send(formData);
+        });
+    });
 }
 
 function saveProfileImage(fileLocation){
