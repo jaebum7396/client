@@ -214,7 +214,7 @@ function openCharacterSelectionPopup() {
 function closeCharacterSelectionPopup() {
     $('#characterSelectionPopup').css('display', 'none');
     if(changeUserInfoFlag){
-        if(confirm('변경된 특징을 바탕으로 자기소개를 작성할까요?')){
+        if(confirm('변경된 특징을 바탕으로 자동으로 자기소개를 작성할까요?')){
             makeAboutMeHub();
         }
     }

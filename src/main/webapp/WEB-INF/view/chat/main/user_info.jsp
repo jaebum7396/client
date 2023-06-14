@@ -76,7 +76,6 @@
         <option id='주량?'>주량?</option>
         <option id='한잔_밖에_못마셔요'>한잔_밖에_못마셔요</option>
         <option id='분위기를_즐기는_수준의_주량'>분위기를_즐기는_수준의_주량</option>
-        <option id='잘은_못마시지만_너랑은_더_마실_수_있어'>잘_못마시지만_너랑은_더_마실_수_있어</option>
         <option id='술을_너무_잘마셔서_술에_취해본적이_없음'>술을_너무_잘마셔서_술에_취해본적_없음</option>
     </select>
     <div id='운이좋은편' class="characterSelectButton" onclick="characterSelect(this)">운이좋은편</div>
