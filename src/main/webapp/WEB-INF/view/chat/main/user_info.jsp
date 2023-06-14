@@ -84,7 +84,7 @@
     <div id='책벌레' class="characterSelectButton" onclick="characterSelect(this)">책벌레</div>
     <div id='머리가좋아요' class="characterSelectButton" onclick="characterSelect(this)">머리가좋아요</div>
     <div id='요리를좋아해요' class="characterSelectButton" onclick="characterSelect(this)">요리를좋아해요</div>
-    <div id='유명인(셀럽이란뜻)' class="characterSelectButton" onclick="characterSelect(this)">유명인(셀럽이란뜻)</div>
+    <div id='셀럽' class="characterSelectButton" onclick="characterSelect(this)">셀럽</div>
     <div id='액티비티한타입' class="characterSelectButton" onclick="characterSelect(this)">액티비티한타입</div>
 </div>
 

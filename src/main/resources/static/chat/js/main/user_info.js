@@ -26,20 +26,23 @@ function initUserInfoTab() {
         $('#user_info_container').find('#aboutMe').val(userInfo.aboutMe);
         $('#user_info_container').find('#lookingForGender').val(userInfo.lookingForGender);
 
-        userInfo.userCharacter.split(',').forEach((item, idx) => {
-            console.log(item, idx);
-            let element = $('#characterSelectionPopup').find(item);
-            console.log(element);
-            let tagName = element.prop("tagName"); // 선택한 요소의 태그 이름을 가져옵니다.
-            console.log(tagName); // 태그 이름을 콘솔에 출력합니다.
-            if(tagName == 'OPTION'){
-                $('#characterSelectionPopup').find(item).parent('select').val(item.replaceAll('#',''));
-                console.log($('#characterSelectionPopup').find(item).parent('select'))
-                characterSelect($('#characterSelectionPopup').find(item).parent('select')[0]);
-            }else{
-                $('#characterSelectionPopup').find(item).click();
-            }
-        })
+        //userCharacter가 있다면
+        if(userInfo.userCharacter){
+            userInfo.userCharacter.split(',').forEach((item, idx) => {
+                console.log(item, idx);
+                let element = $('#characterSelectionPopup').find(item);
+                console.log(element);
+                let tagName = element.prop("tagName"); // 선택한 요소의 태그 이름을 가져옵니다.
+                console.log(tagName); // 태그 이름을 콘솔에 출력합니다.
+                if(tagName == 'OPTION'){
+                    $('#characterSelectionPopup').find(item).parent('select').val(item.replaceAll('#',''));
+                    console.log($('#characterSelectionPopup').find(item).parent('select'))
+                    characterSelect($('#characterSelectionPopup').find(item).parent('select')[0]);
+                }else{
+                    $('#characterSelectionPopup').find(item).click();
+                }
+            })
+        }
 
         $('#aboutMe').on('scroll', function() {
             if ($(this).scrollTop() > 0) {
