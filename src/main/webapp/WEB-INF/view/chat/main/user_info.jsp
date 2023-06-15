@@ -14,7 +14,7 @@
                             <form>
                                 <div style="display:flex;justify-content:center;margin:10px;overflow:hidden;">
                                     <input style='display:none;' type='file' id='imageInput' onchange='updateProfileImageHub()'>
-                                    <div id='profile_container' class='profile_container' style='width:300px; height:300px;'>
+                                    <div id='profile_container' class='profile_container' style='width:300px; height:300px;' onclick='profileClick();'>
                                     </div>
                                 </div>
                                 <div class="form-floating mb-3">
@@ -24,6 +24,14 @@
                                 <div class="form-floating mb-3">
                                     <textarea class="form-control" id="aboutMe" style='height:auto;  min-height: 150px; resize:none;'></textarea>
                                     <label for="aboutMe">자기소개</label>
+                                </div>
+                                <div class="form-floating mb-3" style='display: none;'>
+                                    <select class="form-control" id="userGender" readonly>
+                                        <option value="">크레파스</option>
+                                        <option value="남자">남자</option>
+                                        <option value="여자">여자</option>
+                                    </select>
+                                    <label for="userGender">내 성별</label>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <select class="form-control" id="lookingForGender" required>
@@ -87,73 +95,3 @@
     <div id='셀럽' class="characterSelectButton" onclick="characterSelect(this)">셀럽</div>
     <div id='액티비티한타입' class="characterSelectButton" onclick="characterSelect(this)">액티비티한타입</div>
 </div>
-
-<style>
-    .characterSelectButton {
-        max-width: 150px;
-        height: auto;
-        border-radius: 5px;
-        background-color: #eb8b1b;
-        color:white;
-        margin: 5px;
-        padding: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        word-wrap: break-word;
-        border:0;
-    }
-
-    .characterSelectHashTag{
-        margin:3px;
-        padding:3px;
-        border-radius: 5px;
-        border:1px solid black;
-    }
-
-    .characterSelectionPopup {
-        display: none;
-        position: absolute;
-        z-index: 1;
-        background-color: #f9f9f9;
-        border: 1px solid #ccc;
-        padding: 10px;
-        overflow-y: auto;
-        width:80%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        flex-wrap: wrap;
-    }
-
-    .form-floating.mb-3 {
-        position: relative;
-    }
-
-    .form-floating.mb-3:hover .characterSelectionPopup {
-        display: block;
-    }
-
-    #character {
-        display:flex;
-        border: 1px solid #ccc;
-        padding: 10px;
-        padding-top:30px;
-        margin-top: 10px;
-        flex-wrap: wrap;
-        height: auto;
-        min-height: 58px;
-    }
-
-    .close-button {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 10px;
-    }
-
-    .close-button button {
-        cursor: pointer;
-    }
-</style>
-

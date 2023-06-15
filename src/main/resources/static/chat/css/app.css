@@ -938,3 +938,70 @@ input[type=checkbox]:disabled + label {
 		transform: rotate(360deg);
 	}
 }
+
+.characterSelectButton {
+	max-width: 150px;
+	height: auto;
+	border-radius: 5px;
+	background-color: #eb8b1b;
+	color:white;
+	margin: 5px;
+	padding: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	word-wrap: break-word;
+	border:0;
+}
+
+.characterSelectHashTag{
+	margin:3px;
+	padding:3px;
+	border-radius: 5px;
+	border:1px solid black;
+}
+
+.characterSelectionPopup {
+	display: none;
+	position: absolute;
+	z-index: 1;
+	background-color: #f9f9f9;
+	border: 1px solid #ccc;
+	padding: 10px;
+	overflow-y: auto;
+	width:80%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	flex-wrap: wrap;
+}
+
+.form-floating.mb-3 {
+	position: relative;
+}
+
+.form-floating.mb-3:hover .characterSelectionPopup {
+	display: block;
+}
+
+#character {
+	display:flex;
+	border: 1px solid #ccc;
+	padding: 10px;
+	padding-top:30px;
+	margin-top: 10px;
+	flex-wrap: wrap;
+	height: auto;
+	min-height: 58px;
+}
+
+.close-button {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 10px;
+}
+
+.close-button button {
+	cursor: pointer;
+}

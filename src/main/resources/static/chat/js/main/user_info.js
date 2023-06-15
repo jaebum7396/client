@@ -7,9 +7,6 @@ function initUserInfoTab() {
     $('.list_container').css('display', 'none');
     $('#user_info_container').css('display', 'block');
 
-    $('#profile_container').click(function() {
-        $("#imageInput")[0].click()
-    })
     //캐릭터 선택 초기화
     $('#user_info_container').find('#character').html('');
 
@@ -22,6 +19,7 @@ function initUserInfoTab() {
             profileImgUrl = userInfo.userProfileImages[0].profileImgUrl;
             $('#profile_container').html("<img src='"+profileImgUrl+"' style='width: 100%;'>");
         }
+        $('#user_info_container').find('#userGender').val(userInfo.userGender);
         $('#user_info_container').find('#userNickNm').val(userInfo.userNickNm);
         $('#user_info_container').find('#aboutMe').val(userInfo.aboutMe);
         $('#user_info_container').find('#lookingForGender').val(userInfo.lookingForGender);
@@ -29,14 +27,10 @@ function initUserInfoTab() {
         //userCharacter가 있다면
         if(userInfo.userCharacter){
             userInfo.userCharacter.split(',').forEach((item, idx) => {
-                console.log(item, idx);
                 let element = $('#characterSelectionPopup').find(item);
-                console.log(element);
                 let tagName = element.prop("tagName"); // 선택한 요소의 태그 이름을 가져옵니다.
-                console.log(tagName); // 태그 이름을 콘솔에 출력합니다.
                 if(tagName == 'OPTION'){
                     $('#characterSelectionPopup').find(item).parent('select').val(item.replaceAll('#',''));
-                    console.log($('#characterSelectionPopup').find(item).parent('select'))
                     characterSelect($('#characterSelectionPopup').find(item).parent('select')[0]);
                 }else{
                     $('#characterSelectionPopup').find(item).click();
@@ -58,7 +52,6 @@ function initUserInfoTab() {
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 // 변경된 내용에 대한 처리를 수행합니다.
-                console.log('내용변경')
                 changeUserInfoFlag = true;
             });
         });
@@ -68,7 +61,6 @@ function initUserInfoTab() {
         var inputs = document.querySelectorAll('#user_info_container input, #user_info_container select');
         inputs.forEach(function(input) {
             input.addEventListener('change', function() {
-                console.log('내용변경')
                 changeUserInfoFlag = true;
             });
         });
@@ -84,6 +76,10 @@ function initUserInfoTab() {
             console.error(error);
         }
     })
+}
+
+function profileClick(){
+    $("#imageInput")[0].click()
 }
 
 // input과 select 태그의 변경을 감지하는 함수
@@ -293,8 +289,8 @@ function makeAboutMeHub(){
     });
     console.log(userCharacterArr)
     let prompt = '';
-        prompt += '너의 이름은 '+$('#userNickNm').val() +'이고 ';
-        prompt += '너는 성별이 '+$('#lookingForGender').val() +'인 친구를 찾고 있어. ';
+        prompt += '너의 이름은 '+$('#userNickNm').val() +'이고 성별은 '+$('#userGender').val() + '야 ';
+        prompt += '너는 '+$('#lookingForGender').val() +'인 친구를 찾고 있어. ';
         prompt += '네가 해시태그('+userCharacterArr.toString()+')에 해당하는 사람이라고 생각하고 200글자 이내의 자기소개 작성해줘 ';
     console.log('prompt : ' + prompt);
     prompt = encodeURIComponent(prompt);

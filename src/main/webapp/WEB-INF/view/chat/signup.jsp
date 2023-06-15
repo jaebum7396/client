@@ -49,8 +49,8 @@
                                         <div class="form-floating mb-3">
                                             <select class="form-control" id="userGender" required>
                                                 <option value="">성별 선택</option>
-                                                <option value="M">남자</option>
-                                                <option value="W">여자</option>
+                                                <option value="남자">남자</option>
+                                                <option value="여자">여자</option>
                                             </select>
                                             <label for="userGender">성별</label>
                                         </div>
@@ -67,7 +67,7 @@
                     </div>
                 </main>
             </div>
-            <div id="layoutAuthentication_footer">
+            <%--<div id="layoutAuthentication_footer">
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 </footer>
-            </div>
+            </div>--%>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
