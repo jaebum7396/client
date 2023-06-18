@@ -162,6 +162,7 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += 	"<div style='margin: auto;'>";
         htmlText += 		"<input id='check_"+friend.userInfo.userCd+"' class='friend_check' type='checkbox' style='' value='" + friend.userInfo.userCd + "'/>";
         htmlText +=     	"<label for='check_"+friend.userInfo.userCd+"' class='friend_check_label'></label>"
+        htmlText +=     	"<i class='bi bi-three-dots'></i>"
         htmlText += 	"</div>";
         htmlText += "</div>";
         resolve(htmlText);
