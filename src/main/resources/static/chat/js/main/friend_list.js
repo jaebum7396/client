@@ -120,7 +120,7 @@ function myInfoMaker(user, rowClickActivate) {
         htmlText += "   <div id='"+user.userCd+"' class='profile_container'>"
         htmlText += 	    profileMaker(user.userInfo.userProfileImages[0].profileImgUrl, ' left:auto; top:auto;');
         htmlText += "   </div>";
-        htmlText += "   <div onclick='rowClick(this, "+rowClickActivate+", \"me\");' style='padding:10px; width:65%;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+        htmlText += "   <div onclick='initUserInfoTab();' style='padding:10px; width:65%;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
         htmlText += "       <strong class='friend_alias alias' style='color: #f18a1c;'>" + (user.userInfo.userNickNm != null ? user.userInfo.userNickNm + "(나)" : user.userNm + "(나)") + "</strong>";
         htmlText += "       <div class='friend_message'>" + (user.userInfo.aboutMe != null ? user.userInfo.aboutMe : "") + "</div>";
         htmlText += "   </div>";

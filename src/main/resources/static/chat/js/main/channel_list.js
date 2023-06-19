@@ -121,6 +121,7 @@ function channelMaker(channel){
     htmlText +=         "</div>";
     htmlText +=     "</div>";
     htmlText +=     "<div class='unread_count_container' style=''>"
+    htmlText +=     	"<i class='bi bi-three-dots'></i>"
     htmlText +=         "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
     htmlText +=             "<div>" + unreadCount + "</div>"
     htmlText +=         "</div>"

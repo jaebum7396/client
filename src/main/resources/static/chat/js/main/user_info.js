@@ -290,7 +290,7 @@ function makeAboutMeHub(){
     console.log(userCharacterArr)
     let prompt = '';
         prompt += '너의 이름은 '+$('#userNickNm').val() +'이고 성별은 '+$('#userGender').val() + '야 ';
-        prompt += '너는 '+$('#lookingForGender').val() +'인 친구를 찾고 있어. ';
+        //prompt += '너는 '+$('#lookingForGender').val() +'인 친구를 찾고 있어. ';
         prompt += '네가 해시태그('+userCharacterArr.toString()+')에 해당하는 사람이라고 생각하고 200글자 이내의 자기소개 작성해줘 ';
     console.log('prompt : ' + prompt);
     prompt = encodeURIComponent(prompt);
