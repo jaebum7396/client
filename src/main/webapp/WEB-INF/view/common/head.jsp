@@ -34,10 +34,17 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 <%--<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js<%= version %>"></script>--%>
 <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 <script src="/webjars/axios/0.21.1/dist/axios.min.js"></script>
+<%--웹소켓관련--%>
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
+<%--cropper.js--%>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
+
+<%--swiper.js--%>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+
 <script>
     const BACKEND_URL = '<%=BACKEND_URL%>';
     const USER_URL = '<%=USER_URL%>';

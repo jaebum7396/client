@@ -672,6 +672,12 @@ input[type=checkbox]:checked + label {
 input[type=checkbox]:disabled + label {
 	background-image: url('image/checker-disabled.svg');
 }
+.profile_container.swiper-wrapper{
+	flex-direction:row;
+	justify-content: flex-start;
+	width: 100%;
+	height: 300px;
+}
 .profile_container{
 	position:relative;
 	display: flex;
@@ -679,7 +685,6 @@ input[type=checkbox]:disabled + label {
 	justify-content: center;
 	align-items: center;
 	width: 20%;
-	padding: 5px;
 }
 .profile_container .profile_img{
 	/* margin: 5px; */
