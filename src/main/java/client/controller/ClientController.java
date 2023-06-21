@@ -21,4 +21,8 @@ public class ClientController {
     public String adminIndex() {
         return "admin/index";
     }
+    @GetMapping("/admin/user")
+    public String adminUser() {
+        return "admin/user";
+    }
 }
