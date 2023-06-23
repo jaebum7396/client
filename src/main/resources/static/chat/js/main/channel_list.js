@@ -77,6 +77,7 @@ function channelMaker(channel){
     if (!channel.lastChat) {
         return false;
     }
+
     //해당 채팅방의 유저를 순회
     let channelName;
     for (let j = 0; j < channelUsers.length; j++) {
@@ -121,7 +122,12 @@ function channelMaker(channel){
     htmlText +=         "</div>";
     htmlText +=     "</div>";
     htmlText +=     "<div class='unread_count_container' style=''>"
-    htmlText +=     	"<i class='bi bi-three-dots'></i>"
+    htmlText +=     	"<i class='bi bi-three-dots' onclick='dropdownToggle(this)'></i>"
+    htmlText +=     	"<ul class='dropdown-list'>"
+    htmlText +=     	    "<li>항목 1</li>"
+    htmlText +=     	    "<li>항목 2</li>"
+    htmlText +=     	    "<li>항목 3</li>"
+    htmlText +=     	"</ul>"
     htmlText +=         "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
     htmlText +=             "<div>" + unreadCount + "</div>"
     htmlText +=         "</div>"
@@ -129,6 +135,11 @@ function channelMaker(channel){
     htmlText += "</div>";
 
     return htmlText;
+}
+
+function dropdownToggle(obj){
+    console.log('dropdownToggle', obj)
+    $(obj).siblings('.dropdown-list').toggleClass('openToggle');
 }
 
 function channelProfileMaker(profileArr) {
