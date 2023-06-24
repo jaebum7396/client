@@ -124,9 +124,7 @@ function channelMaker(channel){
     htmlText +=     "<div class='unread_count_container' style=''>"
     htmlText +=     	"<i class='bi bi-three-dots' onclick='dropdownToggle(this)'></i>"
     htmlText +=     	"<ul class='dropdown-list'>"
-    htmlText +=     	    "<li>항목 1</li>"
-    htmlText +=     	    "<li>항목 2</li>"
-    htmlText +=     	    "<li>항목 3</li>"
+    htmlText +=     	    "<li>나가기</li>"
     htmlText +=     	"</ul>"
     htmlText +=         "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
     htmlText +=             "<div>" + unreadCount + "</div>"
@@ -139,7 +137,15 @@ function channelMaker(channel){
 
 function dropdownToggle(obj){
     console.log('dropdownToggle', obj)
-    $(obj).siblings('.dropdown-list').toggleClass('openToggle');
+    let openToggleYn;
+    let dropdownList = $(obj).siblings('.dropdown-list');
+
+    openToggleYn = $(obj).siblings('.dropdown-list').hasClass('openToggle') ? true : false;
+    $('.dropdown-list').removeClass('openToggle');
+
+    if(!openToggleYn){
+        dropdownList.addClass('openToggle');
+    }
 }
 
 function channelProfileMaker(profileArr) {

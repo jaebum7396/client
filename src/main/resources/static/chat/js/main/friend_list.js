@@ -162,11 +162,28 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += 	"<div style='margin: auto;'>";
         htmlText += 		"<input id='check_"+friend.userInfo.userCd+"' class='friend_check' type='checkbox' style='' value='" + friend.userInfo.userCd + "'/>";
         htmlText +=     	"<label for='check_"+friend.userInfo.userCd+"' class='friend_check_label'></label>"
-        htmlText +=     	"<i class='bi bi-three-dots'></i>"
+        htmlText +=     	"<i class='bi bi-three-dots' onclick='dropdownToggle(this)'></i>"
+        htmlText +=     	"<ul class='dropdown-list'>"
+        htmlText +=     	    "<li>삭제</li>"
+        htmlText +=     	    "<li>차단</li>"
+        htmlText +=     	"</ul>"
         htmlText += 	"</div>";
         htmlText += "</div>";
         resolve(htmlText);
     })
+}
+
+function dropdownToggle(obj){
+    console.log('dropdownToggle', obj)
+    let openToggleYn;
+    let dropdownList = $(obj).siblings('.dropdown-list');
+
+    openToggleYn = $(obj).siblings('.dropdown-list').hasClass('openToggle') ? true : false;
+    $('.dropdown-list').removeClass('openToggle');
+
+    if(!openToggleYn){
+        dropdownList.addClass('openToggle');
+    }
 }
 
 function toggleSearchUserContainer() {
@@ -241,21 +258,58 @@ function addFriend(p_userCd){
             Authorization: localStorage.getItem("token"),
         }
     })
-        .then(function (response) {
-            const data = response.data;
-            console.log(data)
-            if(data.result.processYn === 'Y'){
-                alert(data.message);
-                closeSearchUserContainer();
-                initFriendTab();
+    .then(function (response) {
+        const data = response.data;
+        console.log(data)
+        if(data.result.processYn === 'Y'){
+            alert(data.message);
+            closeSearchUserContainer();
+            initFriendTab();
+        }
+        else if(data.result.processYn === 'N'){
+            alert(data.message);
+            closeSearchUserContainer();
+            initFriendTab();
+        }
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
+}
+function exitChannelHub(p_channelCd){
+    let deleteChannelUserPromise = deleteChannelUser(p_channelCd);
+    deleteChannelUserPromise
+    .then((response) => {
+        sendChatHub(p_channelCd, response.result.friendList[0].userNm+' 님이 나가셨습니다.', 1)
+        unsubscribe(p_channelCd);
+        getChannelsWithPageable('0');
+    })
+    .catch((response) => {
+        console.log(response)
+    })
+}
+function deleteChannelUser(p_channelCd) {
+    console.log('deleteChannelUser>>>>>>>>>>>>')
+    return axios.post(CHAT_URL+'/friend', {
+        userCd: p_userCd
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem("token"),
+        }
+    })
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'http://' + clientUrl + '/deleteChannelUser?channelCd='+p_channelCd+'&loginUserCd='+$("#chatbox input[name='LOGIN_USER_CD']").val()
+            , async: true
+            , type: 'POST'
+            , success: function(response) {
+                resolve(response)
             }
-            else if(data.result.processYn === 'N'){
-                alert(data.message);
-                closeSearchUserContainer();
-                initFriendTab();
+            , error: function(response) {
+                reject(response)
+                console.log(response);
             }
-        })
-        .catch(function (error) {
-            console.error(error);
         });
+    });
 }
