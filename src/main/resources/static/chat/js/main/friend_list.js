@@ -65,7 +65,6 @@ function getFriendsWithPageable(p_page) {
             }
         })
         .then(response => {
-
             console.log('getFriendsWithPageableResp', response)
             let result = response.data.result;
             let friendArr = result.friendArr
@@ -78,7 +77,10 @@ function getFriendsWithPageable(p_page) {
         .catch((error) => {
             console.log(error.response);
             if(error){
-                if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
+                if(error.response.status == '503'){
+                    alert("잠시 후에 다시 시도하세요");
+                    location.reload();
+                }else if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
                     localStorage.setItem('token', '');
                     alert('로그인이 만료되었습니다');
                     location.href = 'login';
@@ -274,42 +276,5 @@ function addFriend(p_userCd){
     })
     .catch(function (error) {
         console.error(error);
-    });
-}
-function exitChannelHub(p_channelCd){
-    let deleteChannelUserPromise = deleteChannelUser(p_channelCd);
-    deleteChannelUserPromise
-    .then((response) => {
-        sendChatHub(p_channelCd, response.result.friendList[0].userNm+' 님이 나가셨습니다.', 1)
-        unsubscribe(p_channelCd);
-        getChannelsWithPageable('0');
-    })
-    .catch((response) => {
-        console.log(response)
-    })
-}
-function deleteChannelUser(p_channelCd) {
-    console.log('deleteChannelUser>>>>>>>>>>>>')
-    return axios.post(CHAT_URL+'/friend', {
-        userCd: p_userCd
-    }, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: localStorage.getItem("token"),
-        }
-    })
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: 'http://' + clientUrl + '/deleteChannelUser?channelCd='+p_channelCd+'&loginUserCd='+$("#chatbox input[name='LOGIN_USER_CD']").val()
-            , async: true
-            , type: 'POST'
-            , success: function(response) {
-                resolve(response)
-            }
-            , error: function(response) {
-                reject(response)
-                console.log(response);
-            }
-        });
     });
 }

@@ -124,7 +124,7 @@ function channelMaker(channel){
     htmlText +=     "<div class='unread_count_container' style=''>"
     htmlText +=     	"<i class='bi bi-three-dots' onclick='dropdownToggle(this)'></i>"
     htmlText +=     	"<ul class='dropdown-list'>"
-    htmlText +=     	    "<li>나가기</li>"
+    htmlText +=     	    "<li onclick='exitChannelHub(\"" + channel.channelCd + "\")'>나가기</li>"
     htmlText +=     	"</ul>"
     htmlText +=         "<div class='unread_count' style='" + (unreadCount != 0 ? "display:flex;" : "display:none;") + "'>"
     htmlText +=             "<div>" + unreadCount + "</div>"
@@ -201,31 +201,47 @@ function exitChannelHub(p_channelCd){
     let deleteChannelUserPromise = deleteChannelUser(p_channelCd);
     deleteChannelUserPromise
         .then((response) => {
-            sendChatHub(p_channelCd, response.result.friendList[0].userNm+' 님이 나가셨습니다.', 1)
-
+            console.log(response)
+            sendChatHub(response.data.result.channelUser.userInfo.userNickNm+' 님이 나가셨습니다.','1')
             unsubscribe(p_channelCd);
             getChannelsWithPageable('0');
         })
-        .catch((response) => {
-            console.log(response)
+        .catch((error) => {
+            console.log(error.response);
         })
 }
 
 function deleteChannelUser(p_channelCd) {
     console.log('deleteChannelUser>>>>>>>>>>>>')
-
     return new Promise((resolve, reject) => {
-        $.ajax({
-            url: 'http://' + clientUrl + '/deleteChannelUser?channelCd='+p_channelCd+'&loginUserCd='+$("#chatbox input[name='LOGIN_USER_CD']").val()
-            , async: true
-            , type: 'POST'
-            , success: function(response) {
-                resolve(response)
+        axios.post(CHAT_URL +'/channel/exit'
+        , {
+            channelCd : p_channelCd
+        }
+        , {
+            headers: {
+                'Content-Type': 'application/json'
+                , Authorization: localStorage.getItem("token")
             }
-            , error: function(response) {
-                reject(response)
-                console.log(response);
+        })
+        .then(response => {
+            resolve(response)
+        })
+        .catch((error) => {
+            console.log(error.response);
+            if(error){
+                if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
+                    localStorage.setItem('token', '');
+                    alert('로그인이 만료되었습니다');
+                    location.href = 'login';
+                }else{
+                    alert(error.response.data.message);
+                    console.error(error);
+                }
+            }else{
+                alert("알 수 없는 에러가 발생했습니다.");
+                location.reload();
             }
-        });
-    });
+        })
+    })
 }
