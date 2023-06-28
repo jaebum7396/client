@@ -7,11 +7,11 @@
         function intentCall(url) {
             if (/Android/i.test(navigator.userAgent)) {
                 // Android 인 경우
-                window.location.href = 'intent://www.youtube.com/watch?v='
+                window.location.href = 'intent://www.youtube.com/@hongsedu'
                     //+ videoId + '#Intent;package=com.google.android.youtube;end;';
             } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                 // iOS 인 경우
-                window.location.href = 'youtube://www.youtube.com/watch?v='
+                window.location.href = 'youtube://www.youtube.com/@hongsedu'
                     //+ videoId;
             } else {
                 // Android 또는 iOS가 아닌 경우
