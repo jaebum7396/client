@@ -14,7 +14,8 @@
                 //intentURI = "vnd.youtube://" + "channel/"+channelID; 안됨
                 //intentURI = "vnd.youtube://" + youtubeURL; 안됨
                 //intentURI = "youtube://" + youtubeURL; 안됨
-                intentURI = "intent://" + youtubeURL + "#Intent;package=com.google.android.youtube;end;";
+                //intentURI = "intent://" + youtubeURL + "#Intent;package=com.google.android.youtube;end;";
+                intentURI = "https://" + youtubeURL;
             } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                 // iOS 인 경우
                 intentURI = "youtube://" + youtubeURL;
@@ -26,7 +27,7 @@
             //window.location.href = intentURI;
 
             // 웹뷰에 URL 호출 요청 전달
-            window.location.href = "callApp://" + intentURI;
+            window.location.href = "callapp://" + intentURI;
         }
     </script>
     <body>
