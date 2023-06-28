@@ -135,19 +135,6 @@ function myInfoMaker(user, rowClickActivate) {
     })
 }
 
-//행 클릭
-function rowClick(p_obj, rowClickActivate, p_division) {
-    if($(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop('checked')){
-        $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", false);
-    }else{
-        $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", true);
-    }
-    if(rowClickActivate){
-        console.log($(p_obj).parents('.chat_row'))
-        openPopupProfile($(p_obj).parents('.chat_row'), p_division);
-    }
-}
-
 function friendMaker(friend, rowClickActivate) {
     console.log('friendMaker', friend);
     return new Promise((resolve, reject) => {
@@ -157,7 +144,7 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += "   <div id='"+friend.userInfo.userCd+"' class='profile_container'>"
         htmlText += 	    profileMaker(friend.userInfo.userProfileImages[0].profileImgUrl, ' left:auto; top:auto;');
         htmlText += 	"</div>";
-        htmlText += 	"<div onclick='rowClick(this, "+rowClickActivate+");' style='width:65%;padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:15px;'>";
+        htmlText += 	"<div class='friend_contents' onclick='rowClick(this, "+rowClickActivate+");' style=''>";
         htmlText += 		"<strong class='friend_alias alias' style='color: #f18a1c;'>" + (friend.friendAlias!=null? friend.friendAlias : friend.userInfo.userNickNm) + "</strong>";
         htmlText +=         "<div class='friend_message'>" + (friend.userInfo.aboutMe != null ? friend.userInfo.aboutMe : "") + "</div>";
         htmlText += 	"</div>";
@@ -173,6 +160,19 @@ function friendMaker(friend, rowClickActivate) {
         htmlText += "</div>";
         resolve(htmlText);
     })
+}
+
+//행 클릭
+function rowClick(p_obj, rowClickActivate, p_division) {
+    if($(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop('checked')){
+        $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", false);
+    }else{
+        $(p_obj).parents('.chat_row').find("input:checkbox[class='friend_check']").prop("checked", true);
+    }
+    if(rowClickActivate){
+        console.log($(p_obj).parents('.chat_row'))
+        openPopupProfile($(p_obj).parents('.chat_row'), p_division);
+    }
 }
 
 function dropdownToggle(obj){
