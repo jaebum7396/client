@@ -27,7 +27,7 @@
             //window.location.href = intentURI;
 
             // 웹뷰에 URL 호출 요청 전달
-            window.location.href = "callapp://" + intentURI;
+            window.location.href = intentURI;
         }
     </script>
     <body>
