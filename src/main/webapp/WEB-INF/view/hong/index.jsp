@@ -6,12 +6,12 @@
     <script>
         function intentCall(url) {
             let channelID = "UCInTwYQR-ng61-0tlIinkZQ";  // 유튜버의 채널 ID를 입력하세요.
-            let youtubeURL = "www.youtube.com/channel/" + channelID;
+            let youtubeURL = "channel/" + channelID;
 
             let intentURI;
             if (/Android/i.test(navigator.userAgent)) {
                 // Android 인 경우
-                intentURI = "youtube://" + youtubeURL;
+                intentURI = "vnd.youtube://" + youtubeURL;
             } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                 // iOS 인 경우
                 intentURI = "youtube://" + youtubeURL;
