@@ -23,7 +23,10 @@
                 // 대체 동작을 수행하거나 오류 메시지를 표시할 수 있습니다.
             }
             // 유튜브 앱 실행을 시도합니다.
-            window.location.href = intentURI;
+            //window.location.href = intentURI;
+
+            // 웹뷰에 URL 호출 요청 전달
+            window.location.href = "callApp://" + intentURI;
         }
     </script>
     <body>
