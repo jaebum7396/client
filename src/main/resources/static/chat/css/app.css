@@ -110,6 +110,9 @@ body {
 	justify-content: space-between;
 	padding:5px;
 }
+.chat_row .friend_contents{
+	display:flex;flex-direction:column;justify-content:space-between; padding:5px; width:65%; font-size:15px;
+}
 
 .chat_row:hover {
 	background: #f1f4f6;
@@ -895,7 +898,7 @@ input[type=checkbox]:disabled + label {
 }
 
 .channel_row_contents{
-	display: flex;flex-direction: column;width: 65%; padding: 10px; justify-content:space-between;
+	display: flex;flex-direction: column;width: 65%; padding: 5px; justify-content:space-between;
 }
 
 .friend_message{
