@@ -11,7 +11,7 @@
             let intentURI;
             if (/Android/i.test(navigator.userAgent)) {
                 // Android 인 경우
-                intentURI = "intent://" + youtubeURL+ "#Intent;package=com.google.android.youtube;end";
+                intentURI = "vnd.youtube:" + youtubeURL;
             } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                 // iOS 인 경우
                 intentURI = "youtube://" + youtubeURL;
