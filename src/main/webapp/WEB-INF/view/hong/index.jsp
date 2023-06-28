@@ -5,7 +5,6 @@
     </head>
     <script>
         function intentCall(url) {
-            debugger;
             let channelID = "UCInTwYQR-ng61-0tlIinkZQ";  // 유튜버의 채널 ID를 입력하세요.
             let youtubeURL = "channel/" + channelID;
 
@@ -20,6 +19,8 @@
                 // Android 또는 iOS가 아닌 경우
                 // 대체 동작을 수행하거나 오류 메시지를 표시할 수 있습니다.
             }
+            // 유튜브 앱 실행을 시도합니다.
+            window.location.href = intentURI;
         }
     </script>
     <body>
