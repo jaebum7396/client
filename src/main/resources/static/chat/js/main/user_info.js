@@ -110,7 +110,8 @@ function initUserInfoTab() {
 }
 
 function imageInputClick(p_this){
-    $("#imageInput")[0].click()
+    //$("#imageInput")[0].click()
+    document.getElementById("imageInput").click();
     console.log(p_this);
 }
 
