@@ -5,8 +5,8 @@
   Date: 2023-05-14
   Time: 오후 7:03
 --%>
-<link href="css/popup/profile.css" rel="stylesheet" type="text/css"/>
-<script src="js/popup/profile.js" type="text/javascript"></script>
+<link href="css/popup/profile.css<%= version %>" rel="stylesheet" type="text/css"/>
+<script src="js/popup/profile.js<%= version %>" type="text/javascript"></script>
 
 <div id='profile_popup' style=''>
     <div id="chat_header" style=''>

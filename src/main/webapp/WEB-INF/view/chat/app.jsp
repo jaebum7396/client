@@ -6,9 +6,9 @@
         <jsp:directive.include file="../common/head.jsp"/>
         <!-- CSS -->
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
-        <link href="css/app.css" rel="stylesheet" type="text/css"/>
-        <script src="js/app.js" type="text/javascript"></script>
-        <script src="js/stomp.js" type="text/javascript"></script>
+        <link href="css/app.css<%= version %>" rel="stylesheet" type="text/css"/>
+        <script src="js/app.js<%= version %>" type="text/javascript"></script>
+        <script src="js/stomp.js<%= version %>" type="text/javascript"></script>
     </head>
     <script>
         // 로그인 체크
