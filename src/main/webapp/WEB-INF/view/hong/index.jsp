@@ -7,11 +7,23 @@
         function intentCall(url) {
             if (/Android/i.test(navigator.userAgent)) {
                 // Android 인 경우
-                window.location.href = 'vnd.youtube:https://www.youtube.com/@hongsedu'
-                    //+ videoId + '#Intent;package=com.google.android.youtube;end;';
+                let channelID = "UCInTwYQR-ng61-0tlIinkZQ";  // 유튜버의 채널 ID를 입력하세요.
+                let youtubeURL = "https://www.youtube.com/channel/" + channelID;
+
+                let intentURI = "vnd.youtube:" + youtubeURL;
+                let fallbackURL = "https://www.youtube.com";  // 유튜브 앱이 없는 경우, 웹 사이트로 이동할 URL을 입력하세요.
+
+                // 유튜브 앱 실행을 시도합니다.
+                window.location.href = intentURI;
+
+                // 유튜브 앱이 없는 경우, 웹 사이트로 이동합니다.
+                setTimeout(function() {
+                    window.location.href = fallbackURL;
+                }, 2000);  // 2초 후에 fallbackURL로 이동합니다.
+
             } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                 // iOS 인 경우
-                window.location.href = 'youtube://https://www.youtube.com/@hongsedu'
+                window.location.href = 'youtube://@hongsedu'
                     //+ videoId;
             } else {
                 // Android 또는 iOS가 아닌 경우
