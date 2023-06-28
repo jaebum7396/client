@@ -7,11 +7,11 @@
         function intentCall(url) {
             if (/Android/i.test(navigator.userAgent)) {
                 // Android 인 경우
-                window.location.href = 'intent://www.youtube.com/@hongsedu'
+                window.location.href = 'vnd.youtube:https://www.youtube.com/@hongsedu'
                     //+ videoId + '#Intent;package=com.google.android.youtube;end;';
             } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                 // iOS 인 경우
-                window.location.href = 'youtube://www.youtube.com/@hongsedu'
+                window.location.href = 'youtube://https://www.youtube.com/@hongsedu'
                     //+ videoId;
             } else {
                 // Android 또는 iOS가 아닌 경우
@@ -20,7 +20,7 @@
         }
     </script>
     <body>
-        <h2 onclick = "intentCall('vnd.youtube:VIDEO_ID')">외부 intent- youtube</h2>
+        <h2 onclick = "intentCall('')">외부 intent- youtube</h2>
         <h2>외부 intent- browser</h2>
     </body>
 </html>
