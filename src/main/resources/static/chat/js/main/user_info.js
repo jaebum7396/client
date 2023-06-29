@@ -194,7 +194,6 @@ function uploadProfileImageFile() {
     cropper.getCroppedCanvas().toBlob((blob) => {
         // 이미지 최적화
         const maxFileSize = 1024; // 최대 파일 크기 (KB)
-        const imageQuality = 0.7; // 이미지 품질 (0 ~ 1)
 
         const resizedBlobPromise = new Promise((resolve) => {
             const reader = new FileReader();
@@ -204,6 +203,7 @@ function uploadProfileImageFile() {
                     const canvas = document.createElement("canvas");
                     const ctx = canvas.getContext("2d");
                     const maxWidth = 300; // 최대 가로 크기 (픽셀)
+                    const imageQuality = 1; // 이미지 품질 설정
 
                     let width = image.width;
                     let height = image.height;
@@ -395,4 +395,3 @@ function saveUserInfo(){
         }
     });
 }
-
