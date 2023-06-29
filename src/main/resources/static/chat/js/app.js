@@ -252,8 +252,16 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
 function profileMaker(profileImgUrl, imgSizestr){
     let htmlText='';
     if(profileImgUrl){
+        let imgUrl;
+        if(profileImgUrl.indexOf('image/profile') == 0){
+            console.log('기본', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+            imgUrl = profileImgUrl;
+        }else{
+            console.log('기본아님', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+            imgUrl = 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+profileImgUrl;
+        }
         htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
-        htmlText += 		"<img src='"+profileImgUrl+"'>";
+        htmlText += 		"<img src = "+imgUrl+">";
         htmlText += 	"</div>";
     }else{
         htmlText += 	"<div class='profile_img' style='"+imgSizestr+"'>";
