@@ -8,9 +8,6 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="js/login.js<%= version %>" type="text/javascript"></script>
     </head>
-    <%
-
-    %>
     <body class="bg-primary">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">

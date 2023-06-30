@@ -215,12 +215,12 @@ function addFriend(p_userCd){
         const data = response.data;
         //console.log(data)
         if(data.result.processYn === 'Y'){
-            alert(data.message);
+            alert('친구등록이 완료되었어요.');
             closeSearchUserContainer();
             initFriendTab();
         }
         else if(data.result.processYn === 'N'){
-            alert(data.message);
+            alert('이미 친구에요.');
             closeSearchUserContainer();
             initFriendTab();
         }

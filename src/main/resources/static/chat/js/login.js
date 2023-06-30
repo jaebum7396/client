@@ -1,3 +1,15 @@
+$(document).ready(function(){
+    $('#layoutAuthentication #userId').keyup(function(e) {
+        if (e.keyCode == 13) {
+            $('#userPw').focus();
+        }
+    });
+    $('#layoutAuthentication #userPw').keyup(function(e) {
+        if (e.keyCode == 13) {
+            login();
+        }
+    });
+})
 function login(){
     axios.post(USER_URL+'/login', {
         userId: $('#userId').val(),
