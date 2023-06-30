@@ -120,7 +120,7 @@
 						}
 
 						function deleteRow() {
-							console.log('삭제할 행 : ' + grid.getCheckedRowKeys());
+							//console.log('삭제할 행 : ' + grid.getCheckedRowKeys());
 							grid.removeRows(grid.getCheckedRowKeys())
 							grid.request('deleteData');
 						}
@@ -166,7 +166,7 @@
 							}
 							, headers : {
 								'Content-Type': 'application/json',
-								Authorization: localStorage.getItem("token"),
+								'Authorization':  localStorage.getItem('token')
 							}
 						}
 
@@ -186,18 +186,18 @@
 							, scrollY: true
 							, columns: columns
 							, onGridMounted(ev) {
-								console.log('onGridMounted', ev);
+								//console.log('onGridMounted', ev);
 							}
 							, onGridBeforeDestroy(ev) {
-								console.log('onGridBeforeDestroy', ev);
+								//console.log('onGridBeforeDestroy', ev);
 							}
 						});
 
 						grid.on('response', function (ev) {
-							console.log('ev', ev)
+							//console.log('ev', ev)
 							// 성공/실패와 관계 없이 응답을 받았을 경우
 							let resp = JSON.parse(ev.xhr.response)
-							console.log('response', resp)
+							//console.log('response', resp)
 							if(resp.statusCode =='401'){
 								localStorage.setItem('token', '');
 								alert('로그인이 만료되었습니다');

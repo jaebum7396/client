@@ -49,8 +49,7 @@ function signupValidate() {
 }
 
 function signup(){
-    console.log('signup>>>>>>>>>>>>')
-
+    //console.log('signup>>>>>>>>>>>>')
     if(!signupValidate()){
         return;
     };
@@ -68,7 +67,7 @@ function signup(){
     })
     .then(response => {
         let result = response.data.result;
-        console.log(response.data);
+        //console.log(response.data);
         //console.log('token >>>>> ', localStorage.getItem("token"))
         location.href='/chat/login';
     })

@@ -19,8 +19,8 @@ class CustomSelectEditor {
 		];
 		this.addOptions(defaultOptions);
 
-		console.log(props);
-		console.log(props.value);
+		//console.log(props);
+		//console.log(props.value);
 		el.value = String(props.value);
 	}
 

@@ -10,7 +10,7 @@ function initChannelTab(){
 var OPEN_CHANNEL_LIST_YN = false;
 function getChannelsWithPageable(p_page) {
     $('#channel_list_container').off('scroll')
-    console.log('getChannelsWithPageable>>>>>>>>>>>>')
+    //console.log('getChannelsWithPageable>>>>>>>>>>>>')
     $('#friend_list_container').css('display', 'none')
     $('#channel_list_container').css('display', 'block')
     if (OPEN_CHANNEL_LIST_YN == false) {
@@ -22,14 +22,9 @@ function getChannelsWithPageable(p_page) {
                 $("#channel_list_container").html('');
             }
         }
-        axios.get(CHAT_URL+'/channels?size=11&page='+p_page, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: localStorage.getItem("token"),
-            }
-        })
+        axios.get(CHAT_URL+'/channels?size=11&page='+p_page, {})
         .then(response => {
-            console.log('getChannelsWithPageableResp', response)
+            //console.log('getChannelsWithPageableResp', response)
             let result = response.data.result;
             let channelArr = result.channelArr
             let p_page = result.p_page;
@@ -38,7 +33,7 @@ function getChannelsWithPageable(p_page) {
             OPEN_CHANNEL_LIST_YN = false;
         })
         .catch((error) => {
-            console.log(error.response);
+            //console.log(error.response);
             if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
                 localStorage.setItem('token', '');
                 alert('로그인이 만료되었습니다.');
@@ -55,18 +50,18 @@ function getChannelsWithPageable(p_page) {
 
 
 async function channelMakerHub(channelArr){
-    console.log('channelMakerHub start', channelArr)
+    //console.log('channelMakerHub start', channelArr)
     for (let i = 0; i < channelArr.length; i++) {
         let channel = channelArr[i];
         //await channelRowMaker(channel);
         await $("#channel_list_container").append(channelMaker(channel));
     }
-    console.log('channelMakerHub done')
+    //console.log('channelMakerHub done')
 }
 
 //채널 생성 해주는 함수
 function channelMaker(channel){
-    console.log('channelMaker', channel)
+    //console.log('channelMaker', channel)
     let htmlText = "";
     let channelUsers = channel.channelUsers;
     let lastChat = channel.lastChat;
@@ -136,7 +131,7 @@ function channelMaker(channel){
 }
 
 function dropdownToggle(obj){
-    console.log('dropdownToggle', obj)
+    //console.log('dropdownToggle', obj)
     let openToggleYn;
     let dropdownList = $(obj).siblings('.dropdown-list');
 
@@ -149,7 +144,7 @@ function dropdownToggle(obj){
 }
 
 function channelProfileMaker(profileArr) {
-    console.log('channelProfileMaker', profileArr);
+    //console.log('channelProfileMaker', profileArr);
     let htmlText = '';
     let imgSizeStr = '';
 
@@ -200,48 +195,15 @@ function channelProfileMaker(profileArr) {
 function exitChannelHub(p_channelCd){
     let deleteChannelUserPromise = deleteChannelUser(p_channelCd);
     deleteChannelUserPromise
-        .then((response) => {
-            console.log(response)
-            sendChatHub(response.data.result.channelUser.userInfo.userNickNm+' 님이 나가셨습니다.','1')
-            unsubscribe(p_channelCd);
-            getChannelsWithPageable('0');
-        })
-        .catch((error) => {
-            console.log(error.response);
-        })
+    .then((response) => {
+        //console.log(response)
+        sendChatHub(response.data.result.channelUser.userInfo.userNickNm+' 님이 나가셨습니다.','1')
+        unsubscribe(p_channelCd);
+        getChannelsWithPageable('0');
+    })
 }
 
 function deleteChannelUser(p_channelCd) {
-    console.log('deleteChannelUser>>>>>>>>>>>>')
-    return new Promise((resolve, reject) => {
-        axios.post(CHAT_URL +'/channel/exit'
-        , {
-            channelCd : p_channelCd
-        }
-        , {
-            headers: {
-                'Content-Type': 'application/json'
-                , Authorization: localStorage.getItem("token")
-            }
-        })
-        .then(response => {
-            resolve(response)
-        })
-        .catch((error) => {
-            console.log(error.response);
-            if(error){
-                if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
-                    localStorage.setItem('token', '');
-                    alert('로그인이 만료되었습니다');
-                    location.href = 'login';
-                }else{
-                    alert(error.response.data.message);
-                    console.error(error);
-                }
-            }else{
-                alert("알 수 없는 에러가 발생했습니다.");
-                location.reload();
-            }
-        })
-    })
+    //console.log('deleteChannelUser>>>>>>>>>>>>')
+    return axios.post(CHAT_URL +'/channel/exit', {channelCd : p_channelCd}, {})
 }

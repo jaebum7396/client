@@ -1,20 +1,20 @@
 //메시지 수신
 function onMessage(msg) {
-    console.log('onMessage>>>>>>>>>>>>', msg)
+    //console.log('onMessage>>>>>>>>>>>>', msg)
     let innerHeight = $('#chat_messages').height();
     if (msg) {
         let data = msg;
-        console.log('height: calc(100% - 115px);', data)
+        //console.log('height: calc(100% - 115px);', data)
         if(data.transferType==3){
             //$('#WSS_KEY').val(data.objMap.wssKey);
         }else if(data.transferType == 9){
-            console.log('읽음처리resp', data);
+            //console.log('읽음처리resp', data);
             // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
             let getChatsAfterReadChatPromise = getChatsAfterReadChat(data);
             // 화면에 라스트 메시지 이후의 데이터들을 업데이트 해준다.
             getChatsAfterReadChatPromise
                 .then((response) => {
-                    console.log('getChatsAfterReadChatResp', response);
+                    //console.log('getChatsAfterReadChatResp', response);
                     let chatArr = response.data.result.chatArr;
                     for(let i=0; i<chatArr.length; i++){
                         $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
@@ -24,16 +24,16 @@ function onMessage(msg) {
                     }
                 })
                 .catch((response) => {
-                    console.log(response);
+                    //console.log(response);
                 })
         }else if(data.transferType == 99){
-            console.log('채팅방 신규 개설', data);
+            //console.log('채팅방 신규 개설', data);
             if(data.userCd!=localStorage.getItem('loginUserCd')){
                 stompSubscribe(data.domainCd, data.channelCd);
             }
         }else if(data.transferType == 89){
             if (localStorage.getItem('loginUserCd') != data.userCd && data.channelCd == $('#OPEN_CHANNEL_CD').val()){
-                console.log('상대방이 타이핑 중입니다.', data);
+                //console.log('상대방이 타이핑 중입니다.', data);
                 $('#chat_alarm').css('display', 'flex');
                 $('#chat_alarm').html("<div class='alarm_payload'>상대방이 타이핑 중입니다.</div")
                 setTimeout(function() {
@@ -45,7 +45,7 @@ function onMessage(msg) {
             let getChatPromise = getChat(data)
             getChatPromise
                 .then((response) => {
-                    console.log('getChatResp', response)
+                    //console.log('getChatResp', response)
                     let chatArr = response.data.result.chatArr;
                     let channelInfo = response.data.result.channelInfo;
                     //채팅 목록이 활성화 되어 있을때
@@ -81,17 +81,17 @@ function onMessage(msg) {
                         //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
                         if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
                             if(hasFocus||hasFocusApp){
-                                console.log("해당 채팅을 읽었습니다.");
+                                //console.log("해당 채팅을 읽었습니다.");
                                 chatReadHub(chatArr[0]);
                                 //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
                             }else{
-                                console.log("해당 채팅을 읽지않았습니다.");
+                                //console.log("해당 채팅을 읽지않았습니다.");
                             }
                         }
                         let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
                         //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
                         let messageDt = chatArr[0].messageDt;
-                        console.log($('.message_content_container').last().find('.sender').val(), chatArr[0].sender.userCd, $('.message_content_container').last().find('.messageTime').val(), chatArr[0].messageDt.substr(0, 16));
+                        //console.log($('.message_content_container').last().find('.sender').val(), chatArr[0].sender.userCd, $('.message_content_container').last().find('.messageTime').val(), chatArr[0].messageDt.substr(0, 16));
                         if($('.message_content_container').last().find('.sender').val() == chatArr[0].sender.userCd && $('.message_content_container').last().find('.messageTime').val() == chatArr[0].messageDt.substr(0, 16)){
                             //버블로 추가
                             $('.message_content_container').last().find('.bubble_container').append(bubbleMaker(chatArr[0]))
@@ -100,7 +100,7 @@ function onMessage(msg) {
                             $('#chat_messages').append(talkMaker(chatArr,'Y'))
                         }
                         //수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
-                        console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
+                        //console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
                         if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight-5 <= Number($('#chat_messages').scrollTop() + innerHeight)) {
                             //스크롤을 아래로 내려준다.
                             moveBottom();
@@ -110,7 +110,7 @@ function onMessage(msg) {
                     }
                 })
                 .catch(response => {
-                    console.log(response);
+                    //console.log(response);
                     if(response.data.statusCode == 401||response.data.body.statusCode == 401){
                         localStorage.setItem('token', '');
                         alert('로그인이 만료되었습니다.');
@@ -127,25 +127,25 @@ function onMessage(msg) {
 
 //마지막 읽은 메시지 이후의 메시지들을 모두 읽음 처리 해주기 위한 함수
 function channelReadHub() {
-    console.log('channelReadHub start')
+    //console.log('channelReadHub start')
     let channelReadPromise = channelRead($('#OPEN_CHANNEL_CD').val());
     channelReadPromise
         .then((response) => {
-            console.log("channelReadHubResp", response);
+            //console.log("channelReadHubResp", response);
             let chat = response.data.result.prevLastChat;
             chat.transferType = 9;
-            console.log('이게 맞습니까?', chat)
+            //console.log('이게 맞습니까?', chat)
             sendChat(chat);
         })
         .catch((response) => {
-            console.log(response)
+            //console.log(response)
         })
-    console.log('channelReadHub done')
+    //console.log('channelReadHub done')
 }
 
 //메시지 읽음 처리
 function channelRead(p_channelCd) {
-    console.log('updateUnreadCount>>>>>>>>>>>>', p_channelCd)
+    //console.log('updateUnreadCount>>>>>>>>>>>>', p_channelCd)
     return new Promise((resolve, reject) => {
         axios.post(CHAT_URL +'/channel/read'
         , {
@@ -154,14 +154,14 @@ function channelRead(p_channelCd) {
         , {
             headers: {
                 'Content-Type': 'application/json'
-                , Authorization: localStorage.getItem("token")
+                
             }
         })
         .then(response => {
             resolve(response)
         })
         .catch((error) => {
-            console.log(error.response);
+            //console.log(error.response);
             if(error){
                 if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
                     localStorage.setItem('token', '');
@@ -181,32 +181,32 @@ function channelRead(p_channelCd) {
 
 //단일 메시지를 읽음 표시 해주기 위해 사용하는 함
 function chatReadHub(p_chat) {
-    console.log('updateUnreadCountPerHub start')
+    //console.log('updateUnreadCountPerHub start')
     let chatReadPromise = chatRead(p_chat);
     chatReadPromise
         .then((response) => {
-            console.log("chatReadResp", response);
+            //console.log("chatReadResp", response);
             let chat = response.data.result.chat;
             chat.domainCd = 1;
             chat.transferType = 9;
             sendChat(chat);
         })
         .catch((response) => {
-            console.log(response)
+            //console.log(response)
         })
-    console.log('updateUnreadCountPerHub done')
+    //console.log('updateUnreadCountPerHub done')
 }
 
 //메시지 읽음 처리
 function chatRead(p_chat) {
-    console.log('chatRead>>>>>>>>>>>>', p_chat)
+    //console.log('chatRead>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
         axios.post(CHAT_URL +'/chat/read'
             , p_chat
             , {
                 headers: {
                     'Content-Type': 'application/json'
-                    , Authorization: localStorage.getItem("token")
+                    
                 }
             })
             .then(response => {
@@ -220,7 +220,7 @@ function chatRead(p_chat) {
 
 //마지막으로 읽은 메시지를 포함한 이후의 메시지들을 가져오는 함수
 function getChatsAfterReadChat(p_chat) {
-    console.log('getChatsAfterReadChat>>>>>>>>>>>>', p_chat)
+    //console.log('getChatsAfterReadChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
         axios.get(CHAT_URL +'/chats/read', {
             params: {
@@ -228,7 +228,7 @@ function getChatsAfterReadChat(p_chat) {
             }
             ,headers: {
                 'Content-Type': 'application/json'
-                , Authorization: localStorage.getItem("token")
+                
             }
         })
         .then(response => {
@@ -241,7 +241,7 @@ function getChatsAfterReadChat(p_chat) {
 }
 
 function alarmMaker(p_chat){
-    console.log('alarmMaker>>>>>>>>>>>>', p_chat)
+    //console.log('alarmMaker>>>>>>>>>>>>', p_chat)
     let html = '';
     html+="<div class='alarm "+p_chat.chatCd+"' style='max-width: 400px; display:flex; border-radius: 5px; margin: 5px; background-color:white;' onclick='closeAlarm(this)'>"
     html+=		"<div style='width: 50px; height:50px; background:url(\""+p_chat.sender.userProfileImages[0].profileImgUrl+"\");background-size: cover; border-radius:5px;'></div>"
@@ -277,11 +277,11 @@ function moveBottom() {
 
 //메시지 전송 API 호출
 function sendChatHub(message, p_chatType) {
-    console.log(message, message.length)
+    //console.log(message, message.length)
     if(message.trim().length==0){
         return;
     }
-    console.log('sendChatHub start', p_chatType)
+    //console.log('sendChatHub start', p_chatType)
 
     // chat 객체 생성
     let chat = new Object();
@@ -296,32 +296,32 @@ function sendChatHub(message, p_chatType) {
     saveChatPromise
     .then((response) => {
         let result = response.data.result
-        console.log('saveChatResp', response)
+        //console.log('saveChatResp', response)
         result.chat.domainCd = 1;
         // sendChat 함수 호출하여 메시지 전송하기
         sendChat(result.chat);
     })
     .catch((response) => {
-        console.log(response);
+        //console.log(response);
     })
     document.getElementById("msg").value = '';
     document.getElementById("msg").defaultValue = '';
 }
 
 function saveChat(p_chat) {
-    console.log('saveChat>>>>>>>>>>>>', p_chat)
+    //console.log('saveChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
         axios.post(CHAT_URL +'/chat', p_chat, {
             headers: {
                 'Content-Type': 'application/json'
-                , Authorization: localStorage.getItem("token")
+                
             }
         })
         .then(response => {
             resolve(response)
         })
         .catch(error => {
-            console.log(error.response);
+            //console.log(error.response);
             if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
                 localStorage.setItem('token', '');
                 alert('로그인이 만료되었습니다.');
@@ -336,7 +336,7 @@ function saveChat(p_chat) {
 
 //메시지코드로 메시지를 가져옴
 function getChat(p_chat) {
-    console.log('getChat>>>>>>>>>>>>', p_chat)
+    //console.log('getChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
         axios.get(CHAT_URL + '/chat', {
             params: {
@@ -344,7 +344,7 @@ function getChat(p_chat) {
             }
             , headers: {
                 'Content-Type': 'application/json'
-                , Authorization: localStorage.getItem('token')
+                , 
             }
         })
         .then(response => {
@@ -358,7 +358,7 @@ function getChat(p_chat) {
 
 //메시지 리스트를 새로고침 하기 위한 함수
 function loadChatListHub(p_channelCd, p_openYn) {
-    console.log('loadChatListHub start')
+    //console.log('loadChatListHub start')
     //새로 열리는 채팅방일 경우엔 현재 페이지를 0으로 세팅한다.
     let noMore = false;
     if (p_openYn == 'Y') {
@@ -369,7 +369,7 @@ function loadChatListHub(p_channelCd, p_openYn) {
     const loadChatListPromise = loadChatList(p_channelCd);
     loadChatListPromise
     .then((response) => {
-        console.log("loadChatListResp", response)
+        //console.log("loadChatListResp", response)
         //이전 메시지가 prepend 되어지기 전 스크롤 총 길이
         let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
 
@@ -379,7 +379,7 @@ function loadChatListHub(p_channelCd, p_openYn) {
             .then(() => {
                 $('#chat_messages').scroll(function() {
                     let scrollHeight = $('#chat_messages')[0].scrollHeight;
-                    console.log('scroll>>>>>>>>>>>>',scrollHeight)
+                    //console.log('scroll>>>>>>>>>>>>',scrollHeight)
                     let current_page_num = $("#chat_room_view input[name='current_page_num']").val()
                     let scrollTop = $('#chat_messages').scrollTop();
 
@@ -394,7 +394,7 @@ function loadChatListHub(p_channelCd, p_openYn) {
                 });
                 if (p_openYn == 'Y') {//새로 열리는 채팅방일 경우엔 맨 아래쪽 리스트로 이동시킨다.
                     moveBottom();
-                    console.log('loadChatListHub done')
+                    //console.log('loadChatListHub done')
                 } else {//이전 메시지 로딩일 경우에는 이전 메시지가 prepend 되어지기 전의 스크롤 위치로 스크롤 위치를 복구 시킨다.
                     let currentScrollHeight = $('#chat_messages')[0].scrollHeight;
                     $('#chat_messages').scrollTop(currentScrollHeight - prevScrollHeight); //현재 스크롤 총 높이에서 이전 스크롤 총 높이를 빼서 추가된 스크롤 만큼 스크롤 위치 다시 이동
@@ -406,7 +406,7 @@ function loadChatListHub(p_channelCd, p_openYn) {
         }
     })
     .catch(error => {
-        console.log(error.response);
+        //console.log(error.response);
         if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
             localStorage.setItem('token', '');
             alert('로그인이 만료되었습니다.');
@@ -420,17 +420,17 @@ function loadChatListHub(p_channelCd, p_openYn) {
 
 //메시지 리스트를 불러온다.
 function loadChatList(p_channelCd) {
-    console.log('loadChatList>>>>>>>>>>>>')
+    //console.log('loadChatList>>>>>>>>>>>>')
     let p_page = $("#chat_room_view input[name='current_page_num']").val();
     return new Promise((resolve, reject) => {
         axios.get(CHAT_URL + '/chats?size=100&page=' + p_page + '&channelCd=' + p_channelCd, {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: localStorage.getItem("token"),
+                
             }
         })
         .then(response => {
-            console.log('loadChatListResp', response)
+            //console.log('loadChatListResp', response)
             resolve(response);
         })
         .catch(error => {
@@ -439,12 +439,12 @@ function loadChatList(p_channelCd) {
     });
 }
 async function talkMakerHub(chatArr) {
-    console.log('talkMakerHub start', chatArr)
+    //console.log('talkMakerHub start', chatArr)
 
     let bubbleArr = new Array();
     for (let i = 0; i < chatArr.length; i++) {
         if(i==0){
-            console.log(i,chatArr[i],0)
+            //console.log(i,chatArr[i],0)
             bubbleArr.push(chatArr[i]);
             if(chatArr.length==1){
                 await $('#chat_messages').prepend(talkMaker(bubbleArr));
@@ -465,11 +465,11 @@ async function talkMakerHub(chatArr) {
             }
         }
     }
-    console.log('talkMakerHub done')
+    //console.log('talkMakerHub done')
 }
 
 function dateMaker(p_date){
-    console.log(p_date)
+    //console.log(p_date)
     let html ='';
     html+="<div style='width:100%; display: flex;justify-content: center;'><div style=''>"+p_date+"</div></div>"
     return html
@@ -477,19 +477,19 @@ function dateMaker(p_date){
 
 //talk 세팅을 위한 함수
 function talkMaker(chatArr, singleMessageYn) {
-    console.log(chatArr[0].messageDt.substr(0, 10),$('#chat-messages div.message').first().find('.messageDate').val());
+    //console.log(chatArr[0].messageDt.substr(0, 10),$('#chat-messages div.message').first().find('.messageDate').val());
     if(singleMessageYn=='Y'){
-        console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '마지막 메시지 날짜 : '+ $('#chat-messages div.message').last().find('.messageDate').val())
+        //console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '마지막 메시지 날짜 : '+ $('#chat-messages div.message').last().find('.messageDate').val())
         if(chatArr[0].messageDt.substr(0, 10)!=$('#chat-messages div.message').last().find('.messageDate').val()){
             $('#chat-messages').append(dateMaker(chatArr[0].messageDt.substr(0, 10)));
         }
     }else{
-        console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '첫번째 메시지 날짜 : '+ $('#chat-messages div.message').first().find('.messageDate').val(), $('#chat-messages div.message').first().find('.messageDate').val())
+        //console.log('현재보내온 메시지 날짜 : ',chatArr[0].messageDt.substr(0, 10), '첫번째 메시지 날짜 : '+ $('#chat-messages div.message').first().find('.messageDate').val(), $('#chat-messages div.message').first().find('.messageDate').val())
         if(chatArr[0].messageDt.substr(0, 10)!=$('#chat-messages div.message').first().find('.messageDate').val()&&$('#chat-messages div.message').first().find('.messageDate').val()){
             $('#chat-messages').prepend(dateMaker($('#chat-messages div.message').first().find('.messageDate').val()));
         }
     }
-    console.log('talkMaker>>>>>>>>>>>>',chatArr)
+    //console.log('talkMaker>>>>>>>>>>>>',chatArr)
     //현재 세션에 로그인 한 사람
     var loginUserCd = localStorage.getItem('loginUserCd')
     var chatStr = '';
@@ -549,7 +549,7 @@ function createThumbnailDom(url, target, maxWidth, maxHeight, callback) {
 
 // JSONP 콜백 함수
 function handleCreateThumbnailResponse(response) {
-    console.log('handleCreateThumbnailResponse', response)
+    //console.log('handleCreateThumbnailResponse', response)
     let html = "";
     html+=	"<div style='display:flex;flex-direction: column;'>"
     html+=		"<p style='font-weight:600; font-size: 16px; color: #597a96;'>"+response.title+"</p>";
@@ -583,7 +583,7 @@ function createMovieDom(chat){
 
 //채팅 내용 생성하기 위한 함수(시간별로 talk에 묶임)
 function bubbleMaker(chat) {
-    console.log('bubbleMaker>>>>>>>>>>>>',chat)
+    //console.log('bubbleMaker>>>>>>>>>>>>',chat)
     //현재 세션에 로그인 한 사람
     var loginUserCd = localStorage.getItem('loginUserCd')
     var chatStr = '';

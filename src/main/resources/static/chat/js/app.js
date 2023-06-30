@@ -1,4 +1,36 @@
 
+const debugYn = true;
+/*axios 관련*/
+axios.interceptors.request.use(req => {
+    req.headers.Authorization = localStorage.getItem("token");
+    req.headers['Content-Type'] = 'application/json';
+    return req;
+});
+
+axios.interceptors.response.use(res => {
+    if(debugYn){
+        console.log('[debugMode]' + res.config.url + '>>>>> ', res);
+    }
+    return res;
+}, err => {
+    console.log('[err] >>>>>', err.response);
+    if(err.response.status == 401){
+        localStorage.setItem('token', '');
+        alert('로그인이 만료되었습니다');
+        location.href = 'login';
+    }else if(err.response.data.statusCodeValue == 401){
+        localStorage.setItem('token', '');
+        alert('로그인이 만료되었습니다');
+        location.href = 'login';
+    }else if(err.response.data.statusCode == 500){
+        alert('서버에러가 발생했습니다');
+        //location.reload();
+    }else if(err.response.data.statusCode == 503){
+        alert("잠시 후에 다시 시도하세요");
+        location.reload();
+    }
+})
+
 $(document).ready(function() {
     // #menu 요소 하위의 ul 요소 중 class 속성이 channel_user_list인 요소를 숨깁니다.
     $("#menu ul.channel_user_list").hide();
@@ -45,13 +77,13 @@ var hasFocusApp;
 function updateFocusStatus() {
     if (document.hasFocus()) {
         hasFocus = true;
-        console.log("해당 창이 포커스를 가지고 있습니다.");
+        //console.log("해당 창이 포커스를 가지고 있습니다.");
         if($('#OPEN_CHANNEL_CD').val()){
             channelReadHub();
         }
     } else {
         hasFocus = false;
-        console.log("해당 창이 포커스를 잃었습니다.");
+        //console.log("해당 창이 포커스를 잃었습니다.");
     }
 }
 
@@ -159,7 +191,7 @@ function addInfiniteScroll(p_list_container_id){
 
 //친구 리스트에서 클릭시 채팅방 오픈하기 위한 함수
 function openChannelWithUserHub(p_me){
-    console.log('openChannelWithUserHub start')
+    //console.log('openChannelWithUserHub start')
 
     // 전역변수 초기화
     //localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트// 채팅방 번호
@@ -179,7 +211,7 @@ function openChannelWithUserHub(p_me){
     var openChannelWithUserPromise = openChannelWithUser(p_objArr);
     openChannelWithUserPromise
     .then((response) => { // 채팅방 생성 성공시 수행될 코드
-        console.log('openChannelWithUserResp', response)
+        //console.log('openChannelWithUserResp', response)
         channelUsers = response.data.result.channel.channelUsers; // 채팅방에 참여한 사용자 정보들
         for(let i=0; i< channelUsers.length; i++){ // 사용자 정보들을 반복문으로 돌면서
             if(channelUsers[i].userCd==localStorage.getItem('loginUserCd')){ // 로그인한 사용자의 채팅방 별명 설정
@@ -187,7 +219,7 @@ function openChannelWithUserHub(p_me){
             }
         }
         let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
-        console.log('channelCd : '+channelCd)
+        //console.log('channelCd : '+channelCd)
         //localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
         $('#OPEN_CHANNEL_CD').val(channelCd);
         channelReadHub(); // 채팅방 읽지 않은 메시지 개수 업데이트
@@ -197,11 +229,11 @@ function openChannelWithUserHub(p_me){
         //메시지 초기화
         loadChatListHub(channelCd, 'Y');
         $("input[class='friend_check']").prop('checked', false)
-        console.log('rowClick done')
+        //console.log('rowClick done')
         chatRoomVisible('friend', channelUsers.length);
     })
     .catch((response) => {
-        console.log(response)
+        //console.log(response)
     })
 
     //invite_list_close();
@@ -209,18 +241,13 @@ function openChannelWithUserHub(p_me){
 
 //채널생성 -- 현재 로그인 되어있는 세션 유저코드와 클릭한 행의 유저코드를 통해 채널 생성함
 function openChannelWithUser(p_objArr) {
-    console.log('openChannelWithUser>>>>>>>>>>>>', p_objArr)
+    //console.log('openChannelWithUser>>>>>>>>>>>>', p_objArr)
     return new Promise((resolve, reject) => {
         let userCdArr = [];
         p_objArr.forEach((p_obj) => {
             userCdArr.push($(p_obj).find('#FRIEND_USER_CD').val());
         })
-        axios.get(CHAT_URL + '/channel?userCdArr=' + encodeURIComponent(userCdArr.join(',')), {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: localStorage.getItem('token')
-            }
-        })
+        axios.get(CHAT_URL + '/channel?userCdArr=' + encodeURIComponent(userCdArr.join(',')), {})
         .then(response => {
             resolve(response)
         })
@@ -254,10 +281,10 @@ function profileMaker(profileImgUrl, imgSizestr){
     if(profileImgUrl){
         let imgUrl;
         if(profileImgUrl.indexOf('image/profile') == 0){
-            console.log('기본', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+            //console.log('기본', profileImgUrl, profileImgUrl.indexOf('image/profile'))
             imgUrl = profileImgUrl;
         }else{
-            console.log('기본아님', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+            //console.log('기본아님', profileImgUrl, profileImgUrl.indexOf('image/profile'))
             imgUrl = 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+profileImgUrl;
         }
         htmlText += 	"<div class='profile_img' style='"+imgSizestr+" '>"
@@ -273,12 +300,12 @@ function profileMaker(profileImgUrl, imgSizestr){
 
 //채팅리스트 및 친구 리스트 프로필 생성
 //function profileMaker(friend, imgSizeStr){
-//    console.log('profileMaker', friend);
+//    //console.log('profileMaker', friend);
 //    return new Promise((resolve, reject) => {
 //        let htmlText = '';
 //
 //        if (!friend.userInfo) {
-//            console.log('프로필 이미지가 없습니다.');
+//            //console.log('프로필 이미지가 없습니다.');
 //            htmlText += "<div class='profile_img' style='" + imgSizeStr + "'>";
 //            htmlText += "<img src='image/face_common.jpg'>";
 //            htmlText += '</div>';
@@ -297,17 +324,17 @@ function profileMaker(profileImgUrl, imgSizestr){
 //                    responseType:'blob',
 //                    headers: {
 //                        'Content-Type': 'application/json',
-//                        Authorization: localStorage.getItem("token"),
+//                        
 //                    }
 //                }).then(response => {
-//                    console.log('해당 이미지가 있습니다.',response);
+//                    //console.log('해당 이미지가 있습니다.',response);
 //                    const imageURL = window.URL.createObjectURL(response.data)
 //                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
 //                    htmlText += 		"<img src='"+ imageURL +"'>";
 //                    htmlText += 	"</div>";
 //                    resolve(htmlText);
 //                }).catch(error => {
-//                    console.log('해당 이미지가 없습니다.', error.response);
+//                    //console.log('해당 이미지가 없습니다.', error.response);
 //                    htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>"
 //                    htmlText += 		"<img src='image/face_common.jpg'>";
 //                    htmlText += 	"</div>";
@@ -315,7 +342,7 @@ function profileMaker(profileImgUrl, imgSizestr){
 //                })
 //            }
 //        }else{
-//            console.log('프로필 이미지가 없습니다.', error.response);
+//            //console.log('프로필 이미지가 없습니다.', error.response);
 //            htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>";
 //            htmlText += 		"<img src='image/face_common.jpg'>";
 //            htmlText += 	"</div>";
@@ -328,13 +355,9 @@ function imageProvider(fileLocation, imgSizeStr){
     return new Promise((resolve, reject) => {
         let htmlText = "";
         axios.get(FILE_STORAGE_URL+'/display?fileLocation='+fileLocation, {
-            responseType:'blob',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: localStorage.getItem("token"),
-            }
+            responseType:'blob'
         }).then(response => {
-            console.log('해당 이미지가 있습니다.',response);
+            //console.log('해당 이미지가 있습니다.',response);
             const imageURL = window.URL.createObjectURL(response.data)
             htmlText += 	"<div class='profile_img' style='"+imgSizeStr+" '>"
             htmlText += 		"<img src='"+ imageURL +"'>";
@@ -344,7 +367,7 @@ function imageProvider(fileLocation, imgSizeStr){
             //return htmlText;
             resolve(htmlText);
         }).catch(error => {
-            console.log('해당 이미지가 없습니다.', error.response);
+            //console.log('해당 이미지가 없습니다.', error.response);
             htmlText += 	"<div class='profile_img' style='"+imgSizeStr+"'>"
             htmlText += 		"<img src='image/face_common.jpg'>";
             htmlText += 	"</div>";
