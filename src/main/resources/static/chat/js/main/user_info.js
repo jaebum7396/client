@@ -30,12 +30,22 @@ function initUserInfoTab() {
 
                 let swiperSlideHtml = '';
                 for(let i = 0; i < userInfo.userProfileImages.length; i++){
-                    let imgUrl = userInfo.userProfileImages[i].profileImgUrl;
+                    let imgUrl;
+                    let profileImgUrl = userInfo.userProfileImages[i].profileImgUrl;
+
+                    if(profileImgUrl.indexOf('image/profile') == 0){
+                        console.log('기본', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+                        imgUrl = profileImgUrl;
+                    }else{
+                        console.log('기본아님', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+                        imgUrl = 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+profileImgUrl;
+                    }
+
                     swiperSlideHtml += "<div class='swiper-slide'>"
                     if(userInfo.userProfileImages[i].defaultYn == 'N'){
                         swiperSlideHtml +=     "<i onclick='deleteProfileImageHub(\""+userInfo.userProfileImages[i].profileImgUrl+"\",\""+userInfo.userProfileImages[i].userProfileImageCd+"\")' class='delete_profile_btn bi bi-trash3-fill'></i>"
                     }
-                    swiperSlideHtml +=     "<img src='http://www.aflk-chat.com:8000/file-storage/display?fileLocation=" + imgUrl + "' style='width: 100%;'>"
+                    swiperSlideHtml +=     "<img src='"+imgUrl+"' style='width: 100%;'>"
                     swiperSlideHtml += "</div>";
                 }
 
@@ -134,17 +144,17 @@ function deleteProfileImageData(p_userProfileImageCd){
         alert('프로필이 삭제되었습니다.');
         initUserInfoTab();
     })
-        .catch((error) => {
-            console.log(error);
-            if (error.response.data.statusCode == 401 || error.response.data.body.statusCode == 401) {
-                localStorage.setItem('token', '');
-                alert('로그인이 만료되었습니다');
-                location.href = 'login';
-            } else {
-                alert(error.response.data.message);
-                console.error(error);
-            }
-        })
+    .catch((error) => {
+        console.log(error);
+        if (error.response.data.statusCode == 401 || error.response.data.body.statusCode == 401) {
+            localStorage.setItem('token', '');
+            alert('로그인이 만료되었습니다');
+            location.href = 'login';
+        } else {
+            alert(error.response.data.message);
+            console.error(error);
+        }
+    })
 }
 
 function deleteProfileImageHub(p_profileImgUrl , p_userProfileImageCd) {
@@ -152,21 +162,21 @@ function deleteProfileImageHub(p_profileImgUrl , p_userProfileImageCd) {
         return;
     }
     deleteProfileImageFile(p_profileImgUrl)
-        .then((response) => {
-            console.log('deleteProfileImageFileResp', response)
-            deleteProfileImageData(p_userProfileImageCd)
-        })
-        .catch((error) => {
-            console.log(error);
-            if (error.response.data.statusCode == 401 || error.response.data.body.statusCode == 401) {
-                localStorage.setItem('token', '');
-                alert('로그인이 만료되었습니다');
-                location.href = 'login';
-            } else {
-                alert(error.response.data.message);
-                console.error(error);
-            }
-        })
+    .then((response) => {
+        console.log('deleteProfileImageFileResp', response)
+        deleteProfileImageData(p_userProfileImageCd)
+    })
+    .catch((error) => {
+        console.log(error.response);
+        if (error.response.data.statusCode == 401 || error.response.data.body.statusCode == 401) {
+            localStorage.setItem('token', '');
+            alert('로그인이 만료되었습니다');
+            location.href = 'login';
+        } else {
+            alert(error.response.data.message);
+            console.error(error);
+        }
+    })
 }
 
 function imageInputClick(p_this){

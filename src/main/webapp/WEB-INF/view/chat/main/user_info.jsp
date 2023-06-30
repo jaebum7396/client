@@ -12,9 +12,9 @@
                     <div class="col-lg-7">
                         <div class="card-body">
                             <form>
-                                <div class = 'swiper-container' style="display:flex;justify-content:center;margin-bottom:10px;overflow:hidden;">
+                                <div class = 'swiper-container' style="display:flex;justify-content:center;margin-bottom:10px;overflow:hidden;background-color:black;">
                                     <input style='display:none;' type='file' id='imageInput' onchange='updateProfileImageHub()'>
-                                    <div id='profile_container' class='profile_container swiper-wrapper' style='width:100%; height:300px;'<%-- onclick='imageInputClick();'--%>>
+                                    <div id='profile_container' class='profile_container swiper-wrapper' style='width:100%;'<%-- onclick='imageInputClick();'--%>>
                                     </div>
                                 </div>
                                 <div class="form-floating mb-3" style='display: flex; justify-content: center;'>

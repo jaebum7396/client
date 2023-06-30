@@ -14,7 +14,7 @@
     <body class="bg-primary">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
-                <div class="" style='margin:20px; margin-top:15%;'>
+                <div class="" style='margin:20px; margin-top:30%;'>
                     <div>
                         <div class="card-header" style="display:flex;justify-content: center;">
                             <img src="/chat/image/logo_app.png" style="width:200px;">
