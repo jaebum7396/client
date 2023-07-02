@@ -1036,7 +1036,7 @@ ul {
 	right: 10px;
 }
 #profile_container .swiper-slide{
-	height:366px;
+	/*height:366px;*/
 }
 
 .swiper-slide .delete_profile_btn{
