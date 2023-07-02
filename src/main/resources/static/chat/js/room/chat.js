@@ -512,11 +512,25 @@ function talkMaker(chatArr, singleMessageYn) {
         chatStr += "<div class='message'>";
         chatStr += "	<input type='hidden' class='messageDate' value='"+chatArr[0].messageDt.substr(0, 10)+"'/>"
         chatStr += "	<div class='message_content_container'>";
-        if(chatArr[0].sender.userProfileImages[0]){
-            chatStr += "	<img src='"+chatArr[0].sender.userProfileImages[0].profileImgUrl+"' style='width:40px;height:40px;object-fit:cover;'>";
+        let imgUrl;
+        let profileImgUrl = chatArr[0].sender.userProfileImages[0].profileImgUrl;
+        console.log(profileImgUrl)
+
+        if(profileImgUrl.indexOf('image/profile') == 0){
+            //console.log('기본', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+            imgUrl = profileImgUrl;
         }else{
-            chatStr += "	<img src='image/face_common.jpg' style='width:40px;height:40px;object-fit:cover;'>";
+            //console.log('기본아님', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+            imgUrl = 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+profileImgUrl;
         }
+        console.log(imgUrl)
+
+        //if(chatArr[0].sender.userProfileImages[0]){
+        //    chatStr += "	<img src='http://www.aflk-chat.com:8000/file-storage/display?"+chatArr[0].sender.userProfileImages[0].profileImgUrl+"' style='width:40px;height:40px;object-fit:cover;'>";
+        //}else{
+        //    chatStr += "	<img src='image/face_common.jpg' style='width:40px;height:40px;object-fit:cover;'>";
+        //}
+        chatStr += "	<img src='"+imgUrl+"' style='width:40px;height:40px;object-fit:cover;'>";
         chatStr += "		<div style='display:flex; flex-direction:column;'>"
         chatStr += "			<div style='margin-top:10px;'>"
         chatStr += 					chatArr[0].sender.userNickNm? chatArr[0].sender.userNickNm : chatArr[0].sender.userNm;
