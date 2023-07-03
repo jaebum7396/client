@@ -6,7 +6,7 @@
 // ○ 파일	: page_head
 // ● 설명	: 페이지 공통 head
 //**********************************************************************************
-String version = "?v=20230703.1"; // CSS 나 JS 수정 후 업데이트 해줄것
+String version = "?v=20230703.2"; // CSS 나 JS 수정 후 업데이트 해줄것
 WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
 Environment env = context.getEnvironment();
 
