@@ -1037,6 +1037,9 @@ ul {
 }
 #profile_container .swiper-slide{
 	height:351px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .swiper-slide .delete_profile_btn{
