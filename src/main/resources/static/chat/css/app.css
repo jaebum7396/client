@@ -1037,6 +1037,9 @@ ul {
 }
 #profile_container .swiper-slide{
 	height:351px;
+	border: 1px solid black;
+	border-radius: 10px;
+	overflow: hidden;
 	display: flex;
 	justify-content: center;
 	align-items: center;
