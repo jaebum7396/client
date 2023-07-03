@@ -113,13 +113,51 @@ function friendMaker(friend, rowClickActivate) {
         htmlText +=     	"<label for='check_"+friend.userInfo.userCd+"' class='friend_check_label'></label>"
         htmlText +=     	"<i class='bi bi-three-dots' onclick='dropdownToggle(this)'></i>"
         htmlText +=     	"<ul class='dropdown-list'>"
-        htmlText +=     	    "<li>삭제</li>"
-        htmlText +=     	    "<li>차단</li>"
+        htmlText +=     	    "<li onclick='updateFriendHub(\"hide\", \"Y\", \"" + friend.userInfo.userCd + "\")'>숨김</li>"
+        htmlText +=     	    "<li onclick='updateFriendHub(\"block\", \"Y\", \"" + friend.userInfo.userCd + "\")'>차단</li>"
         htmlText +=     	"</ul>"
         htmlText += 	"</div>";
         htmlText += "</div>";
         resolve(htmlText);
     })
+}
+
+function updateFriendHub(p_methodType, p_yn, p_friendCd){
+    let confirmMsg = "";
+    let param = new Object();
+    param.friendCd = p_friendCd;
+    if(p_methodType == 'hide'){
+        if(p_yn == 'Y'){
+            confirmMsg = "친구목록에서 보이지않도록 합니다.";
+        }else{
+            confirmMsg = "친구목록으로 복귀합니다.";
+        }
+        param.hideYn = p_yn;
+    } else if(p_methodType == 'block') {
+        if(p_yn == 'Y'){
+            confirmMsg = "차단하시겠습니까?";
+        }else{
+            confirmMsg = "차단해제 하시겠습니까?";
+        }
+        param.hideYn = p_yn;
+        param.blockYn = p_yn;
+    }
+    if (confirm(confirmMsg)) {
+        updateFriend(param);
+    }
+}
+
+function updateFriend(param){
+    axios.put(CHAT_URL+'/friend', param, {})
+    .then(function (response) {
+        const data = response.data;
+        //console.log(data)
+        alert(response.data.message);
+        initFriendTab();
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
 }
 
 //행 클릭
