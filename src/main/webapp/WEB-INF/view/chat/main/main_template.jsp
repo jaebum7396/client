@@ -5,16 +5,13 @@
   Date: 2023-05-14
   Time: 오후 4:21
 --%>
-<style>
 
-</style>
 <div id="tab_container">
     <%-- 어플리케이션 탑 메뉴 Start --%>
     <jsp:directive.include file="top_menu.jsp"/>
     <%-- 어플리케이션 탑 메뉴 End --%>
     <script src="js/main/friend_list.js<%= version %>" type="text/javascript"></script>
     <script src="js/main/channel_list.js<%= version %>" type="text/javascript"></script>
-
     <div id="friend_list_container" class='list_container' style=''>
         <jsp:directive.include file="../popup/search_user.jsp"/>
         <input type='hidden' name='current_page_num' value='0'/>

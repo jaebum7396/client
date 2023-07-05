@@ -4,6 +4,9 @@ var cropper;
 let swiperInstance = null;
 
 function initUserInfoTab() {
+    closeSearchUserContainer();
+    $('.dropdown-list').removeClass('openToggle');
+
     $('#app_header_menu').css('display', 'none');
     $('#app_title_text').html('내 정보');
     $('.list_container').css('display', 'none');
@@ -353,7 +356,7 @@ function makeAboutMeHub(){
     let prompt = '';
     prompt += '너의 이름은 '+$('#userNickNm').val() +'이고 성별은 '+$('#userGender').val() + '야 ';
     //prompt += '너는 '+$('#lookingForGender').val() +'인 친구를 찾고 있어. ';
-    prompt += '너는 세개의 따옴표 안에 있는 해시태그들에 해당하는 사람이야. 해시태그라는 단어 없이 200글자 이내의 자기소개 작성해줘 ';
+    prompt += '너는 세개의 따옴표 안에 있는 해시태그들에 해당하는 사람이야. 해시태그들에 해당하는 사람이라는 어색한 설명 없이 200글자 이내의 자기소개 작성해줘 ';
     prompt += '\"\"\"'+userCharacterArr.toString()+'\"\"\"';
     //console.log('prompt : ' + prompt);
     prompt = encodeURIComponent(prompt);

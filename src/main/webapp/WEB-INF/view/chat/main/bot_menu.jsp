@@ -14,7 +14,7 @@
     <span class="chat_header avatarMode" onclick='initAvatarTab();'>
         <i class="bi bi-person-heart"></i>
     </span>
-    <span class="chat_header friends" onclick="initFriendTab();">
+    <span class="chat_header friends" onclick="initFriendTab('normal');">
         <%--<img src="image/users.svg"/>--%>
         <i class="bi bi-people-fill"></i>
     </span>

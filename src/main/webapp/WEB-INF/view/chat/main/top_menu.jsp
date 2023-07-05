@@ -19,7 +19,11 @@
             <img src="image/user_add.svg"/>
         </span>
         <span class="app_header settings">
-            <img src="image/settings.svg" onclick=""/>
+            <img src="image/settings.svg" onclick="dropdownToggle(this)"/>
+            <ul class='dropdown-list'>
+                <li onclick=''>숨김 친구 리스트</li>
+                <li onclick=''>차단 친구 리스트</li>
+            </ul>
         </span>
     </div>
 </div>

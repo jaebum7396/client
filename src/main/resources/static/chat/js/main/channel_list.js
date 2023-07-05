@@ -1,4 +1,7 @@
 function initChannelTab(){
+    closeSearchUserContainer();
+    $('.dropdown-list').removeClass('openToggle');
+
     $('#app_header_menu').css('display', 'none');
     $('#app_title_text').html('채팅 목록');
     $('.list_container').css('display', 'none');
@@ -131,6 +134,7 @@ function channelMaker(channel){
 }
 
 function dropdownToggle(obj){
+    closeSearchUserContainer();
     //console.log('dropdownToggle', obj)
     let openToggleYn;
     let dropdownList = $(obj).siblings('.dropdown-list');

@@ -6,7 +6,7 @@
   Time: 오후 7:03
 --%>
 <div id = 'search_user_container' style=''>
-    <input type='hidden' name='current_page_num' value='0'/>
+    <%--<input type='hidden' name='current_page_num' value='0'/>--%>
     <div class='search_input' style='display:flex;'>
         <input type='text' style='margin:5px; padding:5px; width: 100%; border: 1px solid #f18a1c; border-radius:5px;' onkeyup='search(0)'/>
         <%--<button style='margin:5px; padding:5px; width: 20%;'>검색</button>--%>

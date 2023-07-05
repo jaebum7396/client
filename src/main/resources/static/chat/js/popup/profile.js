@@ -69,6 +69,6 @@ function closePopupProfile(){
     if($('#profile_popup').find('.popup_flag').val()=='channel'){
         initChannelTab();
     } else {
-        initFriendTab();
+        initFriendTab('normal');
     }
 }

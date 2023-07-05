@@ -68,9 +68,11 @@ body {
 	position:fixed;
 	display: flex;
 	justify-content: space-between;
+	z-index:9998;
 	/*box-shadow: 4px 4px 4px 4px rgba(226, 154, 22, 0.6);*/
 	/*border-bottom: 1px solid #f18a1c;*/
 	width: 100%;
+	border-bottom: 1px solid #e7ebee;
 }
 
 #topmenu span {

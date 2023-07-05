@@ -1,23 +1,40 @@
-function initFriendTab(){
+function initFriendTab(friendDivision){
+    closeSearchUserContainer();
+    $('.dropdown-list').removeClass('openToggle');
+
+    let appTitleText = '';
+    if(friendDivision=='normal'){
+        appTitleText = '친구 목록';
+    }else if(friendDivision=='block'){
+        appTitleText = '차단 목록';
+    }else if(friendDivision=='hide'){
+        appTitleText = '숨김 목록';
+    }
+    $('#app_title_text').html(appTitleText);
+
     $('#app_header_menu').css('display', 'block');
-    $('#app_title_text').html('친구 목록');
     $('.list_container').css('display', 'none');
     $('#friend_list_container').css('display', 'block');
 
     $("#friend_list_container input[name='current_page_num']").val('0');
     $('#friend_list_container .friend_list').empty();
-    let getMyInfoPromise = getMyInfo();
-    getMyInfoPromise
-    .then((response) => {
-        //console.log('getMyInfoResp', response)
-        //유저 코드 로컬스토리지 세팅
-        localStorage.setItem('loginUserCd', response.data.result.user.userCd);
-        let myInfoMakerPromise = myInfoMaker(response.data.result.user, true);
-        myInfoMakerPromise.then((myInfoMakerResp) => {
-            $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
-            getFriendsWithPageable(0);
-        });
-    })
+
+    if (friendDivision == 'normal') {
+        let getMyInfoPromise = getMyInfo();
+        getMyInfoPromise
+            .then((response) => {
+                //console.log('getMyInfoResp', response)
+                //유저 코드 로컬스토리지 세팅
+                localStorage.setItem('loginUserCd', response.data.result.user.userCd);
+                let myInfoMakerPromise = myInfoMaker(response.data.result.user, true);
+                myInfoMakerPromise.then((myInfoMakerResp) => {
+                    $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
+                    getFriendsWithPageable(0);
+                });
+            })
+    }else{
+        getFriendsWithPageable(0);
+    }
 }
 
 function getMyInfo(){
@@ -26,33 +43,30 @@ function getMyInfo(){
 
 //친구리스트 페이징
 var OPEN_FRIEND_LIST_YN = false;
-function getFriendsWithPageable(p_page) {
+function getFriendsWithPageable() {
     //먼저 어테치된 페이징을 제거한다.
     $('#friend_list_container').off('scroll');
     //console.log('getFriendsWithPageable>>>>>>>>>>>>')
     $('#channel_list_container').css('display', 'none')
     $('#friend_list_container').css('display', 'block')
-    var p_page;
+    let p_page;
     if (OPEN_FRIEND_LIST_YN == false) {
         OPEN_FRIEND_LIST_YN = true;
+        console.log($("#tab_container input[name='current_page_num']").val())
         if (!p_page) {
             p_page = $("#tab_container input[name='current_page_num']").val();
-        } else {
-            if (p_page == '0') {
-                $("#friend_list_container").html('');
-            }
         }
-        axios.get(CHAT_URL+'/friends?size=11&page='+p_page, {})
-        .then(response => {
-            //console.log('getFriendsWithPageableResp', response)
-            let result = response.data.result;
-            let friendArr = result.friendArr
-            let p_page = result.p_page;
-            $("#tab_container input[name='current_page_num']").val(p_page);
-            friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
+        axios.get(CHAT_URL+'/friends?blockYn=N&hideYn=N&size=11&page='+p_page, {})
+            .then(response => {
+                //console.log('getFriendsWithPageableResp', response)
+                let result = response.data.result;
+                let friendArr = result.friendArr
+                let p_page = result.p_page;
+                $("#tab_container input[name='current_page_num']").val(p_page);
+                friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
 
-            OPEN_FRIEND_LIST_YN = false;
-        })
+                OPEN_FRIEND_LIST_YN = false;
+            })
     }
     addInfiniteScroll('friend_list_container');
 }
@@ -128,7 +142,7 @@ function updateFriendHub(p_methodType, p_yn, p_friendCd){
     param.friendCd = p_friendCd;
     if(p_methodType == 'hide'){
         if(p_yn == 'Y'){
-            confirmMsg = "친구목록에서 보이지않도록 합니다.";
+            confirmMsg = "친구목록에서 보이지 않도록 합니다.";
         }else{
             confirmMsg = "친구목록으로 복귀합니다.";
         }
@@ -149,15 +163,15 @@ function updateFriendHub(p_methodType, p_yn, p_friendCd){
 
 function updateFriend(param){
     axios.put(CHAT_URL+'/friend', param, {})
-    .then(function (response) {
-        const data = response.data;
-        //console.log(data)
-        alert(response.data.message);
-        initFriendTab();
-    })
-    .catch(function (error) {
-        console.error(error);
-    });
+        .then(function (response) {
+            const data = response.data;
+            //console.log(data)
+            alert(response.data.message);
+            initFriendTab('normal');
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 }
 
 //행 클릭
@@ -187,6 +201,7 @@ function dropdownToggle(obj){
 }
 
 function toggleSearchUserContainer() {
+    $('.dropdown-list').removeClass('openToggle');
     if ($('#search_user_container').css('display') === 'block') {
         closeSearchUserContainer();
     } else {
@@ -212,58 +227,58 @@ function search(p_page) {
     }
     // 실시간 검색 요청
     axios.get(USER_URL+'/users?size=11&page='+p_page, {params: {queryString: searchInput}})
-    .then(function (response) {
-        // 이전 검색 결과 초기화
-        $('#search_user_list').html('');
-        const data = response.data;
-        //console.log(data)
-        // 검색 결과를 동적으로 표시
-        if(data.result.userArr.length > 0){
-            if(data.result.userArr[0].userCd == localStorage.getItem('loginUserCd')){
-                return;
-            }else{
-                data.result.userArr.forEach(function (user) {
-                    let innerHTML = '';
-                    innerHTML += '<div class="friend_list_item" onclick="addFriend(\''+user.userCd+'\')">'
-                    innerHTML += '   <div class="friend_info">'
-                    innerHTML += '       <div class="friend_list_item_img">'
-                    //innerHTML += '       <img src="'+user+'" alt="">'
-                    innerHTML += '       </div>'
-                    innerHTML += '       <div class="friend_list_item_info">'
-                    innerHTML += '           <div class="name">'+user.userNm+'</div>'
-                    //innerHTML += '           <div class="aboutMe">'+user.userInfo.aboutMe+'</div>'
-                    innerHTML += '       </div>'
-                    innerHTML += '   </div>'
-                    innerHTML += '   <div>'
-                    innerHTML += '      친구추가'
-                    innerHTML += '   </div>'
-                    innerHTML += '</div>'
-                    $('#search_user_list').append(innerHTML);
-                });
+        .then(function (response) {
+            // 이전 검색 결과 초기화
+            $('#search_user_list').html('');
+            const data = response.data;
+            //console.log(data)
+            // 검색 결과를 동적으로 표시
+            if(data.result.userArr.length > 0){
+                if(data.result.userArr[0].userCd == localStorage.getItem('loginUserCd')){
+                    return;
+                }else{
+                    data.result.userArr.forEach(function (user) {
+                        let innerHTML = '';
+                        innerHTML += '<div class="friend_list_item" onclick="addFriend(\''+user.userCd+'\')">'
+                        innerHTML += '   <div class="friend_info">'
+                        innerHTML += '       <div class="friend_list_item_img">'
+                        //innerHTML += '       <img src="'+user+'" alt="">'
+                        innerHTML += '       </div>'
+                        innerHTML += '       <div class="friend_list_item_info">'
+                        innerHTML += '           <div class="name">'+user.userNm+'</div>'
+                        //innerHTML += '           <div class="aboutMe">'+user.userInfo.aboutMe+'</div>'
+                        innerHTML += '       </div>'
+                        innerHTML += '   </div>'
+                        innerHTML += '   <div>'
+                        innerHTML += '      친구추가'
+                        innerHTML += '   </div>'
+                        innerHTML += '</div>'
+                        $('#search_user_list').append(innerHTML);
+                    });
+                }
             }
-        }
-    })
-    .catch(function (error) {
-        console.error(error);
-    });
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 }
 function addFriend(p_userCd){
     axios.post(CHAT_URL+'/friend', {userCd: p_userCd}, {})
-    .then(function (response) {
-        const data = response.data;
-        //console.log(data)
-        if(data.result.processYn === 'Y'){
-            alert('친구등록이 완료되었어요.');
-            closeSearchUserContainer();
-            initFriendTab();
-        }
-        else if(data.result.processYn === 'N'){
-            alert('이미 친구에요.');
-            closeSearchUserContainer();
-            initFriendTab();
-        }
-    })
-    .catch(function (error) {
-        console.error(error);
-    });
+        .then(function (response) {
+            const data = response.data;
+            //console.log(data)
+            if(data.result.processYn === 'Y'){
+                alert('친구등록이 완료되었어요.');
+                closeSearchUserContainer();
+                initFriendTab('normal');
+            }
+            else if(data.result.processYn === 'N'){
+                alert('이미 친구에요.');
+                closeSearchUserContainer();
+                initFriendTab('normal');
+            }
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 }

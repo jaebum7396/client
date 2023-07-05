@@ -43,7 +43,7 @@ $(document).ready(function() {
     // .left_side_btn 요소를 클릭하면, leftSideMenuOpen() 함수와 loadChannelUserListHub() 함수를 실행하고, URL 해시값을 #open으로 변경합니다.
     $(".left_side_btn").click(function() {
         leftSideMenuOpen();
-        loadChannelUserListHub();
+        //loadChannelUserListHub();
         window.location.hash = "#open";
     });
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
     });
     preventBrowserZoom();
     webSocketConnectHub();
-    initFriendTab();
+    initFriendTab('normal');
 });
 
 var hasFocus = document.hasFocus();
@@ -158,7 +158,7 @@ function chatRoomVisible(p_flag) {
         if("channel" == p_flag){
             getChannelsWithPageable('0')
         }else{
-            initFriendTab();
+            initFriendTab('normal');
         }
     });
     closePopupProfile();
