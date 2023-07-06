@@ -1,11 +1,10 @@
 const clientDomainCd = 1;
 
-var sock;
-var wsClient;
-var reconnect;
+let sock;
+let wsClient;
+let reconnect;
 
 //웹소켓 연결
-var websocket;
 function webSocketConnectHub() {
 	//console.log('webSocketConnectHub start')
 	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp?Authorization="+localStorage.getItem("token"));

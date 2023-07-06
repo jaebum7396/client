@@ -4,7 +4,7 @@
 
     <script src="js/main/user_info.js" type="text/javascript"></script>
 </head>
-<div id="layoutAuthentication">
+<div id="layoutAuthentication" style="margin-top:10px;">
     <div id="layoutAuthentication_content">
         <main>
             <div id='user_info_container' class="container">

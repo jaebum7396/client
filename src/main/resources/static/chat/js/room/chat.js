@@ -4,28 +4,21 @@ function onMessage(msg) {
     let innerHeight = $('#chat_messages').height();
     if (msg) {
         let data = msg;
-        //console.log('height: calc(100% - 115px);', data)
         if(data.transferType==3){
             //$('#WSS_KEY').val(data.objMap.wssKey);
         }else if(data.transferType == 9){
-            //console.log('읽음처리resp', data);
             // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
-            let getChatsAfterReadChatPromise = getChatsAfterReadChat(data);
-            // 화면에 라스트 메시지 이후의 데이터들을 업데이트 해준다.
-            getChatsAfterReadChatPromise
-                .then((response) => {
-                    //console.log('getChatsAfterReadChatResp', response);
-                    let chatArr = response.data.result.chatArr;
-                    for(let i=0; i<chatArr.length; i++){
-                        $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
-                        if(chatArr[i].unreadCount==0){
-                            $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').css('display','none');
-                        }
+            getChatsAfterReadChat(data)
+            .then((response) => {
+                //console.log('getChatsAfterReadChatResp', response);
+                let chatArr = response.data.result.chatArr;
+                for(let i=0; i<chatArr.length; i++){
+                    $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
+                    if(chatArr[i].unreadCount==0){
+                        $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').css('display','none');
                     }
-                })
-                .catch((response) => {
-                    //console.log(response);
-                })
+                }
+            })
         }else if(data.transferType == 99){
             //console.log('채팅방 신규 개설', data);
             if(data.userCd!=localStorage.getItem('loginUserCd')){
@@ -42,84 +35,74 @@ function onMessage(msg) {
             }
         }else{
             //수신한 메시지를 조회한다.
-            let getChatPromise = getChat(data)
-            getChatPromise
-                .then((response) => {
-                    //console.log('getChatResp', response)
-                    let chatArr = response.data.result.chatArr;
-                    let channelInfo = response.data.result.channelInfo;
-                    //채팅 목록이 활성화 되어 있을때
-                    if($('#channel_list_container').css('display')=='block'){
-                        let channelUsers = channelInfo.channelUsers;
-                        let unreadCount = 0;
-                        for(let i =0; i<channelUsers.length; i++){
-                            //메시지 수신자 중 로그인한 유저코드와 같은 유저코드를 찾아서 안읽음 메시지 카운트 세팅
-                            if(channelUsers[i].userCd == localStorage.getItem('loginUserCd')){
-                                unreadCount = channelUsers[i].unreadCount
-                            }
-                        }
-                        //채팅방이 있을때
-                        if($('.chat_row.'+chatArr[0].channelCd).length!=0){
-                            //수신한 최신 메시지를 미리보기에 세팅한다.
-                            $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_message').html(chatArr[0].message);
-                            $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_messageDt').html(formatLastChatDateTime(chatArr[0].messageDt.substr(0, 16)));
-                            //수신한 최신 메시지에 해당하는 채팅룸을 맨 위로 올린다.
-                            $('.chat_row.'+chatArr[0].channelCd).insertBefore($('#channel_list_container .chat_row')[0]);
-                            //안읽음 메시지 카운트를 미리보기에 세팅한다.
-                            $('.chat_row.'+chatArr[0].channelCd).find('.unread_count div').html(unreadCount);
-                            if(unreadCount==0){
-                                $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','none');
-                            }else{
-                                $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','flex');
-                            }
-                        }else{ //채팅방이 없을때
-                            $("#channel_list_container").append(channelMaker(channelInfo));
+            getChat(data)
+            .then((response) => {
+                //console.log('getChatResp', response)
+                let chatArr = response.data.result.chatArr;
+                let channelInfo = response.data.result.channelInfo;
+
+
+                //채팅 목록이 활성화 되어 있을때
+                if($('#channel_list_container').css('display')=='block'){
+                    let channelUsers = channelInfo.channelUsers;
+                    let unreadCount = 0;
+                    for(let i =0; i<channelUsers.length; i++){
+                        //메시지 수신자 중 로그인한 유저코드와 같은 유저코드를 찾아서 안읽음 메시지 카운트 세팅
+                        if(channelUsers[i].userCd == localStorage.getItem('loginUserCd')){
+                            unreadCount = channelUsers[i].unreadCount
                         }
                     }
-                    //채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
-                    if (chatArr[0].channelCd == $('#OPEN_CHANNEL_CD').val()) {
-                        //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
-                        if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
-                            if(hasFocus||hasFocusApp){
-                                //console.log("해당 채팅을 읽었습니다.");
-                                chatReadHub(chatArr[0]);
-                                //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
-                            }else{
-                                //console.log("해당 채팅을 읽지않았습니다.");
-                            }
-                        }
-                        let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
-                        //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
-                        let messageDt = chatArr[0].messageDt;
-                        //console.log($('.message_content_container').last().find('.sender').val(), chatArr[0].sender.userCd, $('.message_content_container').last().find('.messageTime').val(), chatArr[0].messageDt.substr(0, 16));
-                        if($('.message_content_container').last().find('.sender').val() == chatArr[0].sender.userCd && $('.message_content_container').last().find('.messageTime').val() == chatArr[0].messageDt.substr(0, 16)){
-                            //버블로 추가
-                            $('.message_content_container').last().find('.bubble_container').append(bubbleMaker(chatArr[0]))
+                    //채팅방이 있을때
+                    if($('.chat_row.'+chatArr[0].channelCd).length!=0){
+                        //수신한 최신 메시지를 미리보기에 세팅한다.
+                        $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_message').html(chatArr[0].message);
+                        $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_messageDt').html(formatLastChatDateTime(chatArr[0].messageDt.substr(0, 16)));
+                        //수신한 최신 메시지에 해당하는 채팅룸을 맨 위로 올린다.
+                        $('.chat_row.'+chatArr[0].channelCd).insertBefore($('#channel_list_container .chat_row')[0]);
+                        //안읽음 메시지 카운트를 미리보기에 세팅한다.
+                        $('.chat_row.'+chatArr[0].channelCd).find('.unread_count div').html(unreadCount);
+                        if(unreadCount==0){
+                            $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','none');
                         }else{
-                            //통째 talk 단위로 추가
-                            $('#chat_messages').append(talkMaker(chatArr,'Y'))
+                            $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','flex');
                         }
-                        //수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
-                        //console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
-                        if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight-5 <= Number($('#chat_messages').scrollTop() + innerHeight)) {
-                            //스크롤을 아래로 내려준다.
-                            moveBottom();
+                    }else{ //채팅방이 없을때
+                        $("#channel_list_container").append(channelMaker(channelInfo));
+                    }
+                }
+                //채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
+                if (chatArr[0].channelCd == $('#OPEN_CHANNEL_CD').val()) {
+                    //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
+                    if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
+                        if(hasFocus||hasFocusApp){
+                            //console.log("해당 채팅을 읽었습니다.");
+                            chatReadHub(chatArr[0]);
+                            //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
+                        }else{
+                            //console.log("해당 채팅을 읽지않았습니다.");
                         }
-                    }else{
-                        //alarmMaker(chatArr[0])
                     }
-                })
-                .catch(response => {
-                    //console.log(response);
-                    if(response.data.statusCode == 401||response.data.body.statusCode == 401){
-                        localStorage.setItem('token', '');
-                        alert('로그인이 만료되었습니다.');
-                        location.href = 'login';
+                    let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
+                    //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
+                    let messageDt = chatArr[0].messageDt;
+                    //console.log($('.message_content_container').last().find('.sender').val(), chatArr[0].sender.userCd, $('.message_content_container').last().find('.messageTime').val(), chatArr[0].messageDt.substr(0, 16));
+                    if($('.message_content_container').last().find('.sender').val() == chatArr[0].sender.userCd && $('.message_content_container').last().find('.messageTime').val() == chatArr[0].messageDt.substr(0, 16)){
+                        //버블로 추가
+                        $('.message_content_container').last().find('.bubble_container').append(bubbleMaker(chatArr[0]))
                     }else{
-                        alert(response.data.message);
-                        console.error(error);
+                        //통째 talk 단위로 추가
+                        $('#chat_messages').append(talkMaker(chatArr,'Y'))
                     }
-                })
+                    //수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
+                    //console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
+                    if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight-5 <= Number($('#chat_messages').scrollTop() + innerHeight)) {
+                        //스크롤을 아래로 내려준다.
+                        moveBottom();
+                    }
+                }else{
+                    //alarmMaker(chatArr[0])
+                }
+            })
         }
     }
 }
@@ -130,16 +113,13 @@ function channelReadHub() {
     //console.log('channelReadHub start')
     let channelReadPromise = channelRead($('#OPEN_CHANNEL_CD').val());
     channelReadPromise
-        .then((response) => {
-            //console.log("channelReadHubResp", response);
-            let chat = response.data.result.prevLastChat;
-            chat.transferType = 9;
-            //console.log('이게 맞습니까?', chat)
-            sendChat(chat);
-        })
-        .catch((response) => {
-            //console.log(response)
-        })
+    .then((response) => {
+        //console.log("channelReadHubResp", response);
+        let chat = response.data.result.prevLastChat;
+        chat.transferType = 9;
+        //console.log('이게 맞습니까?', chat)
+        sendChat(chat);
+    })
     //console.log('channelReadHub done')
 }
 
@@ -160,22 +140,6 @@ function channelRead(p_channelCd) {
         .then(response => {
             resolve(response)
         })
-        .catch((error) => {
-            //console.log(error.response);
-            if(error){
-                if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
-                    localStorage.setItem('token', '');
-                    alert('로그인이 만료되었습니다');
-                    location.href = 'login';
-                }else{
-                    alert(error.response.data.message);
-                    console.error(error);
-                }
-            }else{
-                alert("알 수 없는 에러가 발생했습니다.");
-                location.reload();
-            }
-        })
     })
 }
 
@@ -184,16 +148,13 @@ function chatReadHub(p_chat) {
     //console.log('updateUnreadCountPerHub start')
     let chatReadPromise = chatRead(p_chat);
     chatReadPromise
-        .then((response) => {
-            //console.log("chatReadResp", response);
-            let chat = response.data.result.chat;
-            chat.domainCd = 1;
-            chat.transferType = 9;
-            sendChat(chat);
-        })
-        .catch((response) => {
-            //console.log(response)
-        })
+    .then((response) => {
+        //console.log("chatReadResp", response);
+        let chat = response.data.result.chat;
+        chat.domainCd = 1;
+        chat.transferType = 9;
+        sendChat(chat);
+    })
     //console.log('updateUnreadCountPerHub done')
 }
 
@@ -301,9 +262,6 @@ function sendChatHub(message, p_chatType) {
         // sendChat 함수 호출하여 메시지 전송하기
         sendChat(result.chat);
     })
-    .catch((response) => {
-        //console.log(response);
-    })
     document.getElementById("msg").value = '';
     document.getElementById("msg").defaultValue = '';
 }
@@ -319,17 +277,6 @@ function saveChat(p_chat) {
         })
         .then(response => {
             resolve(response)
-        })
-        .catch(error => {
-            //console.log(error.response);
-            if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
-                localStorage.setItem('token', '');
-                alert('로그인이 만료되었습니다.');
-                location.href = 'login';
-            }else{
-                alert(error.response.data.message);
-                console.error(error);
-            }
         })
     })
 }
@@ -350,9 +297,6 @@ function getChat(p_chat) {
         .then(response => {
             resolve(response)
         })
-        .catch(error => {
-            reject(error.response)
-        });
     });
 }
 
@@ -376,44 +320,33 @@ function loadChatListHub(p_channelCd, p_openYn) {
         let chatArr = response.data.result.chatArr.content;
         let talkMakerHubPromise = talkMakerHub(chatArr);
         talkMakerHubPromise
-            .then(() => {
-                $('#chat_messages').scroll(function() {
-                    let scrollHeight = $('#chat_messages')[0].scrollHeight;
-                    //console.log('scroll>>>>>>>>>>>>',scrollHeight)
-                    let current_page_num = $("#chat_room_view input[name='current_page_num']").val()
-                    let scrollTop = $('#chat_messages').scrollTop();
+        .then(() => {
+            $('#chat_messages').scroll(function() {
+                let scrollHeight = $('#chat_messages')[0].scrollHeight;
+                //console.log('scroll>>>>>>>>>>>>',scrollHeight)
+                let current_page_num = $("#chat_room_view input[name='current_page_num']").val()
+                let scrollTop = $('#chat_messages').scrollTop();
 
-                    if (!noMore) {
-                        if (scrollTop == 0) {
-                            //스크롤이 맨 위일때 뭐할지 여기에 정의 시작
-                            $("#chat_room_view input[name='current_page_num']").val(Number(current_page_num) + Number(1))
-                            loadChatListHub(p_channelCd);
-                            noMore = (true);
-                        }
+                if (!noMore) {
+                    if (scrollTop == 0) {
+                        //스크롤이 맨 위일때 뭐할지 여기에 정의 시작
+                        $("#chat_room_view input[name='current_page_num']").val(Number(current_page_num) + Number(1))
+                        loadChatListHub(p_channelCd);
+                        noMore = (true);
                     }
-                });
-                if (p_openYn == 'Y') {//새로 열리는 채팅방일 경우엔 맨 아래쪽 리스트로 이동시킨다.
-                    moveBottom();
-                    //console.log('loadChatListHub done')
-                } else {//이전 메시지 로딩일 경우에는 이전 메시지가 prepend 되어지기 전의 스크롤 위치로 스크롤 위치를 복구 시킨다.
-                    let currentScrollHeight = $('#chat_messages')[0].scrollHeight;
-                    $('#chat_messages').scrollTop(currentScrollHeight - prevScrollHeight); //현재 스크롤 총 높이에서 이전 스크롤 총 높이를 빼서 추가된 스크롤 만큼 스크롤 위치 다시 이동
                 }
-            })
+            });
+            if (p_openYn == 'Y') {//새로 열리는 채팅방일 경우엔 맨 아래쪽 리스트로 이동시킨다.
+                moveBottom();
+                //console.log('loadChatListHub done')
+            } else {//이전 메시지 로딩일 경우에는 이전 메시지가 prepend 되어지기 전의 스크롤 위치로 스크롤 위치를 복구 시킨다.
+                let currentScrollHeight = $('#chat_messages')[0].scrollHeight;
+                $('#chat_messages').scrollTop(currentScrollHeight - prevScrollHeight); //현재 스크롤 총 높이에서 이전 스크롤 총 높이를 빼서 추가된 스크롤 만큼 스크롤 위치 다시 이동
+            }
+        })
         //로딩 되어진 메시지가 세팅된 사이즈보다 작을 경우 더이상 로딩되지 않게 한다.
         if (chatArr.length < 20) {
             noMore = true;
-        }
-    })
-    .catch(error => {
-        //console.log(error.response);
-        if(error.response.data.statusCode == 401||error.response.data.body.statusCode == 401){
-            localStorage.setItem('token', '');
-            alert('로그인이 만료되었습니다.');
-            location.href = 'login';
-        }else{
-            alert(error.response.data.message);
-            console.error(error);
         }
     })
 }
@@ -465,7 +398,6 @@ async function talkMakerHub(chatArr) {
             }
         }
     }
-    //console.log('talkMakerHub done')
 }
 
 function dateMaker(p_date){
@@ -514,8 +446,6 @@ function talkMaker(chatArr, singleMessageYn) {
         chatStr += "	<div class='message_content_container'>";
         let imgUrl;
         let profileImgUrl = chatArr[0].sender.userProfileImages[0].profileImgUrl;
-        console.log(profileImgUrl)
-
         if(profileImgUrl.indexOf('image/profile') == 0){
             //console.log('기본', profileImgUrl, profileImgUrl.indexOf('image/profile'))
             imgUrl = profileImgUrl;

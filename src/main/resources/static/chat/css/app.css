@@ -113,7 +113,7 @@ body {
 	padding:5px;
 }
 .chat_row .friend_contents{
-	display:flex;flex-direction:column;justify-content:space-between; padding:5px; width:65%; font-size:15px;
+	display:flex; flex-direction:column; justify-content:center; /*justify-content:space-between;*/ padding:5px; width:65%; font-size:15px;
 }
 
 .chat_row:hover {
