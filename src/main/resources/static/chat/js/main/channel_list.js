@@ -1,11 +1,19 @@
 function initChannelTab(){
     closeSearchUserContainer();
     $('.dropdown-list').removeClass('openToggle');
+    //먼저 어테치된 페이징을 제거한다.
+    $('#channel_list_container').off('scroll');
 
-    $('#app_header_menu').css('display', 'none');
-    $('#app_title_text').html('채팅 목록');
+    $('.app_header_menu').css('display', 'none');
+
+    let appTitleText = '';
+    appTitleText = '채팅 목록';
+    $('#app_title_text').html(appTitleText);
+
+    $('.app_header_menu').css('display', 'none');
     $('.list_container').css('display', 'none');
     $('#channel_list_container').css('display', 'block');
+
     getChannelsWithPageable('0');
 }
 

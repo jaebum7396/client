@@ -1,18 +1,23 @@
 function initFriendTab(friendDivision){
     closeSearchUserContainer();
     $('.dropdown-list').removeClass('openToggle');
+    //먼저 어테치된 페이징을 제거한다.
+    $('#friend_list_container').off('scroll');
 
+    $('.app_header_menu').css('display', 'none');
+
+    $('#friend_division').val(friendDivision);
     let appTitleText = '';
     if(friendDivision=='normal'){
         appTitleText = '친구 목록';
-    }else if(friendDivision=='block'){
-        appTitleText = '차단 목록';
     }else if(friendDivision=='hide'){
         appTitleText = '숨김 목록';
+    }else if(friendDivision=='block'){
+        appTitleText = '차단 목록';
     }
+    $('.app_header_menu.friend.'+friendDivision).css('display', 'block');
     $('#app_title_text').html(appTitleText);
 
-    $('#app_header_menu').css('display', 'block');
     $('.list_container').css('display', 'none');
     $('#friend_list_container').css('display', 'block');
 
@@ -29,11 +34,11 @@ function initFriendTab(friendDivision){
                 let myInfoMakerPromise = myInfoMaker(response.data.result.user, true);
                 myInfoMakerPromise.then((myInfoMakerResp) => {
                     $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
-                    getFriendsWithPageable(0);
+                    getFriendsWithPageable();
                 });
             })
     }else{
-        getFriendsWithPageable(0);
+        getFriendsWithPageable();
     }
 }
 
@@ -46,27 +51,36 @@ var OPEN_FRIEND_LIST_YN = false;
 function getFriendsWithPageable() {
     //먼저 어테치된 페이징을 제거한다.
     $('#friend_list_container').off('scroll');
-    //console.log('getFriendsWithPageable>>>>>>>>>>>>')
     $('#channel_list_container').css('display', 'none')
     $('#friend_list_container').css('display', 'block')
     let p_page;
     if (OPEN_FRIEND_LIST_YN == false) {
         OPEN_FRIEND_LIST_YN = true;
-        console.log($("#tab_container input[name='current_page_num']").val())
         if (!p_page) {
             p_page = $("#tab_container input[name='current_page_num']").val();
         }
-        axios.get(CHAT_URL+'/friends?blockYn=N&hideYn=N&size=11&page='+p_page, {})
-            .then(response => {
-                //console.log('getFriendsWithPageableResp', response)
-                let result = response.data.result;
-                let friendArr = result.friendArr
-                let p_page = result.p_page;
-                $("#tab_container input[name='current_page_num']").val(p_page);
-                friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
 
-                OPEN_FRIEND_LIST_YN = false;
-            })
+        let friendDivision = $('#friend_division').val();
+        let queryString = '';
+        if(friendDivision=='normal'){
+            queryString = 'blockYn=N&hideYn=N';
+        }else if(friendDivision=='hide'){
+            queryString = 'hideYn=Y&blockYn=N';
+        }else if(friendDivision=='block'){
+            queryString = 'blockYn=Y';
+        }
+
+        axios.get(CHAT_URL+'/friends?'+queryString+'&size=11&page='+p_page, {})
+        .then(response => {
+            //console.log('getFriendsWithPageableResp', response)
+            let result = response.data.result;
+            let friendArr = result.friendArr
+            let p_page = result.p_page;
+            $("#tab_container input[name='current_page_num']").val(p_page);
+            friendMakerHub(friendArr, $("#friend_list_container .friend_list"), true);
+
+            OPEN_FRIEND_LIST_YN = false;
+        })
     }
     addInfiniteScroll('friend_list_container');
 }
@@ -111,6 +125,7 @@ function myInfoMaker(user, rowClickActivate) {
 
 function friendMaker(friend, rowClickActivate) {
     //console.log('friendMaker', friend);
+    let friendDivision = $('#friend_division').val();
     return new Promise((resolve, reject) => {
         let htmlText ="";
         htmlText += "<div class='chat_row friend " + friend.userInfo.userCd + "'>";
@@ -127,8 +142,15 @@ function friendMaker(friend, rowClickActivate) {
         htmlText +=     	"<label for='check_"+friend.userInfo.userCd+"' class='friend_check_label'></label>"
         htmlText +=     	"<i class='bi bi-three-dots' onclick='dropdownToggle(this)'></i>"
         htmlText +=     	"<ul class='dropdown-list'>"
-        htmlText +=     	    "<li onclick='updateFriendHub(\"hide\", \"Y\", \"" + friend.userInfo.userCd + "\")'>숨김</li>"
-        htmlText +=     	    "<li onclick='updateFriendHub(\"block\", \"Y\", \"" + friend.userInfo.userCd + "\")'>차단</li>"
+        if(friendDivision=='normal'){
+            htmlText +=    	    "<li onclick='updateFriendHub(\"hide\", \"Y\", \"" + friend.userInfo.userCd + "\")'>숨김</li>"
+            htmlText +=    	    "<li onclick='updateFriendHub(\"block\", \"Y\", \"" + friend.userInfo.userCd + "\")'>차단</li>"
+        }else if(friendDivision=='hide'){
+            htmlText +=    	    "<li onclick='updateFriendHub(\"hide\", \"N\", \"" + friend.userInfo.userCd + "\")'>숨김해제</li>"
+            htmlText +=    	    "<li onclick='updateFriendHub(\"block\", \"Y\", \"" + friend.userInfo.userCd + "\")'>차단</li>"
+        }else if(friendDivision=='block'){
+            htmlText +=    	    "<li onclick='updateFriendHub(\"block\", \"N\", \"" + friend.userInfo.userCd + "\")'>차단해제</li>"
+        }
         htmlText +=     	"</ul>"
         htmlText += 	"</div>";
         htmlText += "</div>";

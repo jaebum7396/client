@@ -7,7 +7,7 @@ function initUserInfoTab() {
     closeSearchUserContainer();
     $('.dropdown-list').removeClass('openToggle');
 
-    $('#app_header_menu').css('display', 'none');
+    $('.app_header_menu').css('display', 'none');
     $('#app_title_text').html('내 정보');
     $('.list_container').css('display', 'none');
     $('#user_info_container').css('display', 'block');

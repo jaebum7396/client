@@ -1,4 +1,3 @@
-
 const debugYn = true;
 /*axios 관련*/
 axios.interceptors.request.use(req => {
@@ -9,11 +8,11 @@ axios.interceptors.request.use(req => {
 
 axios.interceptors.response.use(res => {
     if(debugYn){
-        console.log('[debugMode]' + res.config.url + '>>>>> ', res);
+        console.log('[debugMode]' ,'>>>>>', res.config.url, res);
     }
     return res;
 }, err => {
-    console.log('[err] >>>>>', err.response);
+    console.log('[err]','>>>>>', err.response.config.url, err.response);
     if(err.response.status == 401){
         localStorage.setItem('token', '');
         alert('로그인이 만료되었습니다');

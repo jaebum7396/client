@@ -45,6 +45,8 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js<%= version %>"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css<%= version %>"/>
 
+<%--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>--%>
+
 <script>
     const BACKEND_URL = '<%=BACKEND_URL%>';
     const USER_URL = '<%=USER_URL%>';

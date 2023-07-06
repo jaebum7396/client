@@ -846,7 +846,7 @@ input[type=checkbox]:disabled + label {
 	align-items: center;
 	justify-content: center;
 }
-#app_header_menu .app_header{
+.app_header_menu .app_header{
 	display: flex;
 	justify-content: center;
 	flex-direction: row;
@@ -855,6 +855,13 @@ input[type=checkbox]:disabled + label {
 	background-color: #fff;
 	margin: 10px;
 	cursor: pointer;
+	height: 24px;
+}
+
+.app_header_menu .app_header i{
+	font-size:22px;
+	color : red;
+	font-weight: 800;
 }
 
 #app_title_container .app_title{

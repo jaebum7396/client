@@ -5,7 +5,7 @@
         <title>register - chat</title>
         <jsp:directive.include file="../common/head.jsp"/>
         <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
         <script src="js/signup.js<%= version %>" type="text/javascript"></script>
     </head>
     <body class="bg-primary">

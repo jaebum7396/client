@@ -9,6 +9,7 @@
 <div id="tab_container">
     <%-- 어플리케이션 탑 메뉴 Start --%>
     <jsp:directive.include file="top_menu.jsp"/>
+    <input type="hidden" id="friend_division" value="normal"/>
     <%-- 어플리케이션 탑 메뉴 End --%>
     <script src="js/main/friend_list.js<%= version %>" type="text/javascript"></script>
     <script src="js/main/channel_list.js<%= version %>" type="text/javascript"></script>
