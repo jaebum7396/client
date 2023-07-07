@@ -1,9 +1,13 @@
 //메시지 수신
 function onMessage(msg) {
-    //console.log('onMessage>>>>>>>>>>>>', msg)
+    console.log('onMessage>>>>>>>>>>>>', msg)
     let innerHeight = $('#chat_messages').height();
     if (msg) {
         let data = msg;
+        if(data.userCd != localStorage.getItem("loginUserCd") && blockCheckHub(data)){
+            return;
+        };
+
         if(data.transferType==3){
             //$('#WSS_KEY').val(data.objMap.wssKey);
         }else if(data.transferType == 9){
@@ -40,7 +44,6 @@ function onMessage(msg) {
                 //console.log('getChatResp', response)
                 let chatArr = response.data.result.chatArr;
                 let channelInfo = response.data.result.channelInfo;
-
 
                 //채팅 목록이 활성화 되어 있을때
                 if($('#channel_list_container').css('display')=='block'){
@@ -107,6 +110,37 @@ function onMessage(msg) {
     }
 }
 
+function blockCheckHub(p_chat){
+    let booleanExpression = false;
+    getChatFriend(p_chat)
+    .then((response) => {
+        console.log('blockCheckHub', response)
+        if(response.data.result.friendArr.length==0){
+            console.log('친구가 아닙니다.');
+        }else{
+            if(response.data.result.friendArr[0].blockYn=='Y'){
+                console.log('차단된 사용자입니다.');
+                booleanExpression = true;
+            }
+        }
+        return booleanExpression;
+    })
+}
+
+function getChatFriend(p_chat) {
+    //console.log('getChat>>>>>>>>>>>>', p_chat)
+    return new Promise((resolve, reject) => {
+        axios.get(CHAT_URL + '/friends', {
+            params: {
+                friendUserCd: p_chat.userCd
+            }
+        })
+        .then(response => {
+            resolve(response)
+        })
+    });
+}
+
 
 //마지막 읽은 메시지 이후의 메시지들을 모두 읽음 처리 해주기 위한 함수
 function channelReadHub() {
@@ -130,12 +164,6 @@ function channelRead(p_channelCd) {
         axios.post(CHAT_URL +'/channel/read'
         , {
             channelCd : p_channelCd
-        }
-        , {
-            headers: {
-                'Content-Type': 'application/json'
-                
-            }
         })
         .then(response => {
             resolve(response)
@@ -162,20 +190,13 @@ function chatReadHub(p_chat) {
 function chatRead(p_chat) {
     //console.log('chatRead>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.post(CHAT_URL +'/chat/read'
-            , p_chat
-            , {
-                headers: {
-                    'Content-Type': 'application/json'
-                    
-                }
-            })
-            .then(response => {
-                resolve(response)
-            })
-            .catch(error => {
-                reject(error.response)
-            });
+        axios.post(CHAT_URL +'/chat/read', p_chat)
+        .then(response => {
+            resolve(response)
+        })
+        .catch(error => {
+            reject(error.response)
+        });
     })
 }
 
@@ -186,10 +207,6 @@ function getChatsAfterReadChat(p_chat) {
         axios.get(CHAT_URL +'/chats/read', {
             params: {
                 chatCd :p_chat.chatCd
-            }
-            ,headers: {
-                'Content-Type': 'application/json'
-                
             }
         })
         .then(response => {
