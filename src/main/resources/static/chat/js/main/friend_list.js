@@ -159,6 +159,8 @@ function friendMaker(friend, rowClickActivate) {
 }
 
 function updateFriendHub(p_methodType, p_yn, p_friendCd){
+    alert('준비중입니다.')
+    return;
     let confirmMsg = "";
     let param = new Object();
     param.friendCd = p_friendCd;

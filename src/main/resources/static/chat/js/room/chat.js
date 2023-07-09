@@ -4,6 +4,7 @@ function onMessage(msg) {
     let innerHeight = $('#chat_messages').height();
     if (msg) {
         let data = msg;
+        console.log(localStorage.getItem("loginUserCd"), data.userCd)
         if(data.userCd != localStorage.getItem("loginUserCd") && blockCheckHub(data)){
             return;
         };
