@@ -158,12 +158,14 @@ function friendMaker(friend, rowClickActivate) {
     })
 }
 
-function updateFriendHub(p_methodType, p_yn, p_friendCd){
-    alert('준비중입니다.')
-    return;
+function updateFriendHub(p_methodType, p_yn, p_userCd){
+    console.log(p_userCd);
+    /*alert('준비중입니다.')
+    return;*/
     let confirmMsg = "";
     let param = new Object();
-    param.friendCd = p_friendCd;
+    param.userInfo = new Object();
+    param.userInfo.userCd = p_userCd;
     if(p_methodType == 'hide'){
         if(p_yn == 'Y'){
             confirmMsg = "친구목록에서 보이지 않도록 합니다.";
@@ -187,15 +189,15 @@ function updateFriendHub(p_methodType, p_yn, p_friendCd){
 
 function updateFriend(param){
     axios.put(CHAT_URL+'/friend', param, {})
-        .then(function (response) {
-            const data = response.data;
-            //console.log(data)
-            alert(response.data.message);
-            initFriendTab('normal');
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+    .then(function (response) {
+        const data = response.data;
+        //console.log(data)
+        alert(response.data.message);
+        initFriendTab('normal');
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
 }
 
 //행 클릭
