@@ -4,110 +4,116 @@ function onMessage(msg) {
     let innerHeight = $('#chat_messages').height();
     if (msg) {
         let data = msg;
-        console.log(localStorage.getItem("loginUserCd"), data.userCd)
-        if(data.userCd != localStorage.getItem("loginUserCd") && blockCheckHub(data)){
-            return;
-        };
-
-        if(data.transferType==3){
-            //$('#WSS_KEY').val(data.objMap.wssKey);
-        }else if(data.transferType == 9){
-            // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
-            getChatsAfterReadChat(data)
-            .then((response) => {
-                //console.log('getChatsAfterReadChatResp', response);
-                let chatArr = response.data.result.chatArr;
-                for(let i=0; i<chatArr.length; i++){
-                    $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
-                    if(chatArr[i].unreadCount==0){
-                        $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').css('display','none');
-                    }
+        getChatFriend(data)
+        .then((response) => {
+            if(response.data.result.friendArr.length==0){
+                console.log('친구가 아닙니다.');
+            }else{
+                if(response.data.result.friendArr[0].blockYn=='Y'){
+                    console.log('차단된 사용자입니다.');
+                    return;
                 }
-            })
-        }else if(data.transferType == 99){
-            //console.log('채팅방 신규 개설', data);
-            if(data.userCd!=localStorage.getItem('loginUserCd')){
-                stompSubscribe(data.domainCd, data.channelCd);
             }
-        }else if(data.transferType == 89){
-            if (localStorage.getItem('loginUserCd') != data.userCd && data.channelCd == $('#OPEN_CHANNEL_CD').val()){
-                //console.log('상대방이 타이핑 중입니다.', data);
-                $('#chat_alarm').css('display', 'flex');
-                $('#chat_alarm').html("<div class='alarm_payload'>상대방이 타이핑 중입니다.</div")
-                setTimeout(function() {
-                    $('#chat_alarm').fadeOut('slow', function() {});
-                }, 2000);
-            }
-        }else{
-            //수신한 메시지를 조회한다.
-            getChat(data)
-            .then((response) => {
-                //console.log('getChatResp', response)
-                let chatArr = response.data.result.chatArr;
-                let channelInfo = response.data.result.channelInfo;
-
-                //채팅 목록이 활성화 되어 있을때
-                if($('#channel_list_container').css('display')=='block'){
-                    let channelUsers = channelInfo.channelUsers;
-                    let unreadCount = 0;
-                    for(let i =0; i<channelUsers.length; i++){
-                        //메시지 수신자 중 로그인한 유저코드와 같은 유저코드를 찾아서 안읽음 메시지 카운트 세팅
-                        if(channelUsers[i].userCd == localStorage.getItem('loginUserCd')){
-                            unreadCount = channelUsers[i].unreadCount
+            if(data.transferType==3){
+                //$('#WSS_KEY').val(data.objMap.wssKey);
+            }else if(data.transferType == 9){
+                // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
+                getChatsAfterReadChat(data)
+                    .then((response) => {
+                        //console.log('getChatsAfterReadChatResp', response);
+                        let chatArr = response.data.result.chatArr;
+                        for(let i=0; i<chatArr.length; i++){
+                            $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
+                            if(chatArr[i].unreadCount==0){
+                                $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').css('display','none');
+                            }
                         }
-                    }
-                    //채팅방이 있을때
-                    if($('.chat_row.'+chatArr[0].channelCd).length!=0){
-                        //수신한 최신 메시지를 미리보기에 세팅한다.
-                        $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_message').html(chatArr[0].message);
-                        $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_messageDt').html(formatLastChatDateTime(chatArr[0].messageDt.substr(0, 16)));
-                        //수신한 최신 메시지에 해당하는 채팅룸을 맨 위로 올린다.
-                        $('.chat_row.'+chatArr[0].channelCd).insertBefore($('#channel_list_container .chat_row')[0]);
-                        //안읽음 메시지 카운트를 미리보기에 세팅한다.
-                        $('.chat_row.'+chatArr[0].channelCd).find('.unread_count div').html(unreadCount);
-                        if(unreadCount==0){
-                            $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','none');
-                        }else{
-                            $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','flex');
-                        }
-                    }else{ //채팅방이 없을때
-                        $("#channel_list_container").append(channelMaker(channelInfo));
-                    }
+                    })
+            }else if(data.transferType == 99){
+                //console.log('채팅방 신규 개설', data);
+                if(data.userCd!=localStorage.getItem('loginUserCd')){
+                    stompSubscribe(data.domainCd, data.channelCd);
                 }
-                //채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
-                if (chatArr[0].channelCd == $('#OPEN_CHANNEL_CD').val()) {
-                    //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
-                    if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
-                        if(hasFocus||hasFocusApp){
-                            //console.log("해당 채팅을 읽었습니다.");
-                            chatReadHub(chatArr[0]);
-                            //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
-                        }else{
-                            //console.log("해당 채팅을 읽지않았습니다.");
+            }else if(data.transferType == 89){
+                if (localStorage.getItem('loginUserCd') != data.userCd && data.channelCd == $('#OPEN_CHANNEL_CD').val()){
+                    //console.log('상대방이 타이핑 중입니다.', data);
+                    $('#chat_alarm').css('display', 'flex');
+                    $('#chat_alarm').html("<div class='alarm_payload'>상대방이 타이핑 중입니다.</div")
+                    setTimeout(function() {
+                        $('#chat_alarm').fadeOut('slow', function() {});
+                    }, 2000);
+                }
+            }else{
+                //수신한 메시지를 조회한다.
+                getChat(data)
+                .then((response) => {
+                    //console.log('getChatResp', response)
+                    let chatArr = response.data.result.chatArr;
+                    let channelInfo = response.data.result.channelInfo;
+
+                    //채팅 목록이 활성화 되어 있을때
+                    if($('#channel_list_container').css('display')=='block'){
+                        let channelUsers = channelInfo.channelUsers;
+                        let unreadCount = 0;
+                        for(let i =0; i<channelUsers.length; i++){
+                            //메시지 수신자 중 로그인한 유저코드와 같은 유저코드를 찾아서 안읽음 메시지 카운트 세팅
+                            if(channelUsers[i].userCd == localStorage.getItem('loginUserCd')){
+                                unreadCount = channelUsers[i].unreadCount
+                            }
+                        }
+                        //채팅방이 있을때
+                        if($('.chat_row.'+chatArr[0].channelCd).length!=0){
+                            //수신한 최신 메시지를 미리보기에 세팅한다.
+                            $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_message').html(chatArr[0].message);
+                            $('.chat_row.'+chatArr[0].channelCd).find('.recent_message_container .recent_messageDt').html(formatLastChatDateTime(chatArr[0].messageDt.substr(0, 16)));
+                            //수신한 최신 메시지에 해당하는 채팅룸을 맨 위로 올린다.
+                            $('.chat_row.'+chatArr[0].channelCd).insertBefore($('#channel_list_container .chat_row')[0]);
+                            //안읽음 메시지 카운트를 미리보기에 세팅한다.
+                            $('.chat_row.'+chatArr[0].channelCd).find('.unread_count div').html(unreadCount);
+                            if(unreadCount==0){
+                                $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','none');
+                            }else{
+                                $('.chat_row.'+chatArr[0].channelCd).find('.unread_count_container .unread_count').css('display','flex');
+                            }
+                        }else{ //채팅방이 없을때
+                            $("#channel_list_container").append(channelMaker(channelInfo));
                         }
                     }
-                    let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
-                    //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
-                    let messageDt = chatArr[0].messageDt;
-                    //console.log($('.message_content_container').last().find('.sender').val(), chatArr[0].sender.userCd, $('.message_content_container').last().find('.messageTime').val(), chatArr[0].messageDt.substr(0, 16));
-                    if($('.message_content_container').last().find('.sender').val() == chatArr[0].sender.userCd && $('.message_content_container').last().find('.messageTime').val() == chatArr[0].messageDt.substr(0, 16)){
-                        //버블로 추가
-                        $('.message_content_container').last().find('.bubble_container').append(bubbleMaker(chatArr[0]))
+                    //채팅방이 활성화 되어 있을때 (현재 오픈되어 있는 채널코드가 수신 메시지의 채널코드와 같을 시)
+                    if (chatArr[0].channelCd == $('#OPEN_CHANNEL_CD').val()) {
+                        //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
+                        if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
+                            if(hasFocus||hasFocusApp){
+                                //console.log("해당 채팅을 읽었습니다.");
+                                chatReadHub(chatArr[0]);
+                                //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
+                            }else{
+                                //console.log("해당 채팅을 읽지않았습니다.");
+                            }
+                        }
+                        let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
+                        //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
+                        let messageDt = chatArr[0].messageDt;
+                        //console.log($('.message_content_container').last().find('.sender').val(), chatArr[0].sender.userCd, $('.message_content_container').last().find('.messageTime').val(), chatArr[0].messageDt.substr(0, 16));
+                        if($('.message_content_container').last().find('.sender').val() == chatArr[0].sender.userCd && $('.message_content_container').last().find('.messageTime').val() == chatArr[0].messageDt.substr(0, 16)){
+                            //버블로 추가
+                            $('.message_content_container').last().find('.bubble_container').append(bubbleMaker(chatArr[0]))
+                        }else{
+                            //통째 talk 단위로 추가
+                            $('#chat_messages').append(talkMaker(chatArr,'Y'))
+                        }
+                        //수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
+                        //console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
+                        if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight-5 <= Number($('#chat_messages').scrollTop() + innerHeight)) {
+                            //스크롤을 아래로 내려준다.
+                            moveBottom();
+                        }
                     }else{
-                        //통째 talk 단위로 추가
-                        $('#chat_messages').append(talkMaker(chatArr,'Y'))
+                        //alarmMaker(chatArr[0])
                     }
-                    //수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
-                    //console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
-                    if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight-5 <= Number($('#chat_messages').scrollTop() + innerHeight)) {
-                        //스크롤을 아래로 내려준다.
-                        moveBottom();
-                    }
-                }else{
-                    //alarmMaker(chatArr[0])
-                }
-            })
-        }
+                })
+            }
+        });
     }
 }
 
@@ -136,9 +142,12 @@ function getChatFriend(p_chat) {
                 friendUserCd: p_chat.userCd
             }
         })
-        .then(response => {
-            resolve(response)
+        .then((response) => {
+            resolve(response);
         })
+        .catch((error) => {
+            reject(error);
+        });
     });
 }
 
