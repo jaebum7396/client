@@ -1,4 +1,22 @@
-const debugYn = true;
+const debugYn = CURRENT_PROFILE == 'local' ? true : false;
+
+function getCurrentTime(){
+    let today = new Date();
+    var year = today.getFullYear();
+    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+    var day = ('0' + today.getDate()).slice(-2);
+    let hours = today.getHours();
+    let minutes = today.getMinutes();
+    let seconds = today.getSeconds();
+    let milliseconds = today.getMilliseconds();
+    let time = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+    return time;
+}
+function debugLog(p_requestUrl, p_msg){
+    if(debugYn){
+        console.log('[DEBUG]', getCurrentTime(),'\n', p_requestUrl, p_msg);
+    }
+}
 /*axios 관련*/
 axios.interceptors.request.use(req => {
     req.headers.Authorization = localStorage.getItem("token");
@@ -8,7 +26,7 @@ axios.interceptors.request.use(req => {
 
 axios.interceptors.response.use(res => {
     if(debugYn){
-        console.log('[debugMode]' ,'>>>>>', res.config.url, res);
+        debugLog(res.config.url, res)
     }
     return res;
 }, err => {

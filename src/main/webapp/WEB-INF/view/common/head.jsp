@@ -11,6 +11,8 @@ WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplica
 Environment env = context.getEnvironment();
 
 String BACKEND_URL = env.getProperty("backend.url");
+String CURRENT_PROFILE = env.getProperty("spring.profiles.active");
+System.out.println("CURRENT_PROFILE : " + CURRENT_PROFILE);
 String USER_URL = env.getProperty("api.user.url");
 System.out.println("USER_URL : " + USER_URL);
 String CHAT_URL = env.getProperty("api.chat.url");
@@ -48,6 +50,7 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 <%--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>--%>
 
 <script>
+    const CURRENT_PROFILE = '<%=CURRENT_PROFILE%>';
     const BACKEND_URL = '<%=BACKEND_URL%>';
     const USER_URL = '<%=USER_URL%>';
     const CHAT_URL = '<%=CHAT_URL%>';

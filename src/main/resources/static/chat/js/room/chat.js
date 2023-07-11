@@ -1,6 +1,6 @@
 //메시지 수신
 function onMessage(msg) {
-    console.log('onMessage>>>>>>>>>>>>', msg)
+    //debugLog('', msg)
     let innerHeight = $('#chat_messages').height();
     if (msg) {
         let data = msg;
@@ -8,14 +8,14 @@ function onMessage(msg) {
         .then((response) => {
             if(response.data.result.friendArr.length>0){
                 if(response.data.result.friendArr[0].blockYn=='Y'){
-                    console.log('차단된 사용자입니다.');
+                    //debugLog('', '차단된 사용자입니다.');
                     return;
                 }
             }else{
                 if(localStorage.getItem('loginUserCd')==data.userCd){
-                    console.log('나임.');
+                    //debugLog('', '나임.');
                 }else{
-                    console.log('친구가 아닙니다.');
+                    //debugLog('', '친구가 아닙니다.');
                 }
             }
             if(data.transferType==3){
@@ -88,9 +88,9 @@ function onMessage(msg) {
                         //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
                         if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
                             if(hasFocus||hasFocusApp){
-                                //console.log("해당 채팅을 읽었습니다.");
+                                //debugLog('custom', "해당 채팅을 읽었습니다.");
                                 chatReadHub(chatArr[0]);
-                                //안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로)
+                                //debugLog('custom', 안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로));
                             }else{
                                 //console.log("해당 채팅을 읽지않았습니다.");
                             }
@@ -109,7 +109,7 @@ function onMessage(msg) {
                         //수신 메시지가 본인이 송신한 것이거나 스크롤이 현재 맨 밑일때
                         //console.log(prevScrollHeight, Number($('#chat_messages').scrollTop() + innerHeight));
                         if ((localStorage.getItem('loginUserCd') == chatArr[0].sender.userCd) || prevScrollHeight-5 <= Number($('#chat_messages').scrollTop() + innerHeight)) {
-                            //스크롤을 아래로 내려준다.
+                            //debugLog('custom', '스크롤을 아래로 내려준다.');
                             moveBottom();
                         }
                     }else{
