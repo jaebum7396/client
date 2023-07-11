@@ -6,12 +6,16 @@ function onMessage(msg) {
         let data = msg;
         getChatFriend(data)
         .then((response) => {
-            if(response.data.result.friendArr.length==0){
-                console.log('친구가 아닙니다.');
-            }else{
+            if(response.data.result.friendArr.length>0){
                 if(response.data.result.friendArr[0].blockYn=='Y'){
                     console.log('차단된 사용자입니다.');
                     return;
+                }
+            }else{
+                if(localStorage.getItem('loginUserCd')==data.userCd){
+                    console.log('나임.');
+                }else{
+                    console.log('친구가 아닙니다.');
                 }
             }
             if(data.transferType==3){
@@ -344,7 +348,7 @@ function loadChatListHub(p_channelCd, p_openYn) {
         //이전 메시지가 prepend 되어지기 전 스크롤 총 길이
         let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
 
-        let chatArr = response.data.result.chatArr.content;
+        let chatArr = response.data.result.chatArr;
         let talkMakerHubPromise = talkMakerHub(chatArr);
         talkMakerHubPromise
         .then(() => {
@@ -480,7 +484,6 @@ function talkMaker(chatArr, singleMessageYn) {
             //console.log('기본아님', profileImgUrl, profileImgUrl.indexOf('image/profile'))
             imgUrl = 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+profileImgUrl;
         }
-        console.log(imgUrl)
 
         //if(chatArr[0].sender.userProfileImages[0]){
         //    chatStr += "	<img src='http://www.aflk-chat.com:8000/file-storage/display?"+chatArr[0].sender.userProfileImages[0].profileImgUrl+"' style='width:40px;height:40px;object-fit:cover;'>";
