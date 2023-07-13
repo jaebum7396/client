@@ -42,7 +42,6 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 <%--cropper.js--%>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js<%= version %>"></script>
 <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css<%= version %>">
-
 <%--swiper.js--%>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js<%= version %>"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css<%= version %>"/>
