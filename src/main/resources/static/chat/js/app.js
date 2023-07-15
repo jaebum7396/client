@@ -17,6 +17,7 @@ function debugLog(p_requestUrl, p_msg){
         console.log('[DEBUG]', getCurrentTime(),'\n', p_requestUrl, p_msg);
     }
 }
+
 /*axios 관련*/
 axios.interceptors.request.use(req => {
     req.headers.Authorization = localStorage.getItem("token");
@@ -24,6 +25,7 @@ axios.interceptors.request.use(req => {
     return req;
 });
 
+let refreshTokenYn = true;
 axios.interceptors.response.use(res => {
     if(debugYn){
         debugLog(res.config.url, res)
@@ -32,9 +34,18 @@ axios.interceptors.response.use(res => {
 }, err => {
     console.log('[err]','>>>>>', err.response.config.url, err.response);
     if(err.response.status == 401){
-        localStorage.setItem('token', '');
-        alert('로그인이 만료되었습니다');
-        location.href = 'login';
+        if(refreshTokenYn) {
+            refreshTokenYn = false;
+            confirm('로그인을 연장하시겠습니까?') ? refreshToken() : alert('로그인이 만료되었습니다');
+        }else{
+            localStorage.setItem('token', '');
+            alert('로그인이 만료되었습니다');
+            location.href = 'login';
+            refreshTokenYn = true;
+        }
+        //localStorage.setItem('token', '');
+        //alert('로그인이 만료되었습니다');
+        //location.href = 'login';
     }else if(err.response.data.statusCodeValue == 401){
         localStorage.setItem('token', '');
         alert('로그인이 만료되었습니다');
@@ -47,6 +58,19 @@ axios.interceptors.response.use(res => {
         location.reload();
     }
 })
+
+function refreshToken(){
+    axios.post(USER_URL+'/login/refresh', {}, {})
+    .then(response => {
+        let result = response.data.result;
+        //console.log(response.data);
+        localStorage.setItem("token", result.token);
+        //console.log('token >>>>> ', localStorage.getItem("token"))
+        alert('token 갱신 완료')
+        refreshTokenYn = true;
+        //location.href='/chat/app';
+    })
+}
 
 $(document).ready(function() {
     // #menu 요소 하위의 ul 요소 중 class 속성이 channel_user_list인 요소를 숨깁니다.
