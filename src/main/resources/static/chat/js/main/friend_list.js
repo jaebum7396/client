@@ -265,12 +265,20 @@ function search(p_page) {
                 }else{
                     data.result.userArr.forEach(function (user) {
                         let innerHTML = '';
+                        let profileImgUrl = user.userInfo.userProfileImages[0].profileImgUrl;
+                        if(profileImgUrl.indexOf('image/profile') == 0){
+                            //console.log('기본', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+                            imgUrl = profileImgUrl;
+                        }else{
+                            //console.log('기본아님', profileImgUrl, profileImgUrl.indexOf('image/profile'))
+                            imgUrl = 'http://www.aflk-chat.com:8000/file-storage/display?fileLocation='+profileImgUrl;
+                        }
                         innerHTML += '<div class="friend_list_item" onclick="addFriend(\''+user.userCd+'\')">'
-                        innerHTML += '   <div class="friend_info">'
-                        innerHTML += '       <div class="friend_list_item_img">'
-                        //innerHTML += '       <img src="'+user+'" alt="">'
+                        innerHTML += '   <div class="friend_info" style="display:flex;">'
+                        innerHTML += '       <div class="friend_list_item_img" style="width:auto;">'
+                        innerHTML += '          <img src="'+imgUrl+'" alt="" style="height: 24px;">'
                         innerHTML += '       </div>'
-                        innerHTML += '       <div class="friend_list_item_info">'
+                        innerHTML += '       <div class="friend_list_item_info" style="margin-left: 10px;">'
                         innerHTML += '           <div class="name">'+user.userNm+'</div>'
                         //innerHTML += '           <div class="aboutMe">'+user.userInfo.aboutMe+'</div>'
                         innerHTML += '       </div>'
