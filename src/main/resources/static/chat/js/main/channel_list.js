@@ -208,8 +208,16 @@ function exitChannelHub(p_channelCd){
     let deleteChannelUserPromise = deleteChannelUser(p_channelCd);
     deleteChannelUserPromise
     .then((response) => {
-        //console.log(response)
-        sendChatHub(response.data.result.channelUser.userInfo.userNickNm+' 님이 나가셨습니다.','1')
+        console.log(response)
+        let message = response.data.result.channelUser.userInfo.userNickNm+' 님이 채팅방을 나가셨습니다.';
+
+        let p_chat = new Object();
+        p_chat.transferType = 98 // 채널 퇴장 코드
+        p_chat.domainCd = clientDomainCd
+        p_chat.channelCd = p_channelCd
+        p_chat.message = message; // 메시지 내용
+        sendChat(p_chat);
+
         unsubscribe(p_channelCd);
         getChannelsWithPageable('0');
     })

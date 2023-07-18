@@ -23,16 +23,20 @@ function onMessage(msg) {
             }else if(data.transferType == 9){
                 // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
                 getChatsAfterReadChat(data)
-                    .then((response) => {
-                        //console.log('getChatsAfterReadChatResp', response);
-                        let chatArr = response.data.result.chatArr;
-                        for(let i=0; i<chatArr.length; i++){
-                            $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
-                            if(chatArr[i].unreadCount==0){
-                                $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').css('display','none');
-                            }
+                .then((response) => {
+                    //console.log('getChatsAfterReadChatResp', response);
+                    let chatArr = response.data.result.chatArr;
+                    for(let i=0; i<chatArr.length; i++){
+                        $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
+                        if(chatArr[i].unreadCount==0){
+                            $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').css('display','none');
                         }
-                    })
+                    }
+                })
+            }else if(data.transferType == 98){
+                alert(data.message);
+                $('#close_chat').click();
+                //console.log('채팅방 신규 개설', data);
             }else if(data.transferType == 99){
                 //console.log('채팅방 신규 개설', data);
                 if(data.userCd!=localStorage.getItem('loginUserCd')){
@@ -175,10 +179,7 @@ function channelReadHub() {
 function channelRead(p_channelCd) {
     //console.log('updateUnreadCount>>>>>>>>>>>>', p_channelCd)
     return new Promise((resolve, reject) => {
-        axios.post(CHAT_URL +'/channel/read'
-        , {
-            channelCd : p_channelCd
-        })
+        axios.post(CHAT_URL +'/channel/read', {channelCd : p_channelCd})
         .then(response => {
             resolve(response)
         })
@@ -218,11 +219,7 @@ function chatRead(p_chat) {
 function getChatsAfterReadChat(p_chat) {
     //console.log('getChatsAfterReadChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.get(CHAT_URL +'/chats/read', {
-            params: {
-                chatCd :p_chat.chatCd
-            }
-        })
+        axios.get(CHAT_URL +'/chats/read', {params: {chatCd :p_chat.chatCd}})
         .then(response => {
             resolve(response)
         })
@@ -300,12 +297,7 @@ function sendChatHub(message, p_chatType) {
 function saveChat(p_chat) {
     //console.log('saveChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.post(CHAT_URL +'/chat', p_chat, {
-            headers: {
-                'Content-Type': 'application/json'
-                
-            }
-        })
+        axios.post(CHAT_URL +'/chat', p_chat, {})
         .then(response => {
             resolve(response)
         })
@@ -316,15 +308,7 @@ function saveChat(p_chat) {
 function getChat(p_chat) {
     //console.log('getChat>>>>>>>>>>>>', p_chat)
     return new Promise((resolve, reject) => {
-        axios.get(CHAT_URL + '/chat', {
-            params: {
-                chatCd: p_chat.chatCd
-            }
-            , headers: {
-                'Content-Type': 'application/json'
-                , 
-            }
-        })
+        axios.get(CHAT_URL + '/chat', {params: {chatCd: p_chat.chatCd}})
         .then(response => {
             resolve(response)
         })
@@ -387,12 +371,7 @@ function loadChatList(p_channelCd) {
     //console.log('loadChatList>>>>>>>>>>>>')
     let p_page = $("#chat_room_view input[name='current_page_num']").val();
     return new Promise((resolve, reject) => {
-        axios.get(CHAT_URL + '/chats?size=100&page=' + p_page + '&channelCd=' + p_channelCd, {
-            headers: {
-                'Content-Type': 'application/json',
-                
-            }
-        })
+        axios.get(CHAT_URL + '/chats?size=100&page=' + p_page + '&channelCd=' + p_channelCd, {})
         .then(response => {
             //console.log('loadChatListResp', response)
             resolve(response);

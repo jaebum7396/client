@@ -191,7 +191,7 @@ function updateFriend(param){
     axios.put(CHAT_URL+'/friend', param, {})
     .then(function (response) {
         const data = response.data;
-        //console.log(data)
+        console.log(data)
         alert(response.data.message);
         initFriendTab('normal');
     })
