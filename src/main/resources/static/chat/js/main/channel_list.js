@@ -209,7 +209,7 @@ function exitChannelHub(p_channelCd){
     deleteChannelUserPromise
     .then((response) => {
         console.log(response)
-        let message = response.data.result.channelUser.userInfo.userNickNm+' 님이 채팅방을 나가셨습니다.';
+        let message = '상대방이 채팅방을 나갔습니다.';
 
         let p_chat = new Object();
         p_chat.transferType = 98 // 채널 퇴장 코드

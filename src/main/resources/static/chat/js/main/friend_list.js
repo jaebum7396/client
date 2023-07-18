@@ -192,6 +192,21 @@ function updateFriend(param){
     .then(function (response) {
         const data = response.data;
         console.log(data)
+
+        /*for(let i=0; i<data.channelArr.length; i++){
+            let p_channelCd = data.channelArr[i];
+            let message = '상대방이 채팅방을 나갔습니다.';
+
+            let p_chat = new Object();
+            p_chat.transferType = 98 // 채널 퇴장 코드
+            p_chat.domainCd = clientDomainCd
+            p_chat.channelCd = p_channelCd
+            p_chat.message = message; // 메시지 내용
+            sendChat(p_chat);
+
+            unsubscribe(p_channelCd);
+        }*/
+
         alert(response.data.message);
         initFriendTab('normal');
     })
