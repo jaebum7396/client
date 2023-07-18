@@ -190,6 +190,7 @@ function chatRoomVisible(p_flag) {
     $('#chat_room_view').fadeIn();
 
     $('#close_chat').unbind("click").click(function() {
+        getChannelUserUnreadCountHub();
         $("#chat_messages, #chat_header, #chat_header p").removeClass("animate");
         $('.cx, .cy').removeClass("s1 s2 s3");
         $('#chat_room_view').fadeOut();

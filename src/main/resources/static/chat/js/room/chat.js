@@ -55,6 +55,7 @@ function onMessage(msg) {
                 //수신한 메시지를 조회한다.
                 getChat(data)
                 .then((response) => {
+                    getChannelUserUnreadCountHub();
                     //console.log('getChatResp', response)
                     let chatArr = response.data.result.chatArr;
                     let channelInfo = response.data.result.channelInfo;
@@ -123,6 +124,23 @@ function onMessage(msg) {
             }
         });
     }
+}
+
+function getChannelUserUnreadCountHub(){
+    getChannelUserUnreadCount()
+    .then((response) => {
+        console.log('getChannelUserUnreadCountHub', response)
+        if(response.data.result.unreadCount==0){
+            $('.chat_header .unread_count').css('display','none');
+        }else{
+            $('.chat_header .unread_count').css('display','flex');
+        }
+        $('.chat_header .unread_count').html(response.data.result.unreadCount);
+    })
+}
+
+function getChannelUserUnreadCount(){
+    return axios.get(CHAT_URL + '/channeluser/unreadcount', {});
 }
 
 function blockCheckHub(p_chat){

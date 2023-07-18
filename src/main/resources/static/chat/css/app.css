@@ -61,7 +61,22 @@ body {
 }
 
 .chat_header{
-	font-size:25px;
+	font-size:35px;
+}
+.chat_header .unread_count{
+	position: absolute;
+	margin-left: 20px;
+	margin-top: -20px;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	background-color: #388bc7;
+	color: white;
+	font-size: 11px;
+	font-weight: 600;
 }
 
 #topmenu {

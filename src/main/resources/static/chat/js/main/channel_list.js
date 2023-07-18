@@ -1,5 +1,6 @@
 function initChannelTab(){
     closeSearchUserContainer();
+    getChannelUserUnreadCountHub();
     $('.dropdown-list').removeClass('openToggle');
     //먼저 어테치된 페이징을 제거한다.
     $('#channel_list_container').off('scroll');

@@ -18,9 +18,12 @@
         <%--<img src="image/users.svg"/>--%>
         <i class="bi bi-people-fill"></i>
     </span>
-    <span class="chat_header chats" onclick="initChannelTab();" style="font-size:20px;">
+    <span class="chat_header chats" onclick="initChannelTab();" style="font-size:25px;">
         <%--<img src="image/message.svg"/>--%>
         <i class="bi bi-chat-fill"></i>
+            <div class='unread_count' style="">
+                0
+            </div>
     </span>
     <span class="chat_header more_info" onclick='initUserInfoTab();'>
         <%--<img src="image/more_info.svg" onclick=""/>--%>
