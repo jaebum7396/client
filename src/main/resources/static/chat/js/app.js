@@ -68,7 +68,7 @@ function refreshToken(){
         //console.log('token >>>>> ', localStorage.getItem("token"))
         alert('token 갱신 완료')
         refreshTokenYn = true;
-        //location.href='/chat/app';
+        location.reload();
     })
 }
 

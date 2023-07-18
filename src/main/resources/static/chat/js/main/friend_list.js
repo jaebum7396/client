@@ -159,7 +159,6 @@ function friendMaker(friend, rowClickActivate) {
 }
 
 function updateFriendHub(p_methodType, p_yn, p_userCd){
-    console.log(p_userCd);
     /*alert('준비중입니다.')
     return;*/
     let confirmMsg = "";
@@ -191,8 +190,6 @@ function updateFriend(param){
     axios.put(CHAT_URL+'/friend', param, {})
     .then(function (response) {
         const data = response.data;
-        console.log(data)
-
         /*for(let i=0; i<data.channelArr.length; i++){
             let p_channelCd = data.channelArr[i];
             let message = '상대방이 채팅방을 나갔습니다.';
@@ -206,7 +203,6 @@ function updateFriend(param){
 
             unsubscribe(p_channelCd);
         }*/
-
         alert(response.data.message);
         initFriendTab('normal');
     })
