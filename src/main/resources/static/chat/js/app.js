@@ -66,9 +66,9 @@ function refreshToken(){
         //console.log(response.data);
         localStorage.setItem("token", result.token);
         //console.log('token >>>>> ', localStorage.getItem("token"))
-        alert('token 갱신 완료')
+        //alert('token 갱신 완료')
         refreshTokenYn = true;
-        location.reload();
+        //location.reload();
     })
     .catch(error => {
         console.log(error);

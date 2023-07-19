@@ -350,6 +350,7 @@ function getChat(p_chat) {
 
 //메시지 리스트를 새로고침 하기 위한 함수
 function loadChatListHub(p_channelCd, p_openYn) {
+    $('#chat_messages').off('scroll')
     //console.log('loadChatListHub start')
     //새로 열리는 채팅방일 경우엔 현재 페이지를 0으로 세팅한다.
     let noMore = false;
