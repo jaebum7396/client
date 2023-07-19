@@ -140,6 +140,9 @@ document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
         hasFocusApp = true;
         console.log("앱이 활성화되었습니다.");
+        if($('#OPEN_CHANNEL_CD').val()){
+            channelReadHub();
+        }
     } else {
         hasFocusApp = false;
         console.log("앱이 백그라운드에 있습니다.");
