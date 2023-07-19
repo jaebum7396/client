@@ -121,7 +121,7 @@ $(document).ready(function() {
 });
 
 var hasFocus = document.hasFocus();
-var hasFocusApp;
+var hasFocusApp = isMobileDevice();
 
 function updateFocusStatus() {
     if (document.hasFocus()) {
