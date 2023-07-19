@@ -255,7 +255,7 @@ function uploadProfileImageFile() {
 
                     canvas.toBlob((blob) => {
                         resolve(blob);
-                    }, "image/jpeg", imageQuality);
+                    }, "image/png", imageQuality);
                 };
                 image.src = event.target.result;
             };
