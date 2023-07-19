@@ -92,12 +92,22 @@ function onMessage(msg) {
                     if (chatArr[0].channelCd == $('#OPEN_CHANNEL_CD').val()) {
                         //수신 메시지가 본인이 송신한 것이 아닐때(로그인 유저와 송신유저가 다를때)
                         if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
-                            if(hasFocus||hasFocusApp){
-                                //debugLog('custom', "해당 채팅을 읽었습니다.");
-                                chatReadHub(chatArr[0]);
-                                //debugLog('custom', 안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로));
-                            }else{
-                                //console.log("해당 채팅을 읽지않았습니다.");
+                            if (isMobileDevice()) {
+                                // 모바일 환경에서 실행할 로직
+                                if (hasFocusApp) {
+                                    // 앱이 활성화된 경우
+                                    chatReadHub(chatArr[0]);
+                                } else {
+                                    // 앱이 백그라운드에 있는 경우
+                                }
+                            } else {
+                                // PC 환경에서 실행할 로직
+                                if (hasFocus) {
+                                    // 해당 창이 포커스를 가지고 있는 경우
+                                    chatReadHub(chatArr[0]);
+                                } else {
+                                    // 해당 창이 포커스를 잃은 경우
+                                }
                             }
                         }
                         let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
@@ -124,6 +134,11 @@ function onMessage(msg) {
             }
         });
     }
+}
+
+// 모바일 디바이스 여부를 감지하는 함수
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 function getChannelUserUnreadCountHub(){
