@@ -204,7 +204,7 @@ function getChatFriend(p_chat) {
 
 //마지막 읽은 메시지 이후의 메시지들을 모두 읽음 처리 해주기 위한 함수
 function channelReadHub() {
-    //console.log('channelReadHub start')
+    console.log('channelReadHub start')
     let channelReadPromise = channelRead($('#OPEN_CHANNEL_CD').val());
     channelReadPromise
     .then((response) => {
