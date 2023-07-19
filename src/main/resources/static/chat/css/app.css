@@ -61,7 +61,7 @@ body {
 }
 
 .chat_header{
-	font-size:35px;
+	font-size:30px;
 }
 .chat_header .unread_count{
 	position: absolute;
