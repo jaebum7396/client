@@ -22,7 +22,7 @@ function onMessage(msg) {
                 //$('#WSS_KEY').val(data.objMap.wssKey);
             }else if(data.transferType == 9){
                 // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
-                getChatsAfterReadChat(data)
+                //getChatsAfterReadChat(data)
                 .then((response) => {
                     console.log('getChatsAfterReadChatResp', response);
                     let chatArr = response.data.result.chatArr;
@@ -110,6 +110,15 @@ function onMessage(msg) {
                                 }
                             }
                         }
+                        /*if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)){
+                            if(hasFocus||hasFocusApp){
+                                //debugLog('custom', "해당 채팅을 읽었습니다.");
+                                chatReadHub(chatArr[0]);
+                                //debugLog('custom', 안읽음 카운트를 0으로 갱신해준다.(채팅방에 현재 들어와 있으므로));
+                            }else{
+                                //console.log("해당 채팅을 읽지않았습니다.");
+                            }
+                        }*/
                         let prevScrollHeight = $('#chat_messages')[0].scrollHeight;
                         //현재 최근 메시지 시간과 방금 수신한 메시지 시간이 같을시
                         let messageDt = chatArr[0].messageDt;
@@ -370,6 +379,7 @@ function loadChatListHub(p_channelCd, p_openYn) {
         let talkMakerHubPromise = talkMakerHub(chatArr);
         talkMakerHubPromise
         .then(() => {
+            channelReadHub();
             $('#chat_messages').scroll(function() {
                 let scrollHeight = $('#chat_messages')[0].scrollHeight;
                 //console.log('scroll>>>>>>>>>>>>',scrollHeight)

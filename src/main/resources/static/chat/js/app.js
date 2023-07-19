@@ -1,5 +1,5 @@
-/*const debugYn = CURRENT_PROFILE == 'local' ? true : false;*/
-const debugYn = true;
+const debugYn = CURRENT_PROFILE == 'local' ? true : false;
+//const debugYn = true;
 
 function getCurrentTime(){
     let today = new Date();
@@ -126,27 +126,26 @@ var hasFocusApp;
 function updateFocusStatus() {
     if (document.hasFocus()) {
         hasFocus = true;
-        console.log("해당 창이 포커스를 가지고 있습니다.");
+        debugLog("해당 창이 포커스를 가지고 있습니다.");
         if($('#OPEN_CHANNEL_CD').val()){
             channelReadHub();
         }
     } else {
         hasFocus = false;
-        console.log("해당 창이 포커스를 잃었습니다.");
+        debugLog("해당 창이 포커스를 잃었습니다.");
     }
 }
 
 document.addEventListener("visibilitychange", function() {
-    console.log(document.visibilityState)
     if (document.visibilityState === "visible") {
         hasFocusApp = true;
-        console.log("앱이 활성화되었습니다.");
+        debugLog("앱이 활성화되었습니다.");
         if($('#OPEN_CHANNEL_CD').val()){
             channelReadHub();
         }
     } else {
         hasFocusApp = false;
-        console.log("앱이 백그라운드에 있습니다.");
+        debugLog("앱이 백그라운드에 있습니다.");
     }
 });
 
@@ -320,12 +319,11 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     $('#chat-messages').off('scroll');
     $('#chat-messages').html('');
 
-    channelReadHub();
+    loadChatListHub(channelCd, 'Y')
 
     $('#channel_alias').html(p_channelAlias);
     $('#channel_user_count').html(p_channelUserCount);
     //메시지 초기화
-    loadChatListHub(channelCd, 'Y')
     chatRoomVisible('channel');
 }
 
