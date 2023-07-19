@@ -6,7 +6,7 @@
 // ○ 파일	: page_head
 // ● 설명	: 페이지 공통 head
 //**********************************************************************************
-String version = "?v=20230703.3"; // CSS 나 JS 수정 후 업데이트 해줄것
+String version = "?v=20230719.1"; // CSS 나 JS 수정 후 업데이트 해줄것
 WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
 Environment env = context.getEnvironment();
 
@@ -25,7 +25,7 @@ String GPT_CONNECTOR_URL = env.getProperty("api.gpt-connector.url");
 System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 %>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="description" content="" />
 <meta name="author" content="" />
