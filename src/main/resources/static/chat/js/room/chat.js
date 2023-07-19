@@ -129,7 +129,7 @@ function onMessage(msg) {
 function getChannelUserUnreadCountHub(){
     getChannelUserUnreadCount()
     .then((response) => {
-        console.log('getChannelUserUnreadCountHub', response)
+        /*console.log('getChannelUserUnreadCountHub', response)*/
         if(response.data.result.unreadCount==0){
             $('.chat_header .unread_count').css('display','none');
         }else{
