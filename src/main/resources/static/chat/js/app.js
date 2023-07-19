@@ -38,10 +38,10 @@ axios.interceptors.response.use(res => {
             refreshTokenYn = false;
             confirm('로그인을 연장하시겠습니까?') ? refreshToken() : alert('로그인이 만료되었습니다');
         }else{
-            localStorage.setItem('token', '');
+            /*localStorage.setItem('token', '');
             alert('로그인이 만료되었습니다');
             location.href = 'login';
-            refreshTokenYn = true;
+            refreshTokenYn = true;*/
         }
         //localStorage.setItem('token', '');
         //alert('로그인이 만료되었습니다');
@@ -70,6 +70,13 @@ function refreshToken(){
         refreshTokenYn = true;
         location.reload();
     })
+    .catch(error => {
+        console.log(error);
+        localStorage.setItem('token', '');
+        alert('로그인 갱신시간이 만료되었습니다');
+        location.href = 'login';
+        refreshTokenYn = true;
+    });
 }
 
 $(document).ready(function() {
