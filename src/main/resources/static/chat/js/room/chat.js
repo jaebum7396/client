@@ -145,11 +145,6 @@ function onMessage(msg) {
     }
 }
 
-// 모바일 디바이스 여부를 감지하는 함수
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
 function getChannelUserUnreadCountHub(){
     getChannelUserUnreadCount()
     .then((response) => {

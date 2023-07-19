@@ -120,6 +120,11 @@ $(document).ready(function() {
     initFriendTab('normal');
 });
 
+// 모바일 디바이스 여부를 감지하는 함수
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 var hasFocus = document.hasFocus();
 var hasFocusApp = isMobileDevice();
 
