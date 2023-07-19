@@ -125,23 +125,23 @@ var hasFocusApp;
 function updateFocusStatus() {
     if (document.hasFocus()) {
         hasFocus = true;
-        //console.log("해당 창이 포커스를 가지고 있습니다.");
+        console.log("해당 창이 포커스를 가지고 있습니다.");
         if($('#OPEN_CHANNEL_CD').val()){
             channelReadHub();
         }
     } else {
         hasFocus = false;
-        //console.log("해당 창이 포커스를 잃었습니다.");
+        console.log("해당 창이 포커스를 잃었습니다.");
     }
 }
 
 document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
         hasFocusApp = true;
-        //console.log("앱이 활성화되었습니다.");
+        console.log("앱이 활성화되었습니다.");
     } else {
         hasFocusApp = false;
-        //console.log("앱이 백그라운드에 있습니다.");
+        console.log("앱이 백그라운드에 있습니다.");
     }
 });
 
