@@ -22,9 +22,9 @@ function onMessage(msg) {
                 //$('#WSS_KEY').val(data.objMap.wssKey);
             }else if(data.transferType == 9){
                 // 현재 읽음처리 요청된 메시지의 메시지 코드보다 이후에 온 메시지들을 조회
-                //getChatsAfterReadChat(data)
+                getChatsAfterReadChat(data)
                 .then((response) => {
-                    console.log('getChatsAfterReadChatResp', response);
+                    //console.log('getChatsAfterReadChatResp', response);
                     let chatArr = response.data.result.chatArr;
                     for(let i=0; i<chatArr.length; i++){
                         $('.bubble_box.'+chatArr[i].chatCd).find('.unread_count').html(chatArr[i].unreadCount)
