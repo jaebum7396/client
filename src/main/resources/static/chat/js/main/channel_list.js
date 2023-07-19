@@ -59,8 +59,6 @@ function getChannelsWithPageable(p_page) {
     addInfiniteScroll('channel_list_container');
 }
 
-
-
 async function channelMakerHub(channelArr){
     //console.log('channelMakerHub start', channelArr)
     for (let i = 0; i < channelArr.length; i++) {
