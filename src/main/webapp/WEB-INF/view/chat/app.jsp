@@ -10,6 +10,15 @@
         <script src="js/app.js<%= version %>" type="text/javascript"></script>
         <script src="js/stomp.js<%= version %>" type="text/javascript"></script>
     </head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D5DTCR537R"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-D5DTCR537R');
+    </script>
     <script>
         // 로그인 체크
         if (!localStorage.getItem("token")) {
