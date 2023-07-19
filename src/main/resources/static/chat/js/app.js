@@ -136,6 +136,7 @@ function updateFocusStatus() {
 }
 
 document.addEventListener("visibilitychange", function() {
+    console.log(document.visibilityState)
     if (document.visibilityState === "visible") {
         hasFocusApp = true;
         console.log("앱이 활성화되었습니다.");
