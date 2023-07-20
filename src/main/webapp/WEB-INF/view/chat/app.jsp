@@ -24,6 +24,9 @@
             location.href = "login";
         }
     </script>
+    <div class="loading-container">
+        <div class="loading"></div>
+    </div>
     <div id='loadingCover' style=''>
         <div id="circonf"></div>
         <div id='loadingText'>Loading...</div>
@@ -42,4 +45,6 @@
         </div>
         <jsp:directive.include file="popup/profile.jsp"/>
     </body>
+    <script src="js/loading.js<%= version %>" type="text/javascript"></script>
+    <link href="css/loading.css<%= version %>" rel="stylesheet" type="text/css"/>
 </html>
