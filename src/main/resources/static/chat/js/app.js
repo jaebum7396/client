@@ -1,5 +1,5 @@
-const debugYn = CURRENT_PROFILE == 'local' ? true : false;
-//const debugYn = true;
+//const debugYn = CURRENT_PROFILE == 'local' ? true : false;
+const debugYn = true;
 
 function getCurrentTime(){
     let today = new Date();
