@@ -53,6 +53,7 @@ function swipe(e) {
     }
 }
 
-document.addEventListener("touchstart", e => swipeStart(e), false);
-document.addEventListener("touchmove", e => swipe(e), false);
-document.addEventListener("touchend", e => swipeEnd(e), false);
+main.addEventListener("touchstart", e => swipeStart(e), false);
+main.addEventListener("touchmove", e => swipe(e), false);
+main.addEventListener("touchend", e => swipeEnd(e), false);
+
