@@ -6,7 +6,7 @@ let reconnect;
 
 //웹소켓 연결
 function webSocketConnectHub() {
-	console.log('webSocketConnectHub start')
+	//console.log('webSocketConnectHub start')
 	sock = new SockJS(SOCKET_STREAM_URL+"/ws-stomp?Authorization="+localStorage.getItem("token"));
 	sock.onopen = function () {
 		// 연결이 열리면 실행되는 코드
@@ -69,7 +69,7 @@ function loadMyChannel() {
 // Set 객체 생성 (구독 정보를 저장하기 위한 Set)
 var subscriptionSet = new Set();
 function stompSubscribe(domainCd, channelCd) {
-	console.log('stompSubscribe>>>>>>>>>>>>', domainCd, channelCd)
+	//console.log('stompSubscribe>>>>>>>>>>>>', domainCd, channelCd)
   	const channel = "/sub/channel/" + domainCd + "/" + channelCd;
 
   	// 중복 구독 체크
