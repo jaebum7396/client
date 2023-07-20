@@ -71,10 +71,11 @@ function refreshToken(){
         let result = response.data.result;
         //console.log(response.data);
         localStorage.setItem("token", result.token);
+        webSocketConnectHub();
         //console.log('token >>>>> ', localStorage.getItem("token"))
         //alert('token 갱신 완료')
         //refreshTokenYn = true;
-        location.reload();
+        //location.reload();
     })
     .catch(error => {
         console.log(error);
@@ -150,6 +151,7 @@ document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
         hasFocusApp = true;
         debugLog("앱이 활성화되었습니다.");
+        refreshToken();
         if($('#OPEN_CHANNEL_CD').val()){
             channelReadHub();
         }
