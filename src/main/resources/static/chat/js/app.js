@@ -156,6 +156,8 @@ document.addEventListener("visibilitychange", function() {
         if($('#OPEN_CHANNEL_CD').val()){
             stompSubscribe(clientDomainCd, $('#OPEN_CHANNEL_CD').val())
             channelReadHub();
+        }else{
+            webSocketConnectHub();
         }
     } else {
         hasFocusApp = false;
@@ -216,6 +218,7 @@ function chatRoomVisible(p_flag) {
 
     $('#close_chat').unbind("click").click(function() {
         getChannelUserUnreadCountHub();
+        webSocketConnectHub();
         $("#chat_messages, #chat_header, #chat_header p").removeClass("animate");
         $('.cx, .cy').removeClass("s1 s2 s3");
         $('#chat_room_view').fadeOut();
