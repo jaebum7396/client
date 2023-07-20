@@ -37,7 +37,12 @@ axios.interceptors.response.use(res => {
     if(err.response.status == 401){
         if(refreshTokenYn) {
             refreshTokenYn = false;
-            confirm('로그인을 연장하시겠습니까?') ? refreshToken() : alert('로그인이 만료되었습니다');
+            if(confirm('로그인을 연장하시겠습니까?')){
+                refreshToken();
+            }else{
+                alert('로그인이 만료되었습니다');
+                location.href = 'login';
+            }
         }else{
             /*localStorage.setItem('token', '');
             alert('로그인이 만료되었습니다');
@@ -68,8 +73,8 @@ function refreshToken(){
         localStorage.setItem("token", result.token);
         //console.log('token >>>>> ', localStorage.getItem("token"))
         //alert('token 갱신 완료')
-        refreshTokenYn = true;
-        //location.reload();
+        //refreshTokenYn = true;
+        location.reload();
     })
     .catch(error => {
         console.log(error);
