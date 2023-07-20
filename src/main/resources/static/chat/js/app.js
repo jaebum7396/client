@@ -153,12 +153,13 @@ document.addEventListener("visibilitychange", function() {
         debugLog("앱이 활성화되었습니다.");
         //webSocketConnectHub();
         //refreshToken();
-        if($('#OPEN_CHANNEL_CD').val()){
+        /*if($('#OPEN_CHANNEL_CD').val()){
             stompSubscribe(clientDomainCd, $('#OPEN_CHANNEL_CD').val())
             channelReadHub();
         }else{
             webSocketConnectHub();
-        }
+        }*/
+        location.reload();
     } else {
         hasFocusApp = false;
         debugLog("앱이 백그라운드에 있습니다.");
