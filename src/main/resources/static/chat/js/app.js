@@ -151,9 +151,10 @@ document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
         hasFocusApp = true;
         debugLog("앱이 활성화되었습니다.");
-        webSocketConnectHub();
+        //webSocketConnectHub();
         //refreshToken();
         if($('#OPEN_CHANNEL_CD').val()){
+            stompSubscribe(clientDomainCd, $('#OPEN_CHANNEL_CD').val())
             channelReadHub();
         }
     } else {
