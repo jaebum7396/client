@@ -152,6 +152,7 @@ document.addEventListener("visibilitychange", function() {
         }else{
             webSocketConnectHub();
         }*/
+
         if (activeTab == 'user_info'){
             webSocketConnectHub();
         }else{

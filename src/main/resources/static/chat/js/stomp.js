@@ -16,7 +16,9 @@ function webSocketConnectHub() {
 	}
 	wsClient = Stomp.over(sock);
 	//로그 안보이도록
-	//wsClient.debug = null;
+	if(!debugYn){
+		wsClient.debug = null;
+	}
 	reconnect = 0;
 	
 	wsClient.connect({'Authorization' : localStorage.getItem("token")}, function (frame) {
@@ -69,7 +71,7 @@ function loadMyChannel() {
 // Set 객체 생성 (구독 정보를 저장하기 위한 Set)
 var subscriptionSet = new Set();
 function stompSubscribe(domainCd, channelCd) {
-	//console.log('stompSubscribe>>>>>>>>>>>>', domainCd, channelCd)
+	debugLog('stompSubscribe>>>>>>>>>>>>', domainCd, channelCd)
   	const channel = "/sub/channel/" + domainCd + "/" + channelCd;
 
   	// 중복 구독 체크
