@@ -1,5 +1,6 @@
 //const debugYn = CURRENT_PROFILE == 'local' ? true : false;
 const debugYn = true;
+let activeTab = 'friend';
 
 function getCurrentTime(){
     let today = new Date();
@@ -43,15 +44,7 @@ axios.interceptors.response.use(res => {
                 alert('로그인이 만료되었습니다');
                 location.href = 'login';
             }
-        }else{
-            /*localStorage.setItem('token', '');
-            alert('로그인이 만료되었습니다');
-            location.href = 'login';
-            refreshTokenYn = true;*/
         }
-        //localStorage.setItem('token', '');
-        //alert('로그인이 만료되었습니다');
-        //location.href = 'login';
     }else if(err.response.data.statusCodeValue == 401){
         localStorage.setItem('token', '');
         alert('로그인이 만료되었습니다');
@@ -71,11 +64,11 @@ function refreshToken(){
         let result = response.data.result;
         //console.log(response.data);
         localStorage.setItem("token", result.token);
-        webSocketConnectHub();
+        location.reload();
+        //webSocketConnectHub();
         //console.log('token >>>>> ', localStorage.getItem("token"))
         //alert('token 갱신 완료')
         //refreshTokenYn = true;
-        //location.reload();
     })
     .catch(error => {
         console.log(error);
@@ -159,7 +152,11 @@ document.addEventListener("visibilitychange", function() {
         }else{
             webSocketConnectHub();
         }*/
-        location.reload();
+        if (activeTab == 'user_info'){
+            webSocketConnectHub();
+        }else{
+            location.reload();
+        }
     } else {
         hasFocusApp = false;
         debugLog("앱이 백그라운드에 있습니다.");
@@ -189,6 +186,10 @@ window.onhashchange = function() {
         leftSideMenuClose()
     }
 };
+
+function resetTab(){
+
+}
 
 function sendTypingAlarmHub(){
     let p_chat = new Object();

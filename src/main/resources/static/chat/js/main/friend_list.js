@@ -1,4 +1,5 @@
 function initFriendTab(friendDivision){
+    activeTab = 'friend';
     closeSearchUserContainer();
     getChannelUserUnreadCountHub();
     $('.dropdown-list').removeClass('openToggle');
