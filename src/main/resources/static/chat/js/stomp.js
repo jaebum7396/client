@@ -32,9 +32,10 @@ function webSocketConnectHub() {
 		let loadMyChannelPromise = loadMyChannel();
 		loadMyChannelPromise
 		.then((response) => {
-			//console.log("loadMyChannelResp", response);
+			console.log("loadMyChannelResp", response);
 			let channelArr = response.data.result.channelArr;
 			for(let i = 0; i<channelArr.length; i++){
+				console.log('channelArr', channelArr[i].channelCd);
 				stompSubscribe(clientDomainCd, channelArr[i].channelCd)
 			}
 		})
