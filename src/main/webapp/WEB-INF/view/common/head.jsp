@@ -45,7 +45,6 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 <%--swiper.js--%>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js<%= version %>"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css<%= version %>"/>
-
 <%--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>--%>
 
 <script>

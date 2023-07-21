@@ -16,7 +16,7 @@ function webSocketConnectHub() {
 	}
 	wsClient = Stomp.over(sock);
 	//로그 안보이도록
-	wsClient.debug = null;
+	//wsClient.debug = null;
 	reconnect = 0;
 	
 	wsClient.connect({'Authorization' : localStorage.getItem("token")}, function (frame) {
