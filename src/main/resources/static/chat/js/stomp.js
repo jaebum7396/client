@@ -32,10 +32,10 @@ function webSocketConnectHub() {
 		let loadMyChannelPromise = loadMyChannel();
 		loadMyChannelPromise
 		.then((response) => {
-			console.log("loadMyChannelResp", response);
+			//console.log("loadMyChannelResp", response);
 			let channelArr = response.data.result.channelArr;
 			for(let i = 0; i<channelArr.length; i++){
-				console.log('channelArr', channelArr[i].channelCd);
+				//console.log('channelArr', channelArr[i].channelCd);
 				stompSubscribe(clientDomainCd, channelArr[i].channelCd)
 			}
 		})
@@ -75,7 +75,7 @@ function loadMyChannel() {
 // Set 객체 생성 (구독 정보를 저장하기 위한 Set)
 var subscriptionSet = new Set();
 function stompSubscribe(domainCd, channelCd) {
-	console.log('stompSubscribe>>>>>>>>>>>>', domainCd, channelCd)
+	//console.log('stompSubscribe>>>>>>>>>>>>', domainCd, channelCd)
   	const channel = "/sub/channel/" + domainCd + "/" + channelCd;
 
   	// 중복 구독 체크
@@ -99,7 +99,6 @@ function stompSubscribe(domainCd, channelCd) {
   	// 구독 처리
   	//console.log('먼저 기존 구독 채널 제거');
 	//console.log('신규 구독입니다.', channel);
-
   	let subscription = wsClient.subscribe(channel, function (message) {
     	//console.log('connect.subscribe', message);
     	let recv = JSON.parse(message.body);
