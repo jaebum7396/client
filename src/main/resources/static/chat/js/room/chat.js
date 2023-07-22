@@ -302,7 +302,9 @@ function moveBottom() {
 }
 
 //메시지 전송 API 호출
-function sendChatHub(message, p_chatType) {
+function sendChatHub() {
+    let message = document.getElementById("msg").value;
+    let p_chatType = isValidURL(message)?'5' : '1'
     //console.log(message, message.length)
     if(message.trim().length==0){
         return;
