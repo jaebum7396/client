@@ -4,6 +4,7 @@ var cropper;
 let swiperInstance = null;
 
 function initUserInfoTab() {
+    activeTab = 'user_info';
     closeSearchUserContainer();
     $('.dropdown-list').removeClass('openToggle');
 

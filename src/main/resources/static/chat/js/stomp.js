@@ -16,7 +16,9 @@ function webSocketConnectHub() {
 	}
 	wsClient = Stomp.over(sock);
 	//로그 안보이도록
-	wsClient.debug = null;
+	if(!debugYn){
+		wsClient.debug = null;
+	}
 	reconnect = 0;
 	
 	wsClient.connect({'Authorization' : localStorage.getItem("token")}, function (frame) {
@@ -33,6 +35,7 @@ function webSocketConnectHub() {
 			//console.log("loadMyChannelResp", response);
 			let channelArr = response.data.result.channelArr;
 			for(let i = 0; i<channelArr.length; i++){
+				//console.log('channelArr', channelArr[i].channelCd);
 				stompSubscribe(clientDomainCd, channelArr[i].channelCd)
 			}
 		})
@@ -48,6 +51,9 @@ function webSocketConnectHub() {
 				wsClient = Stomp.over(sock);
 				reconnect = 0;
 			}, 10 * 1000);
+		}else{
+			alert('서버와 연결이 끊어졌습니다.');
+			location.reload();
 		}
 	});
 }
@@ -73,10 +79,11 @@ function stompSubscribe(domainCd, channelCd) {
   	const channel = "/sub/channel/" + domainCd + "/" + channelCd;
 
   	// 중복 구독 체크
-  	if (isDuplicateSubscription(channelCd)) {
-    	//console.log('중복 구독입니다.', channelCd);
-    	return; // 중복 구독일 경우 함수를 종료합니다.
-  	}
+	if (isDuplicateSubscription(channelCd)) {
+		//console.log('중복 구독입니다.', channelCd);
+		//return; // 중복 구독일 경우 함수를 종료합니다.
+		unsubscribe(channelCd);
+	}
 
   	// 구독 요청 메시지 전송
   	wsClient.send(
@@ -92,7 +99,6 @@ function stompSubscribe(domainCd, channelCd) {
   	// 구독 처리
   	//console.log('먼저 기존 구독 채널 제거');
 	//console.log('신규 구독입니다.', channel);
-	unsubscribe(channelCd);
   	let subscription = wsClient.subscribe(channel, function (message) {
     	//console.log('connect.subscribe', message);
     	let recv = JSON.parse(message.body);

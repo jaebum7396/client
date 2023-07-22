@@ -1,4 +1,5 @@
 function initChannelTab(){
+    activeTab = 'channel';
     closeSearchUserContainer();
     getChannelUserUnreadCountHub();
     $('.dropdown-list').removeClass('openToggle');
