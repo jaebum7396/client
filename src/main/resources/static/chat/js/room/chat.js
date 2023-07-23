@@ -145,6 +145,32 @@ function onMessage(msg) {
     }
 }
 
+// 키보드가 활성화된 상태인지 확인하기 위한 변수
+let isKeyboardActive = false;
+
+// 인풋 요소를 클릭했을 때 이벤트 리스너
+$('#textInput').on('click', function() {
+    isKeyboardActive = true;
+});
+
+/*// 문서 전체를 감싸는 외부 영역 클릭 시 이벤트 리스너
+$(document).on('click', function(event) {
+    // 인풋 요소가 아닌 다른 영역을 클릭했을 때 키보드를 숨김
+    if (isKeyboardActive && !$(event.target).is('#sendmessage .msg')) {
+        $('#sendmessage .msg').blur(); // 포커스 해제
+        isKeyboardActive = false;
+    }
+});*/
+
+// 터치 시작 이벤트 리스너 (모바일에서 터치 이벤트를 고려)
+$(document).on('touchstart', function(event) {
+    // 인풋 요소가 아닌 다른 영역을 터치했을 때 키보드를 숨김
+    if (isKeyboardActive && !$(event.target).is('#sendmessage .msg')) {
+        $('#sendmessage .msg').blur(); // 포커스 해제
+        isKeyboardActive = false;
+    }
+});
+
 function getChannelUserUnreadCountHub(){
     getChannelUserUnreadCount()
     .then((response) => {
