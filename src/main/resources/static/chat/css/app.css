@@ -73,7 +73,7 @@ body {
 	border-radius: 50%;
 	width: 20px;
 	height: 20px;
-	background-color: #388bc7;
+	background-color: #f8c58e;
 	color: white;
 	font-size: 11px;
 	font-weight: 600;
@@ -773,7 +773,7 @@ input[type=checkbox]:disabled + label {
 }
 
 .chat_row .unread_count_container .unread_count{
-	display: flex; justify-content: center; align-items: center; border-radius: 50%; width: 20px; height:20px; background-color:#388bc7; color:white; font-size: 11px; font-weight:600; display:none;
+	display: flex; justify-content: center; align-items: center; border-radius: 50%; width: 20px; height:20px; background-color:#f8c58e; color:white; font-size: 11px; font-weight:600; display:none;
 }
 
 .recent_message_container .recent_message{
