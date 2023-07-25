@@ -4,6 +4,8 @@ var cropper;
 let swiperInstance = null;
 
 function initUserInfoTab() {
+    $('.chat_header').css('color', 'black');
+    $('.chat_header.more_info').css('color', '#f18a1c');
     activeTab = 'user_info';
     closeSearchUserContainer();
     $('.dropdown-list').removeClass('openToggle');

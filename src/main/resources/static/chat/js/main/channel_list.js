@@ -1,4 +1,6 @@
 function initChannelTab(){
+    $('.chat_header').css('color', 'black');
+    $('.chat_header.chats').css('color', '#f18a1c');
     activeTab = 'channel';
     closeSearchUserContainer();
     getChannelUserUnreadCountHub();
