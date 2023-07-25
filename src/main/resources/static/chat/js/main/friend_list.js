@@ -1,4 +1,6 @@
 function initFriendTab(friendDivision){
+    $('.chat_header').css('color', 'black');
+    $('.chat_header.friends').css('color', '#f18a1c');
     activeTab = 'friend';
     closeSearchUserContainer();
     getChannelUserUnreadCountHub();
