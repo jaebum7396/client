@@ -10,6 +10,8 @@ String version = "?v=20230720.1"; // CSS 나 JS 수정 후 업데이트 해줄�
 WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
 Environment env = context.getEnvironment();
 
+String FCM_TOKEN = request.getParameter("fcmToken");
+
 String BACKEND_URL = env.getProperty("backend.url");
 String CURRENT_PROFILE = env.getProperty("spring.profiles.active");
 System.out.println("CURRENT_PROFILE : " + CURRENT_PROFILE);
@@ -49,6 +51,8 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 
 <script>
     const CURRENT_PROFILE = '<%=CURRENT_PROFILE%>';
+    const FCM_TOKEN = '<%=FCM_TOKEN%>'
+    localStorage.setItem('FCM_TOKEN', FCM_TOKEN);
     const BACKEND_URL = '<%=BACKEND_URL%>';
     const USER_URL = '<%=USER_URL%>';
     const CHAT_URL = '<%=CHAT_URL%>';
