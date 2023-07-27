@@ -61,7 +61,7 @@ function onMessage(msg) {
                     let channelInfo = response.data.result.channelInfo;
 
                     if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)) {
-                        sendFcm(data)
+                        sendFcm(chatArr[0])
                     }
 
                     //채팅 목록이 활성화 되어 있을때
