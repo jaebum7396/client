@@ -55,6 +55,7 @@ function onMessage(msg) {
                 //수신한 메시지를 조회한다.
                 getChat(data)
                 .then((response) => {
+                    sendFcm(data)
                     getChannelUserUnreadCountHub();
                     //console.log('getChatResp', response)
                     let chatArr = response.data.result.chatArr;
@@ -181,6 +182,14 @@ function getChannelUserUnreadCountHub(){
             $('.chat_header .unread_count').css('display','flex');
         }
         $('.chat_header .unread_count').html(response.data.result.unreadCount);
+    })
+}
+
+function sendFcm(data){
+    let fcmToken = localStorage.getItem('fcmToken');
+    axios.post(CHAT_URL + '/fcm?fcmToken='+fcmToken, data)
+    .then((response) => {
+        console.log('sendFcm', response)
     })
 }
 
