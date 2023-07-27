@@ -55,11 +55,14 @@ function onMessage(msg) {
                 //수신한 메시지를 조회한다.
                 getChat(data)
                 .then((response) => {
-                    sendFcm(data)
                     getChannelUserUnreadCountHub();
                     //console.log('getChatResp', response)
                     let chatArr = response.data.result.chatArr;
                     let channelInfo = response.data.result.channelInfo;
+
+                    if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)) {
+                        sendFcm(data)
+                    }
 
                     //채팅 목록이 활성화 되어 있을때
                     if($('#channel_list_container').css('display')=='block'){
@@ -186,7 +189,7 @@ function getChannelUserUnreadCountHub(){
 }
 
 function sendFcm(data){
-    let fcmToken = localStorage.getItem('fcmToken');
+    let fcmToken = localStorage.getItem('FCM_TOKEN');
     axios.post(CHAT_URL + '/fcm?fcmToken='+fcmToken, data)
     .then((response) => {
         console.log('sendFcm', response)
