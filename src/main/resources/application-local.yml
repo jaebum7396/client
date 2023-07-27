@@ -1,6 +1,6 @@
 api:
   user:
-    url: ${USER_URL_LOCAL}
+    url: ${USER_URL_DEPLOY}
   chat:
     url: ${CHAT_URL_DEPLOY}
   file-storage:

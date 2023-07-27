@@ -63,7 +63,7 @@ axios.interceptors.response.use(res => {
 
 function refreshFcmToken(){
     return axios.post(USER_URL+'/userInfo', {
-        fcmToken: localStorage.getItem('fcmToken')
+        fcmToken: localStorage.getItem('FCM_TOKEN')
     });
 }
 
