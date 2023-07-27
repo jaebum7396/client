@@ -189,9 +189,11 @@ function getChannelUserUnreadCountHub(){
 }
 
 function sendFcm(data){
-    let fcmToken = localStorage.getItem('FCM_TOKEN');
-    data.fcmToken = fcmToken;
-    axios.post(CHAT_URL + '/fcm', data)
+    let param = new Object();
+    param.title = data.sender.userNickNm? data.sender.userNickNm : data.sender.userNm;
+    param.body = data.message;
+    param.fcmToken = localStorage.getItem('FCM_TOKEN');
+    axios.post(CHAT_URL + '/fcm', param)
     .then((response) => {
         console.log('sendFcm', response)
     })
