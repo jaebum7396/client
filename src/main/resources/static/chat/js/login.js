@@ -10,6 +10,13 @@ $(document).ready(function(){
         }
     });
 })
+
+function refreshFcmToken(){
+    return axios.post(USER_URL+'/userInfo', {
+        fcmToken: localStorage.getItem('fcmToken')
+    });
+}
+
 function login(){
     axios.post(USER_URL+'/login', {
         userId: $('#userId').val(),
