@@ -11,12 +11,6 @@ $(document).ready(function(){
     });
 })
 
-function refreshFcmToken(){
-    return axios.post(USER_URL+'/userInfo', {
-        fcmToken: localStorage.getItem('fcmToken')
-    });
-}
-
 function login(){
     axios.post(USER_URL+'/login', {
         userId: $('#userId').val(),
@@ -32,7 +26,6 @@ function login(){
         //console.log(response.data);
         localStorage.setItem("token", result.token);
         //console.log('token >>>>> ', localStorage.getItem("token"))
-        refreshFcmToken();
         location.href='/chat/app';
     })
     .catch(error => {

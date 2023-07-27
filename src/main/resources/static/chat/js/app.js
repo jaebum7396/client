@@ -126,6 +126,7 @@ $(document).ready(function() {
     });
     preventBrowserZoom();
     webSocketConnectHub();
+    refreshFcmToken();
     initFriendTab('normal');
 });
 
