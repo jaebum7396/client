@@ -25,6 +25,7 @@ function login(){
         //console.log(response.data);
         localStorage.setItem("token", result.token);
         //console.log('token >>>>> ', localStorage.getItem("token"))
+        refreshFcmToken();
         location.href='/chat/app';
     })
     .catch(error => {

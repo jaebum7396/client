@@ -42,6 +42,9 @@ axios.interceptors.response.use(res => {
                 refreshToken();
             }else{
                 alert('로그인이 만료되었습니다');
+                localStorage.setItem('fcmToken', '');
+                refreshFcmToken();
+                localStorage.setItem('token', '');
                 location.href = 'login';
             }
         }
@@ -58,12 +61,19 @@ axios.interceptors.response.use(res => {
     }
 })
 
+function refreshFcmToken(){
+    return axios.post(USER_URL+'/userInfo', {
+        fcmToken: localStorage.getItem('fcmToken')
+    });
+}
+
 function refreshToken(){
     axios.post(USER_URL+'/login/refresh', {}, {})
     .then(response => {
         let result = response.data.result;
         //console.log(response.data);
         localStorage.setItem("token", result.token);
+        refreshFcmToken()
         location.reload();
         //webSocketConnectHub();
         //console.log('token >>>>> ', localStorage.getItem("token"))
