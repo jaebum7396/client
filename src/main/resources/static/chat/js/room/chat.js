@@ -192,7 +192,7 @@ function sendFcm(data){
     let param = new Object();
     console.log(data)
     param.title = (data.sender.userNickNm ? data.sender.userNickNm : data.sender.userNm);
-    param.body = data.message;
+    param.message = data.message;
     param.fcmToken = localStorage.getItem('FCM_TOKEN');
     axios.post(CHAT_URL + '/fcm', param)
     .then((response) => {
