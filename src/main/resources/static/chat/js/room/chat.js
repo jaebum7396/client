@@ -60,9 +60,9 @@ function onMessage(msg) {
                     let chatArr = response.data.result.chatArr;
                     let channelInfo = response.data.result.channelInfo;
 
-                    if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)) {
-                        sendFcm(chatArr[0])
-                    }
+                    //if ((localStorage.getItem('loginUserCd') != chatArr[0].sender.userCd)) {
+                    //    sendFcm(chatArr[0])
+                    //}
 
                     //채팅 목록이 활성화 되어 있을때
                     if($('#channel_list_container').css('display')=='block'){
