@@ -229,7 +229,6 @@ function chatRoomVisible(p_flag) {
 
     $('#tab_container').fadeOut();
     $('#chat_room_view').fadeIn();
-
     $('#close_chat').unbind("click").click(function() {
         getChannelUserUnreadCountHub();
         webSocketConnectHub();
@@ -245,7 +244,7 @@ function chatRoomVisible(p_flag) {
             initFriendTab('normal');
         }
     });
-    closePopupProfile();
+    //closePopupProfile();
 }
 
 function addInfiniteScroll(p_list_container_id){
@@ -398,4 +397,8 @@ function openLoadingCover(loadingText){
 
 function closeLoadingCover(){
     $('#loadingCover').css('display', 'none');
+}
+
+function gptQuery(prompt, prevMessages) {
+    return axios.post(GPT_CONNECTOR_URL+'/query?prompt='+prompt, prevMessages, {});
 }

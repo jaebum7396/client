@@ -36,12 +36,8 @@
     </div>
     <body>
         <div id="chatbox">
-            <%--main_template Start--%>
             <jsp:directive.include file="main/main_template.jsp"/>
-            <%--main_template End--%>
-            <%--room_template Start--%>
             <jsp:directive.include file="room/room_template.jsp"/>
-            <%--room_template End--%>
         </div>
         <jsp:directive.include file="popup/profile.jsp"/>
     </body>

@@ -31,16 +31,16 @@ function initFriendTab(friendDivision){
     if (friendDivision == 'normal') {
         let getMyInfoPromise = getMyInfo();
         getMyInfoPromise
-            .then((response) => {
-                //console.log('getMyInfoResp', response)
-                //유저 코드 로컬스토리지 세팅
-                localStorage.setItem('loginUserCd', response.data.result.user.userCd);
-                let myInfoMakerPromise = myInfoMaker(response.data.result.user, true);
-                myInfoMakerPromise.then((myInfoMakerResp) => {
-                    $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
-                    getFriendsWithPageable();
-                });
-            })
+        .then((response) => {
+            //console.log('getMyInfoResp', response)
+            //유저 코드 로컬스토리지 세팅
+            localStorage.setItem('loginUserCd', response.data.result.user.userCd);
+            let myInfoMakerPromise = myInfoMaker(response.data.result.user, true);
+            myInfoMakerPromise.then((myInfoMakerResp) => {
+                $('#friend_list_container .friend_list').prepend(myInfoMakerResp);
+                getFriendsWithPageable();
+            });
+        })
     }else{
         getFriendsWithPageable();
     }

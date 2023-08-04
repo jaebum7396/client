@@ -253,11 +253,39 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     $('#chat-messages').html('');
 
     loadChatListHub(channelCd, 'Y')
-
+    getMyInfo()
+    .then((response) => {
+        localStorage.setItem('MY_CHARACTER', response.data.result.user.userInfo.userCharacter);
+        console.log(response.data.result.user.userInfo.userCharacter);
+    })
     $('#channel_alias').html(p_channelAlias);
     $('#channel_user_count').html(p_channelUserCount);
     //메시지 초기화
     chatRoomVisible('channel');
+}
+
+let baseMessages = [];
+let prevMessages = [];
+function getGptAdvice(currentMessage){
+    let prompt = '';
+    if(prevMessages.length > 0) {
+        baseMessages = prevMessages;
+        prompt = currentMessage;
+    }else{
+        baseMessages=[];
+        prompt = "\"\"\""+localStorage.getItem('MY_CHARACTER')+"\"\"\"너는 지금부터 세개의 따옴표 안에 있는 해시태그에 해당하는 사람이야. 유머러스한 말투가 섞인 반말로 대답해줘";
+    }
+
+    gptQuery(prompt, baseMessages)
+    .then(function(response){
+        prevMessages = response.data.result.messages;
+    })
+    .catch(function(error){
+        //console.log(error);
+        console.log(error)
+        //alert('네트워크 오류입니다. 잠시 후 다시 시도해주세요.')
+        //closeLoadingCover();
+    });
 }
 
 function getChannelUserUnreadCountHub(){
@@ -273,6 +301,10 @@ function getChannelUserUnreadCountHub(){
     })
 }
 
+function getChannelUserUnreadCount(){
+    return axios.get(CHAT_URL + '/channeluser/unreadcount', {});
+}
+
 function sendFcm(data){
     let param = new Object();
     console.log(data)
@@ -283,10 +315,6 @@ function sendFcm(data){
     .then((response) => {
         console.log('sendFcm', response)
     })
-}
-
-function getChannelUserUnreadCount(){
-    return axios.get(CHAT_URL + '/channeluser/unreadcount', {});
 }
 
 function blockCheckHub(p_chat){

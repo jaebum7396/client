@@ -364,6 +364,7 @@ function makeAboutMeHub(){
     //console.log('prompt : ' + prompt);
     prompt = encodeURIComponent(prompt);
     //console.log('gptPrompt : ' + prompt);
+    openLoadingCover('AI가 자기소개를 작성중이에요. </br> 잠시만 기다려주세요!');
     gptQuery(prompt, [])
     .then(function(response){
         //console.log(response);
@@ -378,11 +379,6 @@ function makeAboutMeHub(){
         closeLoadingCover();
     });
     //$('#aboutMe').val(aboutMe);
-}
-
-function gptQuery(prompt, prevMessages) {
-    openLoadingCover('AI가 자기소개를 작성중이에요. </br> 잠시만 기다려주세요!');
-    return axios.post(GPT_CONNECTOR_URL+'/query?prompt='+prompt, prevMessages, {});
 }
 
 function saveUserInfoHub(){
