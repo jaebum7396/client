@@ -221,7 +221,6 @@ function openChannelWithUserHub(p_me){
         .catch((response) => {
             //console.log(response)
         })
-
     //invite_list_close();
 }
 
@@ -257,6 +256,7 @@ function openChannel(p_channelCd, p_channelAlias, p_channelUserCount) {
     .then((response) => {
         localStorage.setItem('MY_CHARACTER', response.data.result.user.userInfo.userCharacter);
         console.log(response.data.result.user.userInfo.userCharacter);
+        //getGptAdvice();
     })
     $('#channel_alias').html(p_channelAlias);
     $('#channel_user_count').html(p_channelUserCount);
@@ -275,6 +275,7 @@ function getGptAdvice(currentMessage){
         baseMessages=[];
         prompt = "\"\"\""+localStorage.getItem('MY_CHARACTER')+"\"\"\"너는 지금부터 세개의 따옴표 안에 있는 해시태그에 해당하는 사람이야. 유머러스한 말투가 섞인 반말로 대답해줘";
     }
+    prompt = encodeURIComponent(prompt);
 
     gptQuery(prompt, baseMessages)
     .then(function(response){
@@ -360,9 +361,13 @@ function channelReadHub() {
     .then((response) => {
         //console.log("channelReadHubResp", response);
         let chat = response.data.result.prevLastChat;
-        chat.transferType = 9;
-        //console.log('이게 맞습니까?', chat)
-        sendChat(chat);
+        if(chat){
+            chat.transferType = 9;
+            sendChat(chat);
+        }else{
+            debugLog('channelReadHub', '메시지가 없습니다.')
+            //getGptAdvice();
+        }
     })
     //console.log('channelReadHub done')
 }
@@ -384,7 +389,7 @@ function chatReadHub(p_chat) {
     let chatReadPromise = chatRead(p_chat);
     chatReadPromise
     .then((response) => {
-        //console.log("chatReadResp", response);
+        console.log("chatReadResp", response);
         let chat = response.data.result.chat;
         chat.domainCd = 1;
         chat.transferType = 9;
