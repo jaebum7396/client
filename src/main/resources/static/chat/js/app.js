@@ -244,6 +244,7 @@ function chatRoomVisible(p_flag) {
             initFriendTab('normal');
         }
     });
+    $('#profile_popup').css('display','none')
     //closePopupProfile();
 }
 
