@@ -83,7 +83,7 @@ function refreshToken(){
     .catch(error => {
         console.log(error);
         localStorage.setItem('token', '');
-        alert('로그인 갱신시간이 만료되었습니다');
+        alert('로그인 갱신 시간이 만료되었습니다');
         location.href = 'login';
         refreshTokenYn = true;
     });
@@ -105,15 +105,16 @@ $(document).ready(function() {
         window.location.hash = "#open";
     });
 
-    $("#sendmessage input").focus(function() {
+    let sendMessageInput = $("#sendmessage input");
+
+    sendMessageInput.focus(function() {
         if ($(this).val() == "Send message...") {
             $(this).val("");
         }
     });
-    $("#sendmessage input").focusout(function() {
+    sendMessageInput.focusout(function() {
         if ($(this).val() == "") {
             $(this).val("Send message...");
-
         }
     });
 
@@ -325,8 +326,10 @@ function imageProvider(fileLocation, imgSizeStr){
 }
 
 function formatLastChatDateTime(messageDt) {
-    var now = new Date();
-    var messageDate = new Date(messageDt);
+    let now = new Date();
+    let messageDate = new Date(messageDt);
+    let formattedTime;
+    let formattedDate;
 
     if (
         now.getFullYear() === messageDate.getFullYear() &&
@@ -334,7 +337,7 @@ function formatLastChatDateTime(messageDt) {
         now.getDate() === messageDate.getDate()
     ) {
         // 오늘일 경우 오전 XX:XX 포맷으로 표기
-        var formattedTime = messageDate.toLocaleTimeString('ko-KR', {
+        formattedTime = messageDate.toLocaleTimeString('ko-KR', {
             hour: 'numeric',
             minute: 'numeric',
             hour12: true
@@ -342,7 +345,7 @@ function formatLastChatDateTime(messageDt) {
         return formattedTime;
     } else {
         // 오늘이 아닐 경우 날짜로 표기
-        var formattedDate = messageDate.toLocaleDateString('ko-KR', {
+        formattedDate = messageDate.toLocaleDateString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
@@ -352,10 +355,11 @@ function formatLastChatDateTime(messageDt) {
 }
 
 function formatDate(inputDate) {
-    var date = new Date(inputDate);
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var period = hours >= 12 ? '오후' : '오전';
+    let date = new Date(inputDate);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let period = hours >= 12 ? '오후' : '오전';
+    let formattedTime;
 
     // 시간 형식 조정
     if (hours > 12) {
@@ -369,7 +373,7 @@ function formatDate(inputDate) {
         minutes = '0' + minutes;
     }
 
-    var formattedTime = period + ' ' + hours + ':' + minutes + '분';
+    formattedTime = period + ' ' + hours + ':' + minutes + '분';
     return formattedTime;
 }
 
@@ -383,7 +387,6 @@ function convertTimeFormat(timeString) {
         period = '오후';
         hour = hour === 12 ? hour : hour - 12;
     }
-
     return `${period} ${hour}:${minutes}분`;
 }
 
