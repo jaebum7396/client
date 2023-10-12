@@ -178,7 +178,6 @@ $(document).on('touchstart', function(event) {
 //친구 리스트에서 클릭시 채팅방 오픈하기 위한 함수
 function openChannelWithUserHub(p_me){
     //console.log('openChannelWithUserHub start')
-
     // 전역변수 초기화
     //localStorage.setItem("channelCd", ''); // 채팅방 번호 업데이트// 채팅방 번호
     $('#OPEN_CHANNEL_CD').val('');
@@ -196,31 +195,28 @@ function openChannelWithUserHub(p_me){
     // 선택된 친구들과의 채팅방 생성
     var openChannelWithUserPromise = openChannelWithUser(p_objArr);
     openChannelWithUserPromise
-        .then((response) => { // 채팅방 생성 성공시 수행될 코드
-            //console.log('openChannelWithUserResp', response)
-            channelUsers = response.data.result.channel.channelUsers; // 채팅방에 참여한 사용자 정보들
-            for(let i=0; i< channelUsers.length; i++){ // 사용자 정보들을 반복문으로 돌면서
-                if(channelUsers[i].userCd==localStorage.getItem('loginUserCd')){ // 로그인한 사용자의 채팅방 별명 설정
-                    $('#channel_alias').html(channelUsers[i].channelAlias);
-                }
+    .then((response) => { // 채팅방 생성 성공시 수행될 코드
+        //console.log('openChannelWithUserResp', response)
+        channelUsers = response.data.result.channel.channelUsers; // 채팅방에 참여한 사용자 정보들
+        for(let i=0; i< channelUsers.length; i++){ // 사용자 정보들을 반복문으로 돌면서
+            if(channelUsers[i].userCd==localStorage.getItem('loginUserCd')){ // 로그인한 사용자의 채팅방 별명 설정
+                $('#channel_alias').html(channelUsers[i].channelAlias);
             }
-            let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
-            //console.log('channelCd : '+channelCd)
-            //localStorage.setItem("channelCd", channelCd); // 채팅방 번호 업데이트
-            $('#OPEN_CHANNEL_CD').val(channelCd);
-            channelReadHub(); // 채팅방 읽지 않은 메시지 개수 업데이트
+        }
+        let channelCd = response.data.result.channel.channelCd; // 생성된 채팅방 번호
+        $('#OPEN_CHANNEL_CD').val(channelCd);
+        channelReadHub(); // 채팅방 읽지 않은 메시지 개수 업데이트
+        channelJoin(channelCd, channelUsers); // 채팅방 참여
 
-            channelJoin(channelCd, channelUsers); // 채팅방 참여
-
-            //메시지 초기화
-            loadChatListHub(channelCd, 'Y');
-            $("input[class='friend_check']").prop('checked', false)
-            //console.log('rowClick done')
-            chatRoomVisible('friend', channelUsers.length);
-        })
-        .catch((response) => {
-            //console.log(response)
-        })
+        //메시지 초기화
+        loadChatListHub(channelCd, 'Y');
+        $("input[class='friend_check']").prop('checked', false)
+        //console.log('rowClick done')
+        chatRoomVisible('friend', channelUsers.length);
+    })
+    .catch((response) => {
+        //console.log(response)
+    })
     //invite_list_close();
 }
 

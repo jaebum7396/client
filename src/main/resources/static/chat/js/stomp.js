@@ -19,9 +19,10 @@ function webSocketConnectHub() {
 	if(!debugYn){
 		wsClient.debug = null;
 	}
+
 	reconnect = 0;
-	
-	wsClient.connect({'Authorization' : localStorage.getItem("token")}, function (frame) {
+	wsClient.connect({'Authorization' : localStorage.getItem("token")}
+	, frame => {
 		//메인 채널 구독
 		wsClient.subscribe("/user/direct/"+clientDomainCd, function (message) {
 			//console.log('connect.user-pool', message);
@@ -42,8 +43,8 @@ function webSocketConnectHub() {
 		.catch((response) => {
 			//console.log(response);
 		})
-		
-	}, function (error) {
+	}
+	, error => {
 		if (reconnect++ <= 5) {
 			setTimeout(function () {
 				//console.log("connection reconnect : "+ error);
