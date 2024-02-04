@@ -25,6 +25,8 @@ String SOCKET_STREAM_URL = env.getProperty("api.socket-stream.url");
 System.out.println("SOCKET_STREAM_URL : " + SOCKET_STREAM_URL);
 String GPT_CONNECTOR_URL = env.getProperty("api.gpt-connector.url");
 System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
+String PAL_URL = env.getProperty("api.pal.url");
+System.out.println("PAL_URL : " + PAL_URL);
 %>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">

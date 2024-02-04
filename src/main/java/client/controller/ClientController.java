@@ -25,4 +25,6 @@ public class ClientController {
     public String adminUser() {
         return "admin/user";
     }
+    @GetMapping("/pal/supporter")
+    public String palSupporter() {return "pal/supporter";}
 }
