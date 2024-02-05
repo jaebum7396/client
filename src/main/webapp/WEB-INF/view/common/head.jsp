@@ -61,4 +61,5 @@ System.out.println("PAL_URL : " + PAL_URL);
     const FILE_STORAGE_URL = '<%=FILE_STORAGE_URL%>';
     const SOCKET_STREAM_URL = '<%=SOCKET_STREAM_URL%>';
     const GPT_CONNECTOR_URL = '<%=GPT_CONNECTOR_URL%>';
+    const PAL_URL = '<%=PAL_URL%>';
 </script>
