@@ -148,7 +148,7 @@
 					if(combinationRecipeList.length>3){
 						$('#selectSubPal').empty();
 						$('#selectSubPal').css('display','block');
-						console.log(palArrayUnique)
+						//console.log(palArrayUnique)
 						let defaultOption = '<option value="0;">재료 팔을 선택하세요</option>'
 						$('#selectSubPal').append(defaultOption);
 						for(let i=0; i<palArrayUnique.length; i++){
@@ -186,7 +186,7 @@
 		}
 
 		function recipeMaker(combinationRecipe){
-			console.log(combinationRecipe)
+			//console.log(combinationRecipe)
 			let aPalProfileImage = combinationRecipe.apalProfileImage;
 			let bPalProfileImage = combinationRecipe.bpalProfileImage;
 			if(aPalProfileImage && bPalProfileImage ){
