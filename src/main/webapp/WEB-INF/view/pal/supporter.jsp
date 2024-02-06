@@ -23,6 +23,68 @@
 		<%--<script src="js/user.js"></script>--%>
 		<link href="css/admin.css" type="text/css" rel="stylesheet"/>
 	</head>
+	<style>
+		input, select {
+			border: 2px solid #1c93d1;
+			border-radius: 10px;
+		}
+		html, body {
+			height: 100%;
+			width:100%;
+			margin: 0;
+		}
+		.pal_row {
+			padding: 5px;
+			height: 150px;
+			overflow: hidden;
+			display: flex;
+			justify-content: space-around;
+		}
+		.pal_col {
+			width:40%;
+			display: flex;
+			flex-direction: column;
+		}
+		.profile_img_container {
+			width: 20%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.pal_profile_img {
+			width: 130px;
+			height: 130px;
+			border-radius: 50%;
+		}
+		.name_container {
+			width: 75%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+		}
+		.pal_row .name_container{
+			justify-content: center;
+		}
+		.search_result_container{
+			position:absolute;
+			display:none;
+			max-height: 300px;
+			width:100%;
+			overflow: scroll;
+			z-index:9999;
+		}
+		.pal_list_col{
+			display:flex;
+			flex-direction:row;
+			justify-content: space-between;
+			margin-left:10px;
+			margin-right:10px;
+			border-top:0;
+			border:1px solid #e8e8e8;
+			padding: 5px;
+		}
+	</style>
 	<script>
 		$(document).ready(function(){
 			axios.get(PAL_URL + '/pal', {})
@@ -91,10 +153,10 @@
 				let recipeHtml = '';
 				recipeHtml += "<div class='pal_list_row' style='background-color:white;' onclick='palSelect(\""+pal.palId+"\")'>";
 				recipeHtml += 	  '<div class="pal_list_col" style="">';
-				recipeHtml += 		  "<div class='profile_img_container' style='width:100%;height:100%;display:flex;'>"
+				recipeHtml += 		  "<div class='profile_img_container' style='height:100%;display:flex;'>"
 				recipeHtml +=    		  "<img class='pal_profile_img' src='"+palProfileImageUrl+"' style='width:40px;height:40px;''>"
 				recipeHtml +=		  '</div>';
-				recipeHtml += 		  "<div class='name_container' style='height:40px;display:flex;justify-content:center;align-items: center;'>"
+				recipeHtml += 		  "<div class='name_container' style='height:40px;display:flex;align-items: center;'>"
 				recipeHtml +=			  pal.palId+'. '+pal.palNameKR + ' (' + pal.palNameEN + ')';
 				recipeHtml +=		  '</div>';
 				recipeHtml += 		  "<div class='ability_container' style='height:100%;display:flex;'>"
@@ -218,66 +280,6 @@
 			}
 		}
 	</script>
-	<style>
-		input, select {
-			border: 2px solid #1c93d1;
-			border-radius: 10px;
-		}
-		html, body {
-			height: 100%;
-			width:100%;
-			margin: 0;
-		}
-		.pal_row {
-			padding: 5px;
-			height: 150px;
-			overflow: hidden;
-			display: flex;
-			justify-content: space-around;
-		}
-		.pal_col {
-			width:40%;
-			display: flex;
-			flex-direction: column;
-		}
-		.profile_img_container {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		.pal_profile_img {
-			width: 130px;
-			height: 130px;
-			border-radius: 50%;
-		}
-		.name_container {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		.search_result_container{
-			position:absolute;
-			display:none;
-			max-height: 300px;
-			width:100%;
-			overflow: scroll;
-			z-index:9999;
-		}
-		.pal_list_col{
-			display:flex;
-			flex-direction:row;
-			justify-content: space-between;
-			margin-left:10px;
-			margin-right:10px;
-			border-top:0;
-			border:1px solid #e8e8e8;
-			padding: 5px;
-		}
-	</style>
 	<body>
 		<div class="page_content" style='margin-left:0;height:100%;width:100%;'>
 			<div style='padding:10px;'>
