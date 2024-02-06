@@ -36,11 +36,9 @@
 					selectPal.appendChild(option);
 				}
 			});
-		});
-
-		$('#pal_search').blur(function() {
-			console.log('blur');
-			palListDisabled();
+			$('#pal_search').blur(function() {
+				palListDisabled();
+			});
 		});
 
 		function palListDisabled(){
@@ -117,10 +115,45 @@
 				$('.recipe_container').empty();
 				let combinationRecipeList = response.data.result.combinationRecipeList
 				console.log(combinationRecipeList)
+				let palArray = new Array();
 				for (let combinationRecipe of combinationRecipeList){
 					recipeMaker(combinationRecipe);
+					let pal = new Object();
+					pal.palId = combinationRecipe.apalId;
+					pal.palNameKR = combinationRecipe.apalNameKR;
+					pal.palProfileImage = combinationRecipe.apalProfileImage;
+					palArray.push(pal);
+					pal = new Object();
+					pal.palId = combinationRecipe.bpalId;
+					pal.palNameKR = combinationRecipe.bpalNameKR;
+					pal.palProfileImage = combinationRecipe.bpalProfileImage;
+					palArray.push(pal);
 				}
+
+				let palArrayUnique = Array.from(new Set(palArray.map(recipe => JSON.stringify(recipe))))
+						.map(recipe => JSON.parse(recipe)).sort(customSort);
+				console.log(palArrayUnique);
 			});
+		}
+
+		function customSort(a, b) {
+			const regex = /^(\d+)([a-z]*)$/; // 숫자 부분과 문자 부분을 분리
+			console.log(a.palId, b.palId)
+			const matchA = a.palId.match(regex);
+			const matchB = b.palId.match(regex);
+
+			const numA = parseInt(matchA[1], 10);
+			const numB = parseInt(matchB[1], 10);
+
+			// 먼저 숫자 부분을 비교
+			if (numA !== numB) {
+				return numA - numB;
+			}
+
+			// 숫자 부분이 같다면 문자 부분을 비교
+			if (matchA[2] < matchB[2]) return -1;
+			if (matchA[2] > matchB[2]) return 1;
+			return 0;
 		}
 
 		function recipeMaker(combinationRecipe){
