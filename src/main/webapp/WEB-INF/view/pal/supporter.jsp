@@ -175,7 +175,7 @@
 			params.cPalId = $('#selectPal').val();
 			if($(paramObj).attr('id') == 'selectPal'){
 
-			}else if($(paramObj).attr('id') == 'selectSubPal'){
+			}else if($(paramObj).attr('id') == 'selectSubPal'&&$(paramObj).val() != '0'){
 				params.aPalId = $('#selectSubPal').val();
 			}
 			axios.get(PAL_URL + '/combination-recipe', {
@@ -211,7 +211,7 @@
 						$('#selectSubPal').empty();
 						$('#selectSubPal').css('display','block');
 						//console.log(palArrayUnique)
-						let defaultOption = '<option value="0;">재료 팔을 선택하세요</option>'
+						let defaultOption = '<option value="0">재료 팔을 선택하세요</option>'
 						$('#selectSubPal').append(defaultOption);
 						for(let i=0; i<palArrayUnique.length; i++){
 							let option = document.createElement('option');
