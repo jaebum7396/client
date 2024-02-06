@@ -32,7 +32,7 @@
 				for(let i=0; i<list.length; i++){
 					let option = document.createElement('option');
 					option.value = list[i].palId;
-					option.innerHTML = list[i].palNameKR + ' (' + list[i].palNameEN + ')';
+					option.innerHTML = list[i].palId+'. '+list[i].palNameKR + ' (' + list[i].palNameEN + ')';
 					selectPal.appendChild(option);
 				}
 			});
@@ -156,6 +156,10 @@
 		}
 	</script>
 	<style>
+		input, select {
+			border: 2px solid #1c93d1;
+			border-radius: 10px;
+		}
 		html, body {
 			height: 100%;
 			width:100%;
