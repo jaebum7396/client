@@ -139,6 +139,9 @@
 				recipeHtml +=			  combinationRecipe.apalNameKR;
 				recipeHtml +=		  '</div>';
 				recipeHtml += 	  '</div>';
+				recipeHtml += 	  '<div class="" style="height:100%;display:flex;align-items: center;justify-content: center;">';
+				recipeHtml += 		  "<span style='color:red;'>♥</span>"
+				recipeHtml +=     '</div>';
 				recipeHtml += 	  '<div class="pal_col" style="">';
 				recipeHtml += 		  "<div class='profile_img_container' id='aPal' style='width:100%;height:100%;display:flex;'>"
 				recipeHtml +=    		  "<img class='pal_profile_img' src='"+bPalProfileImageUrl+"' style=''>"
