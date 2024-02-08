@@ -5,6 +5,16 @@
 * ● 설명	: 팔 서포터
 ***********************************************************************************/
 %>
+<style>
+	html,body{
+		width:100%;
+		height:100%;
+		margin:0;
+		padding:0;
+		overflow:hidden;
+
+	}
+</style>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,6 +24,6 @@
 	</script>
 	<body>
     <!--src="./viewer.html?file=pdf파일경로" -->
-    <iframe width="100%"height="600" src="../policy/privacy_policy_file.pdf"></iframe>
+    <iframe width="100%"height="100%" src="../policy/privacy_policy_file.pdf"></iframe>
 	</body>
 </html>
