@@ -27,4 +27,7 @@ public class ClientController {
     }
     @GetMapping("/pal/supporter")
     public String palSupporter() {return "pal/supporter";}
+
+    @GetMapping("/policy/privacy_policy")
+    public String privacyPolicy() {return "/policy/privacy_policy";}
 }
