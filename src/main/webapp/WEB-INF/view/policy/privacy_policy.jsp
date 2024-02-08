@@ -14,6 +14,6 @@
 	</script>
 	<body>
     <!--src="./viewer.html?file=pdf파일경로" -->
-    <iframe width="100%"height="600" src="개인정보처리방침.pdf"></iframe>
+    <iframe width="100%"height="600" src="../policy/privacy_policy_file.pdf"></iframe>
 	</body>
 </html>
