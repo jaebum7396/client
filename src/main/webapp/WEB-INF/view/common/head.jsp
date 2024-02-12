@@ -62,4 +62,9 @@ System.out.println("PAL_URL : " + PAL_URL);
     const SOCKET_STREAM_URL = '<%=SOCKET_STREAM_URL%>';
     const GPT_CONNECTOR_URL = '<%=GPT_CONNECTOR_URL%>';
     const PAL_URL = '<%=PAL_URL%>';
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-D5DTCR537R');
 </script>
