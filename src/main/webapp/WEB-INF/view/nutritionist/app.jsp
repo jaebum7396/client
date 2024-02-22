@@ -48,15 +48,23 @@
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		}
 
-		label, select, input {
-			display: block;
-			margin: 10px 0;
-			border-radius: 4px;
-			border: 1px solid #ccc;
-			padding: 8px;
+		.form-group {
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+
+		.form-group label {
+			flex: 1;
+			margin-right: 10px;
+		}
+
+		.form-group input, .form-group select {
+			flex: 2;
 		}
 
 		button {
+			width: 100%;
 			background-color: #4CAF50;
 			color: white;
 			padding: 10px 20px;
@@ -64,18 +72,11 @@
 			cursor: pointer;
 			border-radius: 4px;
 			transition: background-color 0.3s;
+			margin-top: 10px;
 		}
 
 		button:hover {
 			background-color: #45a049;
-		}
-
-		#addInputBtn, #confirmMealBtn {
-			margin-top: 10px;
-		}
-
-		#addInputBtn {
-			margin-right: 10px;
 		}
 	</style>
 </head>
@@ -84,36 +85,44 @@
 <div id="userInputModal" class="modal">
 	<div class="modal-content">
 		<h2>사용자 정보 입력</h2>
-		<label for="activityLevel">활동량:</label>
-		<select id="activityLevel">
-			<option value="low">낮음</option>
-			<option value="medium">중간</option>
-			<option value="high">높음</option>
-		</select>
-		<label for="gender">성별:</label>
-		<select id="gender">
-			<option value="male">남성</option>
-			<option value="female">여성</option>
-			<option value="other">기타</option>
-		</select>
-		<label for="height">신장(cm):</label>
-		<input type="number" id="height" placeholder="신장을 입력하세요">
-		<label for="weight">체중(kg):</label>
-		<input type="number" id="weight" placeholder="체중을 입력하세요">
-		<label for="birthdate">생년월일:</label>
-		<input type="date" id="birthdate">
+		<div class="form-group">
+			<label for="activityLevel">활동량:</label>
+			<select id="activityLevel">
+				<option value="low">낮음</option>
+				<option value="medium">중간</option>
+				<option value="high">높음</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="gender">성별:</label>
+			<select id="gender">
+				<option value="male">남성</option>
+				<option value="female">여성</option>
+				<option value="other">기타</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="height">신장(cm):</label>
+			<input type="number" id="height" placeholder="신장을 입력하세요">
+		</div>
+		<div class="form-group">
+			<label for="weight">체중(kg):</label>
+			<input type="number" id="weight" placeholder="체중을 입력하세요">
+		</div>
+		<div class="form-group">
+			<label for="birthdate">생년월일:</label>
+			<input type="date" id="birthdate">
+		</div>
 		<button id="confirmBtn">확인</button>
 	</div>
 </div>
 
-<!-- 메인 화면 -->
 <div id="mainScreen" style="display:none;">
 	<h2>오늘의 영양소 정보</h2>
 	<canvas id="nutritionChart"></canvas>
 	<button id="addMealBtn">식사 입력</button>
 </div>
 
-<!-- 식사 입력 모달 -->
 <div id="mealInputModal" class="modal">
 	<div class="modal-content">
 		<h2>식사 입력</h2>
@@ -146,7 +155,7 @@
 
 		$('#confirmMealBtn').click(function() {
 			$('#mealInputModal').fadeOut();
-			// 식사 정보 업데이트 로직을 여기에 추가할 수 있습니다.
+			// 여기에 식사 정보 업데이트 로직을 추가할 수 있습니다.
 		});
 
 		function initializeChart() {
@@ -188,4 +197,5 @@
 </script>
 </body>
 </html>
+
 
