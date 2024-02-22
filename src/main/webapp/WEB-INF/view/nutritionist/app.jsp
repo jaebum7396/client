@@ -18,13 +18,11 @@
 			font-family: 'Roboto', sans-serif;
 			color: #333;
 		}
-
 		body {
 			background-color: #f4f4f4;
 			margin: 0;
 			padding: 20px;
 		}
-
 		.modal {
 			display: none;
 			position: fixed;
@@ -37,7 +35,6 @@
 			background-color: rgba(0,0,0,0.4);
 			border-radius: 5px;
 		}
-
 		.modal-content {
 			background-color: #fefefe;
 			margin: 10% auto;
@@ -45,38 +42,59 @@
 			border: 1px solid #888;
 			width: 80%;
 			max-width: 400px;
-			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+			border-radius: 8px;
 		}
-
 		.form-group {
 			display: flex;
 			align-items: center;
 			margin-bottom: 10px;
 		}
-
 		.form-group label {
 			flex: 1;
 			margin-right: 10px;
 		}
-
 		.form-group input, .form-group select {
 			flex: 2;
+			margin-right: 8px;
+			border: 2px solid #f0f0f0;
+			background-color: #fafafa;
+			border-radius: 8px;
+			padding: 8px;
+			outline: none;
 		}
-
-		button {
-			width: 100%;
+		#addInputBtn {
+			padding: 0 8px;
+			font-size: 16px;
+			line-height: 32px;
+			width: 32px;
+			border-radius: 50%;
+			margin-right: 0;
+			border: 2px solid #4CAF50;
+			background-color: #fff;
+			color: #4CAF50;
+		}
+		#addInputBtn:hover {
 			background-color: #4CAF50;
-			color: white;
-			padding: 10px 20px;
-			border: none;
-			cursor: pointer;
-			border-radius: 4px;
-			transition: background-color 0.3s;
-			margin-top: 10px;
+			color: #fff;
 		}
-
-		button:hover {
-			background-color: #45a049;
+		#confirmMealBtn {
+			float: right;
+			border-radius: 20px;
+			padding: 10px 20px;
+			font-weight: bold;
+			border: 2px solid #4CAF50;
+			background-color: #4CAF50;
+			color: #fff;
+			clear: both;
+			margin-top: 20px;
+		}
+		#confirmMealBtn:hover {
+			background-color: #367b48;
+		}
+		button {
+			cursor: pointer;
+			transition: background-color 0.3s;
 		}
 	</style>
 </head>
@@ -117,19 +135,23 @@
 	</div>
 </div>
 
+<!-- 메인 화면 -->
 <div id="mainScreen" style="display:none;">
 	<h2>오늘의 영양소 정보</h2>
 	<canvas id="nutritionChart"></canvas>
 	<button id="addMealBtn">식사 입력</button>
 </div>
 
+<!-- 식사 입력 모달 -->
 <div id="mealInputModal" class="modal">
 	<div class="modal-content">
 		<h2>식사 입력</h2>
 		<div id="mealInputs">
-			<input type="text" class="mealInput" placeholder="식사 입력...">
+			<div class="form-group">
+				<input type="text" class="mealInput" placeholder="식사 입력...">
+				<button id="addInputBtn">+</button>
+			</div>
 		</div>
-		<button id="addInputBtn">+</button>
 		<button id="confirmMealBtn">확인</button>
 	</div>
 </div>
@@ -149,13 +171,13 @@
 			$('#mealInputModal').fadeIn();
 		});
 
-		$('#addInputBtn').click(function() {
-			$('#mealInputs').append('<input type="text" class="mealInput" placeholder="식사 입력...">');
+		$(document).on('click', '#addInputBtn', function() {
+			$('<div class="form-group"><input type="text" class="mealInput" placeholder="식사 입력..."></div>').insertBefore(this.parentElement);
 		});
 
 		$('#confirmMealBtn').click(function() {
 			$('#mealInputModal').fadeOut();
-			// 여기에 식사 정보 업데이트 로직을 추가할 수 있습니다.
+			// 식사 정보 업데이트 로직을 여기에 추가할 수 있습니다.
 		});
 
 		function initializeChart() {
