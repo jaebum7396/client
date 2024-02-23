@@ -34,6 +34,8 @@
 
 		.modal-container {
 			z-index: 10;
+			max-height: 90%;
+			overflow: scroll;
 		}
 
 		.modal-close {
@@ -191,11 +193,11 @@
 		// 식사 입력란 추가
 		$(document).on('click', '.add-meal-input', function() {
 			let newInput =
-					`<div class="meal-input mb-4">
+			`<div class="meal-input mb-4">
 				<input type="text" class="meal-name shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="식사 내용을 입력하세요">
 				<button class="remove-meal-input px-4 py-2 bg-red-500 text-white rounded ml-2">-</button>
 			</div>`;
-			$('#mealInputsContainer').prepend(newInput);
+			$('#mealInputsContainer').append(newInput);
 		});
 
 		// 식사 입력란 제거
