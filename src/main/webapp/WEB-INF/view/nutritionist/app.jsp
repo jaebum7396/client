@@ -219,33 +219,59 @@
 
 	$(document).ready(function() {
 		// 영양소 그래프 초기화
-		var ctx = document.getElementById('nutritionChart').getContext('2d');
-		nutritionChart = new Chart(ctx, {
-			type: 'bar', // 차트의 유형
+		//var ctx = document.getElementById('nutritionChart').getContext('2d');
+		//nutritionChart = new Chart(ctx, {
+		//	type: 'bar', // 차트의 유형
+		//	data: {
+		//		labels: ['칼로리', '탄수화물', '단백질', '지방'], // 영양소 종류
+		//		datasets: [{
+		//			label: '오늘 섭취한 영양소',
+		//			data: [0, 0, 0, 0], // 초기값
+		//			backgroundColor: [
+		//				'rgba(255, 99, 132, 0.2)',
+		//				'rgba(54, 162, 235, 0.2)',
+		//				'rgba(255, 206, 86, 0.2)',
+		//				'rgba(75, 192, 192, 0.2)'
+		//			],
+		//			borderColor: [
+		//				'rgba(255, 99, 132, 1)',
+		//				'rgba(54, 162, 235, 1)',
+		//				'rgba(255, 206, 86, 1)',
+		//				'rgba(75, 192, 192, 1)'
+		//			],
+		//			borderWidth: 1
+		//		}]
+		//	},
+		//	options: {
+		//		scales: {
+		//			y: {
+		//				beginAtZero: true
+		//			}
+		//		}
+		//	}
+		//});
+		// 기존 차트 관련 코드 아래에 Radar 차트 초기화 코드 추가
+		let ctx = document.getElementById('nutritionChart').getContext('2d');
+		let nutritionChart = new Chart(ctx, {
+			type: 'radar', // 차트 유형을 'radar'로 변경
 			data: {
-				labels: ['칼로리', '탄수화물', '단백질', '지방'], // 영양소 종류
+				labels: ['칼로리', '탄수화물', '단백질', '지방', '비타민', '미네랄'],
 				datasets: [{
-					label: '오늘 섭취한 영양소',
-					data: [0, 0, 0, 0], // 초기값
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)'
-					],
-					borderWidth: 1
+					label: '당신의 영양소 섭취',
+					data: [2000, 59, 90, 81, 56, 55], // 예시 데이터, 실제 앱에서는 사용자 입력에 따라 동적으로 변경될 예정
+					fill: true,
+					backgroundColor: 'rgba(255, 99, 132, 0.2)',
+					borderColor: 'rgba(255, 99, 132, 1)',
+					pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+					pointBorderColor: '#fff',
+					pointHoverBackgroundColor: '#fff',
+					pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
 				}]
 			},
 			options: {
-				scales: {
-					y: {
-						beginAtZero: true
+				elements: {
+					line: {
+						borderWidth: 3
 					}
 				}
 			}
