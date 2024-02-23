@@ -1,16 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-	/***********************************************************************************
-	 * ○ 파일	: nutritionist/app.jsp
-	 * ● 설명	: 나의 영양사
-	 ***********************************************************************************/
+/***********************************************************************************
+* ○ 파일	: palSurpporter.jsp
+* ● 설명	: 팔 서포터
+***********************************************************************************/
 %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>나의 영양사</title>
+	<title>식단 조언 어플리케이션</title>
 	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 	<%--<link rel="stylesheet" href="style.css">--%>
 	<style>
@@ -191,7 +191,7 @@
 		// 식사 입력란 추가
 		$(document).on('click', '.add-meal-input', function() {
 			let newInput =
-					`<div class="meal-input mb-4">
+			`<div class="meal-input mb-4">
 				<input type="text" class="meal-name shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="식사 내용을 입력하세요">
 				<button class="remove-meal-input px-4 py-2 bg-red-500 text-white rounded ml-2">-</button>
 			</div>`;
@@ -272,3 +272,6 @@
 </script>
 </body>
 </html>
+
+
+

@@ -29,6 +29,8 @@ public class ClientController {
     public String palSupporter() {return "pal/supporter";}
     @GetMapping("/nutritionist/app")
     public String nutritionist() {return "/nutritionist/app";}
+    @GetMapping("/nutritionist/app2")
+    public String nutritionist2() {return "/nutritionist/app2";}
     @GetMapping("/policy/privacy_policy")
     public String privacyPolicy() {return "policy/privacy_policy";}
 }
