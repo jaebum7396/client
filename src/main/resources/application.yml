@@ -1,10 +1,12 @@
+server:
+  port: 3000
 
 spring:
   application:
-    name: user
+    name: client
   profiles:
-    #active: local
-    active: deploy
+    active: local
+    #active: deploy
   mvc:
     view:
       prefix: /WEB-INF/view/

@@ -151,7 +151,7 @@
 					<span class="text-3xl">&times;</span>
 				</div>
 			</div>
-			<div id="mealInputsContainer">
+			<div id="mealInputContainer">
 				<!-- 사용자가 입력할 수 있는 식사 정보 입력란이 동적으로 추가됩니다. -->
 				<div class="meal-input mb-4">
 					<input type="text" class="meal-name shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="식사 내용을 입력하세요">
@@ -195,7 +195,7 @@
 				<input type="text" class="meal-name shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="식사 내용을 입력하세요">
 				<button class="remove-meal-input px-4 py-2 bg-red-500 text-white rounded ml-2">-</button>
 			</div>`;
-			$('#mealInputsContainer').prepend(newInput);
+			$('#mealInputContainer').prepend(newInput);
 		});
 
 		// 식사 입력란 제거

@@ -1,0 +1,26 @@
+.meal-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.meal-input input[type="text"] {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    margin-right: 5px;
+    padding: 8px;
+}
+.meal-input button {
+    width:30px;
+    height: 30px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.meal-input button.removeMealInput {
+    background-color: #dc3545;
+}
