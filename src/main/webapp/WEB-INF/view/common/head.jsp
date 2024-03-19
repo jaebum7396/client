@@ -11,20 +11,23 @@ WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplica
 Environment env = context.getEnvironment();
 
 String FCM_TOKEN = request.getParameter("fcmToken");
-
 String BACKEND_URL = env.getProperty("backend.url");
 String CURRENT_PROFILE = env.getProperty("spring.profiles.active");
-System.out.println("CURRENT_PROFILE : " + CURRENT_PROFILE);
 String USER_URL = env.getProperty("api.user.url");
-System.out.println("USER_URL : " + USER_URL);
 String CHAT_URL = env.getProperty("api.chat.url");
-System.out.println("CHAT_URL : " + CHAT_URL);
 String FILE_STORAGE_URL = env.getProperty("api.file-storage.url");
-System.out.println("FILE_STORAGE_URL : " + FILE_STORAGE_URL);
 String SOCKET_STREAM_URL = env.getProperty("api.socket-stream.url");
-System.out.println("SOCKET_STREAM_URL : " + SOCKET_STREAM_URL);
 String GPT_CONNECTOR_URL = env.getProperty("api.gpt-connector.url");
-System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
+String PAL_URL = env.getProperty("api.pal.url");
+if("local".equals(CURRENT_PROFILE)){
+    System.out.println("CURRENT_PROFILE : " + CURRENT_PROFILE);
+    System.out.println("USER_URL : " + USER_URL);
+    System.out.println("CHAT_URL : " + CHAT_URL);
+    System.out.println("FILE_STORAGE_URL : " + FILE_STORAGE_URL);
+    System.out.println("SOCKET_STREAM_URL : " + SOCKET_STREAM_URL);
+    System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
+    System.out.println("PAL_URL : " + PAL_URL);
+}
 %>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
@@ -35,6 +38,7 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
 <%-- 폰트 --%>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
 <%--<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js<%= version %>"></script>--%>
 <script src="/webjars/jquery/1.11.1/jquery.min.js<%= version %>"></script>
 <script src="/webjars/axios/0.21.1/dist/axios.min.js<%= version %>"></script>
@@ -49,6 +53,9 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css<%= version %>"/>
 <%--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>--%>
 
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
     const CURRENT_PROFILE = '<%=CURRENT_PROFILE%>';
     const FCM_TOKEN = '<%=FCM_TOKEN%>'
@@ -59,4 +66,10 @@ System.out.println("GPT_CONNECTOR_URL : " + GPT_CONNECTOR_URL);
     const FILE_STORAGE_URL = '<%=FILE_STORAGE_URL%>';
     const SOCKET_STREAM_URL = '<%=SOCKET_STREAM_URL%>';
     const GPT_CONNECTOR_URL = '<%=GPT_CONNECTOR_URL%>';
+    const PAL_URL = '<%=PAL_URL%>';
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-D5DTCR537R');
 </script>

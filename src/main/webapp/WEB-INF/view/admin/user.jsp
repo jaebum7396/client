@@ -158,8 +158,8 @@
 							initialRequest: true
 							, contentType: 'application/json'
 							, api: {
-								readData: {url: USER_URL+'/user/grid', method: 'GET'}
-								, createData: {url: USER_URL+'/user/create', method: 'POST'}
+								readData: {url: USER_URL+'/grid', method: 'GET'}
+								, createData: {url: USER_URL+'/create', method: 'POST'}
 								<%--, updateData: {url: USER_URL+'/user/update', method: 'PUT'}
 								, deleteData: {url: USER_URL+'/user/delete', method: 'PUT'}
 								, modifyData: {url: USER_URL+'/user/modify', method: 'POST'}--%>

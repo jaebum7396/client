@@ -9,3 +9,5 @@ api:
     url: ${SOCKET_STREAM_URL_DEPLOY}
   gpt-connector:
     url: ${GPT_CONNECTOR_URL_DEPLOY}
+  pal:
+    url: ${PAL_URL_DEPLOY}
