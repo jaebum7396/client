@@ -1,8 +1,8 @@
-const pStart = { x: 0, y: 0 };
-const pCurrent = { x: 0, y: 0 };
-const cards = document.querySelectorAll(".card");
-const target = document.querySelector("#chatbox");
-const main = document.querySelector(".list_container");
+let pStart = { x: 0, y: 0 };
+let pCurrent = { x: 0, y: 0 };
+//let cards = document.querySelectorAll(".card");
+let target = document.querySelector("#main_screen");
+let main = document.querySelector("#main_container");
 let isLoading = false;
 
 function loading() {
@@ -32,7 +32,7 @@ function swipeStart(e) {
 
 function swipeEnd(e) {
     if (main.scrollTop === 0 && !isLoading) {
-        for (const card of cards) card.style.transform = `rotateX(0deg)`;
+        //for (const card of cards) card.style.transform = `rotateX(0deg)`;
     }
 }
 
@@ -49,7 +49,7 @@ function swipe(e) {
     const rotation = changeY < 100 ? changeY * 30 / 100 : 30;
     if (main.scrollTop === 0) {
         if (changeY > 100) loading();
-        for (const card of cards) card.style.transform = `rotateX(${rotation}deg)`;
+        //for (const card of cards) card.style.transform = `rotateX(${rotation}deg)`;
     }
 }
 

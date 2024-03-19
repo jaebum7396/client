@@ -7,7 +7,7 @@ body {
 	background: #f8c58e;
 }
 
-#chatbox {
+#main_screen {
 	transform: translateY(-50px);
 	transition: 0.4s 0.22s ease-in-out;
 }

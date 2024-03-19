@@ -1,6 +1,8 @@
+server:
+  port: 3000
 spring:
   application:
-    name: client
+    name: user
   profiles:
     #active: local
     active: deploy

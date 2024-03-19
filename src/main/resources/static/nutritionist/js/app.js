@@ -97,6 +97,14 @@ function preventBrowserZoom() {
     }
     document.addEventListener("touchmove", listener, { passive: false });
 }
+// 터치 시작 이벤트 리스너 (모바일에서 터치 이벤트를 고려)
+$(document).on('touchstart', function(event) {
+    // 인풋 요소가 아닌 다른 영역을 터치했을 때 키보드를 숨김
+    /*if (isKeyboardActive && !$(event.target).is('#sendmessage .msg')) {
+        //$('#sendmessage .msg').blur(); // 포커스 해제
+        isKeyboardActive = false;
+    }*/
+});
 //***********************************************************************************
 //* 시간관련
 //***********************************************************************************
