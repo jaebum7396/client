@@ -26,10 +26,8 @@
 	}
 </script>
 <div id="userInfoModal" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center hidden">
-	<div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-
+	<%--<div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>--%>
 	<div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-
 		<div class="modal-content py-4 text-left px-6">
 			<!-- 모달 헤더 -->
 			<div class="flex justify-between items-center pb-3">

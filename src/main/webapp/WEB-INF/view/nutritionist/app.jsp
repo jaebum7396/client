@@ -20,8 +20,6 @@
 
 	</script>
 	<jsp:directive.include file="loading.jsp"/>
-	<!-- 사용자 정보 입력 모달 -->
-	<%--<jsp:directive.include file="user_info_form_popup.jsp"/>--%>
 	<!-- 식사 입력 모달 -->
 	<%--<jsp:directive.include file="meal_form_popup.jsp"/ >--%>
 	<body>
@@ -29,6 +27,8 @@
 		<div id="main_screen"> <%--chatbox--%>
 			<jsp:directive.include file="layout.jsp"/>
 		</div>
+		<!-- 사용자 정보 입력 모달 -->
+		<jsp:directive.include file="user_info_form_popup.jsp"/>
 	</body>
 	<script src="js/loading.js<%= version %>" type="text/javascript"></script>
 	<link href="css/loading.css<%= version %>" rel="stylesheet" type="text/css"/>

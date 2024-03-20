@@ -5,12 +5,6 @@
   Date: 2023-05-14
   Time: 오후 4:21
 --%>
-<script>
-    initPage();
-    function initPage() {
-        $('.dropdown-list').removeClass('openToggle');
-    }
-</script>
 
 <div id="layout"> <%--tab_container--%>
     <%-- 어플리케이션 탑 메뉴 Start --%>
