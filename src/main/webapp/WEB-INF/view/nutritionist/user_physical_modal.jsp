@@ -6,13 +6,13 @@
 	 ***********************************************************************************/
 %>
 <head>
-	<link href="css/user_info_form_popup.css<%= version %>" rel="stylesheet" type="text/css"/>
+	<link href="css/user_info_form_modal.css<%= version %>" rel="stylesheet" type="text/css"/>
 	<%--<link rel="stylesheet" href="style.css">--%>
 </head>
 <script>
 	$(document).ready(function() {
 		// 사용자 정보 입력 모달을 엽니다.
-		$('#userInfoModal').addClass('modal-active');
+		$('#user_physical_modal').addClass('modal-active');
 
 		// 모달 닫기
 		$('.modal-close').on('click', function() {
@@ -20,12 +20,12 @@
 		});
 	});
 
-	function closeUserInfoModal() {
-		$('#userInfoModal').removeClass('modal-active');
+	function closeUserPhysicalModal() {
+		$('#user_physical_modal').removeClass('modal-active');
 		// 여기서 사용자 입력 데이터를 처리할 수 있습니다.
 	}
 </script>
-<div id="userInfoModal" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center hidden">
+<div id="user_physical_modal" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center hidden">
 	<%--<div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>--%>
 	<div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
 		<div class="modal-content py-4 text-left px-6">
@@ -72,7 +72,7 @@
 
 			<!-- 모달 푸터 -->
 			<div class="flex justify-end pt-2">
-				<button class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400 focus:outline-none" onclick="closeUserInfoModal()">확인</button>
+				<button class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400 focus:outline-none" onclick="closeUserPhysicalModal()">확인</button>
 			</div>
 		</div>
 	</div>
