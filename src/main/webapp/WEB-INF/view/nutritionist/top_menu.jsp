@@ -6,6 +6,17 @@
   Time: 오후 4:14
 --%>
 <style>
+    #app_title_container .app_title{
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        margin: 10px;
+        cursor: pointer;
+    }
+
     #topmenu {
         position:fixed;
         display: flex;
@@ -36,7 +47,40 @@
         color : red;
         font-weight: 800;
     }
+
+    /*우측 상단 톱니바퀴 메뉴 관련*/
+    .dropdown-list {
+        display: none; /* 초기에는 드롭다운을 숨김 */
+    }
+
+    .dropdown-list.openToggle {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        top: 40px;
+        border: 1px solid black;
+        right: 5px;
+        align-items: end;
+        background-color: white;
+        z-index:9999;
+        padding: 5px;
+        right: 10px;
+    }
 </style>
+<script>
+    function dropdownToggle(obj){
+        let openToggleYn;
+        let dropdownList = $(obj).siblings('.dropdown-list');
+
+        openToggleYn = $(obj).siblings('.dropdown-list').hasClass('openToggle') ? true : false;
+        $('.dropdown-list').removeClass('openToggle');
+
+        if(!openToggleYn){
+            dropdownList.addClass('openToggle');
+        }
+    }
+</script>
 <div id="topmenu">
     <div id='app_title_container'>
         <div id="app_title_img" class='app_title'>
@@ -47,25 +91,12 @@
         </div>
     </div>
     <div class="app_header_menu">
-        <span class="app_header user_add">
-            <img src="image/user_add.svg"/>
-        </span>
         <span class="app_header settings">
-            <img src="image/settings.svg"/>
+            <img src="image/settings.svg" onclick="dropdownToggle(this)"/>
             <ul class='dropdown-list'>
                 <li onclick=''>리스트</li>
                 <li onclick=''>리스트</li>
             </ul>
-        </span>
-    </div>
-    <div class="app_header_menu friend hide">
-        <span class="app_header settings">
-            <i class="bi bi-x-circle" onclick="initFriendTab('normal')"></i>
-        </span>
-    </div>
-    <div class="app_header_menu friend block">
-        <span class="app_header settings">
-            <i class="bi bi-x-circle" onclick="initFriendTab('normal')"></i>
         </span>
     </div>
 </div>
